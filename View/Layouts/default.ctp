@@ -10,9 +10,9 @@ House::
             echo $this->Html->css('jquery-ui');
             echo $this->Html->css('bootstrap');
             echo $this->Html->css('default');
-            echo $this->Html->script('bootstrap.min');
             echo $this->Html->script('jquery');
             echo $this->Html->script('jquery-ui');
+            echo $this->Html->script('bootstrap.min');
             echo $this->Html->script('olc');
             echo $scripts_for_layout;
             ?>
@@ -45,14 +45,7 @@ House::
                 <div id="viewContent"><?php echo $content_for_layout; ?></div>
             </div>
             <div id="footer">
-                <?php
-                echo $this->Html->link(
-                        $this->Html->image('cake.power.gif', array(
-                            'alt' => __("CakePHP: the rapid development php framework", true), 'border' => "0")
-                        ), 'http://www.cakephp.org/', array('target' => '_blank', 'escape' => false)
-                );
-                ?>
-                & <?php echo $this->Html->link('Just This Computer Studio', 'http://olc.tw/', array('target' => '_blank')); ?>
+                &nbsp;
             </div>
         </div>
         <?php

@@ -11,7 +11,7 @@ class DoorsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         if (isset($this->Auth)) {
-            $this->Auth->allow('q');
+            $this->Auth->allow(array('q', 'index'));
         }
     }
 
@@ -20,12 +20,15 @@ class DoorsController extends AppController {
         $this->response->type('json');
         $result = array();
         if (!empty($address)) {
-            $result = $this->Door->find('all', array(
+            $doors = $this->Door->find('all', array(
                 'conditions' => $this->Door->extractAddress($address),
                 'limit' => 10,
             ));
-            foreach ($result AS $k => $item) {
-                $result[$k]['Door']['id'] = bin2hex($result[$k]['Door']['id']);
+            foreach ($doors AS $k => $item) {
+                $item['Door']['id'] = bin2hex($item['Door']['id']);
+                $item['Door']['lin'] = intval($item['Door']['lin']);
+                $item['Door']['label'] = $item['Door']['value'] = "{$item['Door']['area']}{$item['Door']['cunli']}{$item['Door']['lin']}鄰{$item['Door']['road']}{$item['Door']['place']}{$item['Door']['lane']}{$item['Door']['alley']}{$item['Door']['number']}";
+                $result[] = $item['Door'];
             }
         }
         if (!isset($_GET['pretty'])) {

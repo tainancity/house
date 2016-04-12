@@ -1,6 +1,6 @@
 <?php
 
-Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+Router::connect('/', array('controller' => 'doors', 'action' => 'index'));
 Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
 CakePlugin::routes();
 
