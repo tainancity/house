@@ -10,7 +10,7 @@ if (!defined('APP_DIR')) {
     define('APP_DIR', basename(dirname(dirname(__FILE__))));
 }
 if (!defined('CAKE_CORE_INCLUDE_PATH')) {
-    define('CAKE_CORE_INCLUDE_PATH', '/home/kiang/public_html/olc_baker/lib');
+    define('CAKE_CORE_INCLUDE_PATH', dirname(dirname(__FILE__)) . '/cake2/lib');
 }
 /**
  * Editing below this line should NOT be necessary.
