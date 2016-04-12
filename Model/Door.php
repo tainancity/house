@@ -15,7 +15,7 @@ class Door extends AppModel {
         ),
     );
 
-    public function extractAddress($address = '') {
+    public function extractAddress($address = '', $asCondition = true) {
         $address = preg_replace('/\s+/', '', $address);
         $address = str_replace(array('．'), '', $address);
         $numbersMap = array(
@@ -69,7 +69,7 @@ class Door extends AppModel {
                 '蚵(壳)潭', '佳里興', '新市子', '(那)拔林', '西阿里關', '大(塭)寮',
                 '(檨)子林', '八德橫巷', '市場二巷', '東山市場', '九龍橫巷', '昇平橫巷',
                 '協進市場', '米市園', '中正號', '三民西巷', '康樂市場', '苗圃巷',
-                '市場六巷', '中山號', '市場一巷', 
+                '市場六巷', '中山號', '市場一巷',
             ),
             'road' => array(
                 '新樓街', '仁里街', '市場北街',
@@ -121,7 +121,7 @@ class Door extends AppModel {
                 }
             }
         }
-        if (isset($newItem['lane']) && $newItem['cunli'] === '仁和里' && in_array($newItem['lane'], array('仁巷', '和巷'))) {
+        if (isset($newItem['lane']) && isset($newItem['cunli']) && $newItem['cunli'] === '仁和里' && in_array($newItem['lane'], array('仁巷', '和巷'))) {
             $newItem['place'] = $newItem['lane'];
             unset($newItem['lane']);
         }
@@ -138,6 +138,16 @@ class Door extends AppModel {
                     if (false !== strpos($newItem['place'], '地下')) {
                         unset($newItem['place']);
                     }
+            }
+        }
+        if ($asCondition) {
+            if (isset($newItem['road'])) {
+                $newItem['road LIKE'] = $newItem['road'] . '%';
+                unset($newItem['road']);
+            }
+            if (isset($newItem['number'])) {
+                $newItem['number LIKE'] = $newItem['number'] . '%';
+                unset($newItem['number']);
             }
         }
         return $newItem;
