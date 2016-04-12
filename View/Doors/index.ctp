@@ -38,7 +38,7 @@
                         if (r.length) {
                             $('textarea#doorList').append("\n" + r[0].label + ',' + r[0].latitude + ',' + r[0].longitude);
                         } else {
-                            $('textarea#doorImport').val(arrayOfLines[k] + ": 找不到\n" + $('textarea#doorImport').val());
+                            $('textarea#doorImport').val($('textarea#doorImport').val() + arrayOfLines[k] + ": 找不到\n");
                         }
                     });
                 }
