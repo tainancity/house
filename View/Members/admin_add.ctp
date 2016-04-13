@@ -12,5 +12,5 @@
             'value' => 'Y'));
         ?>
     </fieldset>
-    <?php echo $this->Form->end(__('Submit', true)); ?>
+    <?php echo $this->Form->end('送出'); ?>
 </div>

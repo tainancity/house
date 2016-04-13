@@ -70,6 +70,6 @@
         </fieldset>
     </div>
     <?php
-    echo $this->Form->end(__('Submit', true));
+    echo $this->Form->end('送出');
     ?>
 </div>

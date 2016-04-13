@@ -2,9 +2,7 @@
     <?php echo $this->Form->create('Task', array('type' => 'file')); ?>
     <div class="Tasks form">
         <fieldset>
-            <legend><?php
-                echo __('Edit 專案任務', true);
-                ?></legend>
+            <legend>編輯專案任務</legend>
             <?php
             echo $this->Form->input('Task.id');
             echo $this->Form->input('Task.title', array(
@@ -17,15 +15,10 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
-            echo $this->Form->input('Task.created', array(
-                'label' => '建立時間',
-                'div' => 'form-group',
-                'class' => 'form-control',
-            ));
             ?>
         </fieldset>
     </div>
     <?php
-    echo $this->Form->end(__('Submit', true));
+    echo $this->Form->end('送出');
     ?>
 </div>

@@ -102,7 +102,7 @@
     <hr />
     <div class="actions">
         <ul>
-            <li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('Door.id')), null, __('Delete the item, sure?', true)); ?></li>
+            <li><?php echo $this->Html->link('刪除', array('action' => 'delete', $this->Form->value('Door.id')), null, '確定要刪除？'); ?></li>
             <li><?php echo $this->Html->link(__('門牌 List', true), array('action' => 'index')); ?> </li>
         </ul>
     </div>

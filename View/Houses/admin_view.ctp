@@ -130,7 +130,7 @@
     <hr />
     <div class="actions">
         <ul>
-            <li><?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $this->Form->value('House.id')), null, __('Delete the item, sure?', true)); ?></li>
+            <li><?php echo $this->Html->link('刪除', array('action' => 'delete', $this->Form->value('House.id')), null, '確定要刪除？'); ?></li>
             <li><?php echo $this->Html->link(__('房屋 List', true), array('action' => 'index')); ?> </li>
             <li><?php echo $this->Html->link(__('View Related 房屋記錄', true), array('controller' => 'house_logs', 'action' => 'index', 'House', $this->data['House']['id']), array('class' => 'HousesAdminViewControl')); ?></li>
         </ul>

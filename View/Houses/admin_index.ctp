@@ -10,7 +10,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
 <div id="HousesAdminIndex">
     <h2><?php echo __('房屋', true); ?></h2>
     <div class="btn-group">
-        <?php echo $this->Html->link(__('Add', true), array_merge($url, array('action' => 'add')), array('class' => 'btn dialogControl')); ?>
+        <?php echo $this->Html->link('新增', array_merge($url, array('action' => 'add')), array('class' => 'btn dialogControl')); ?>
     </div>
     <div><?php
         echo $this->Paginator->counter(array(
@@ -21,16 +21,6 @@ if (!empty($foreignId) && !empty($foreignModel)) {
     <table class="table table-bordered" id="HousesAdminIndexTable">
         <thead>
             <tr>
-                <?php if (empty($scope['House.Door_id'])): ?>
-                    <th><?php echo $this->Paginator->sort('House.Door_id', '門牌', array('url' => $url)); ?></th>
-                <?php endif; ?>
-                <?php if (empty($scope['House.Group_id'])): ?>
-                    <th><?php echo $this->Paginator->sort('House.Group_id', '群組', array('url' => $url)); ?></th>
-                <?php endif; ?>
-                <?php if (empty($scope['House.Task_id'])): ?>
-                    <th><?php echo $this->Paginator->sort('House.Task_id', '專案任務', array('url' => $url)); ?></th>
-                <?php endif; ?>
-
                 <th><?php echo $this->Paginator->sort('House.door_id', '門牌', array('url' => $url)); ?></th>
                 <th><?php echo $this->Paginator->sort('House.group_id', '群組', array('url' => $url)); ?></th>
                 <th><?php echo $this->Paginator->sort('House.task_id', '任務', array('url' => $url)); ?></th>
@@ -42,7 +32,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 <th><?php echo $this->Paginator->sort('House.created_by', '建立人', array('url' => $url)); ?></th>
                 <th><?php echo $this->Paginator->sort('House.modified', '更新時間', array('url' => $url)); ?></th>
                 <th><?php echo $this->Paginator->sort('House.modified_by', '更新人', array('url' => $url)); ?></th>
-                <th class="actions"><?php echo __('Action', true); ?></th>
+                <th class="actions">操作</th>
             </tr>
         </thead>
         <tbody>
@@ -55,46 +45,6 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 }
                 ?>
                 <tr<?php echo $class; ?>>
-                    <?php if (empty($scope['House.Door_id'])): ?>
-                        <td><?php
-                            if (empty($item['Door']['id'])) {
-                                echo '--';
-                            } else {
-                                echo $this->Html->link($item['Door']['id'], array(
-                                    'controller' => 'doors',
-                                    'action' => 'view',
-                                    $item['Door']['id']
-                                ));
-                            }
-                            ?></td>
-                    <?php endif; ?>
-                    <?php if (empty($scope['House.Group_id'])): ?>
-                        <td><?php
-                            if (empty($item['Group']['id'])) {
-                                echo '--';
-                            } else {
-                                echo $this->Html->link($item['Group']['id'], array(
-                                    'controller' => 'groups',
-                                    'action' => 'view',
-                                    $item['Group']['id']
-                                ));
-                            }
-                            ?></td>
-                    <?php endif; ?>
-                    <?php if (empty($scope['House.Task_id'])): ?>
-                        <td><?php
-                            if (empty($item['Task']['id'])) {
-                                echo '--';
-                            } else {
-                                echo $this->Html->link($item['Task']['id'], array(
-                                    'controller' => 'tasks',
-                                    'action' => 'view',
-                                    $item['Task']['id']
-                                ));
-                            }
-                            ?></td>
-                    <?php endif; ?>
-
                     <td><?php
                         echo $item['House']['door_id'];
                         ?></td>
@@ -129,9 +79,9 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                         echo $item['House']['modified_by'];
                         ?></td>
                     <td class="actions">
-                        <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['House']['id']), array('class' => 'dialogControl')); ?>
-                        <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $item['House']['id']), array('class' => 'dialogControl')); ?>
-                        <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $item['House']['id']), null, __('Delete the item, sure?', true)); ?>
+                        <?php echo $this->Html->link('檢視', array('action' => 'view', $item['House']['id']), array('class' => 'dialogControl')); ?>
+                        <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['House']['id']), array('class' => 'dialogControl')); ?>
+                        <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['House']['id']), null, '確定要刪除？'); ?>
                     </td>
                 </tr>
             <?php } // End of foreach ($items as $item) {  ?>

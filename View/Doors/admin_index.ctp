@@ -6,7 +6,7 @@ if (!isset($url)) {
 <div id="DoorsAdminIndex">
     <h2><?php echo __('門牌', true); ?></h2>
     <div class="btn-group">
-        <?php echo $this->Html->link(__('Add', true), array('action' => 'add'), array('class' => 'btn dialogControl')); ?>
+        <?php echo $this->Html->link('新增', array('action' => 'add'), array('class' => 'btn dialogControl')); ?>
     </div>
     <div><?php
         echo $this->Paginator->counter(array(
@@ -30,7 +30,7 @@ if (!isset($url)) {
                 <th><?php echo $this->Paginator->sort('Door.floor', '樓層', array('url' => $url)); ?></th>
                 <th><?php echo $this->Paginator->sort('Door.longitude', '經度', array('url' => $url)); ?></th>
                 <th><?php echo $this->Paginator->sort('Door.latitude', '緯度', array('url' => $url)); ?></th>
-                <th class="actions"><?php echo __('Action', true); ?></th>
+                <th class="actions">操作</th>
             </tr>
         </thead>
         <tbody>
@@ -81,9 +81,9 @@ if (!isset($url)) {
                         echo $item['Door']['latitude'];
                         ?></td>
                     <td class="actions">
-                        <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['Door']['id']), array('class' => 'dialogControl')); ?>
-                        <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $item['Door']['id']), array('class' => 'dialogControl')); ?>
-                        <?php echo $this->Html->link(__('Delete', true), array('action' => 'delete', $item['Door']['id']), null, __('Delete the item, sure?', true)); ?>
+                        <?php echo $this->Html->link('檢視', array('action' => 'view', $item['Door']['id']), array('class' => 'dialogControl')); ?>
+                        <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['Door']['id']), array('class' => 'dialogControl')); ?>
+                        <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['Door']['id']), null, '確定要刪除？'); ?>
                     </td>
                 </tr>
             <?php } // End of foreach ($items as $item) {  ?>
