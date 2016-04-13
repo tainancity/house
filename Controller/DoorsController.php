@@ -18,7 +18,10 @@ class DoorsController extends AppController {
     public function q($address = '') {
         $this->autoRender = false;
         $this->response->type('json');
-        $result = array();
+        $result = array(
+            'queryString' => $address,
+            'result' => array(),
+        );
         if (!empty($address)) {
             $doors = $this->Door->find('all', array(
                 'conditions' => $this->Door->extractAddress($address),
@@ -28,7 +31,7 @@ class DoorsController extends AppController {
                 $item['Door']['id'] = bin2hex($item['Door']['id']);
                 $item['Door']['lin'] = intval($item['Door']['lin']);
                 $item['Door']['label'] = $item['Door']['value'] = "{$item['Door']['area']}{$item['Door']['cunli']}{$item['Door']['lin']}鄰{$item['Door']['road']}{$item['Door']['place']}{$item['Door']['lane']}{$item['Door']['alley']}{$item['Door']['number']}";
-                $result[] = $item['Door'];
+                $result['result'][] = $item['Door'];
             }
         }
         if (!isset($_GET['pretty'])) {

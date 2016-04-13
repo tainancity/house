@@ -1,7 +1,7 @@
 <div id="DoorsIndex">
     <div class="input">
         <input type="text" class="col-md-12" id="doorInput" />
-        <textarea class="col-md-12" id="doorList" rows="20">住址,緯度,經度</textarea>
+        <textarea class="col-md-12" id="doorList" rows="20">輸入住址,傳回住址,緯度,經度</textarea>
     </div>
     <div class="clearfix"></div>
     <br />
@@ -14,19 +14,21 @@
         //<![CDATA[
         var queryUrl = '<?php echo $this->Html->url('/doors/q/'); ?>';
         $(function () {
+            var currentTerm;
             $('input#doorInput').autocomplete({
                 source: function (request, response) {
+                    currentTerm = request.term;
                     $.ajax({
                         url: queryUrl + request.term,
                         dataType: "json",
                         data: {},
                         success: function (data) {
-                            response(data);
+                            response(data.result);
                         }
                     });
                 },
                 select: function (event, ui) {
-                    $('textarea#doorList').append("\n" + ui.item.label + ',' + ui.item.latitude + ',' + ui.item.longitude);
+                    $('textarea#doorList').append("\n" + currentTerm + ',' + ui.item.label + ',' + ui.item.latitude + ',' + ui.item.longitude);
                 },
                 minLength: 2
             });
@@ -35,10 +37,10 @@
                 $('textarea#doorImport').val('');
                 for (k in arrayOfLines) {
                     $.getJSON(queryUrl + arrayOfLines[k], {}, function (r) {
-                        if (r.length) {
-                            $('textarea#doorList').append("\n" + r[0].label + ',' + r[0].latitude + ',' + r[0].longitude);
+                        if (r.result.length) {
+                            $('textarea#doorList').append("\n" + r.queryString + ',' + r.result[0].label + ',' + r.result[0].latitude + ',' + r.result[0].longitude);
                         } else {
-                            $('textarea#doorImport').val($('textarea#doorImport').val() + arrayOfLines[k] + ": 找不到\n");
+                            $('textarea#doorList').append("\n" + r.queryString + ',,,');
                         }
                     });
                 }
