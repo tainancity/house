@@ -38,6 +38,9 @@ $(function () {
         },
         minLength: 2
     });
+    $('#HouseLogDateVisited').datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
 });
 
 function markerDrag(e) {

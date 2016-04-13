@@ -5,7 +5,13 @@
             $this->Html->link($item['Task']['title'], array('action' => 'index', 'Task', $item['House']['task_id'])),
             $item['House']['title']
         ));
-        ?></h2><hr />
+        ?></h2>
+    <hr />
+    <div class="col-md-12">
+        <div class="btn-group pull-right">
+            <?php echo $this->Html->link('修改', array('action' => 'edit', $item['House']['id']), array('class' => 'btn btn-primary')); ?>
+        </div>
+    </div>
     <div class="col-md-6">
         <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
     </div>
@@ -39,6 +45,30 @@
             echo $item['Modifier']['username'] . ' / ' . $item['House']['modified'];
             ?>&nbsp;
         </div>
+    </div>
+    <div class="col-md-12">
+        <hr />
+        <table class="table table-bordered">
+            <tr>
+                <th>建檔時間</th>
+                <th>訪視日期</th>
+                <th>狀態</th>
+                <th>操作人</th>
+                <th>備註</th>
+            </tr>
+            <?php
+            foreach ($item['HouseLog'] AS $log) {
+                ?><tr>
+                    <td><?php echo $log['created']; ?></td>
+                    <td><?php echo $log['date_visited']; ?></td>
+                    <td><?php echo $this->Olc->status[$log['status']]; ?></td>
+                    <td><?php echo $log['Creator']['username']; ?></td>
+                    <td><?php echo $log['note']; ?></td>
+                </tr>
+                <?php
+            }
+            ?>
+        </table>
     </div>
 </div>
 <script>

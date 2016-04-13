@@ -76,8 +76,15 @@ class HousesController extends AppController {
                     'Modifier' => array(
                         'fields' => array('username'),
                     ),
+                    'HouseLog' => array(
+                        'order' => array('HouseLog.created' => 'DESC'),
+                        'Creator' => array(
+                            'fields' => array('username'),
+                        ),
+                    ),
                 ),
             ));
+            $item['House']['id'] = bin2hex($item['House']['id']);
         }
         if (!empty($item)) {
             $this->set('item', $item);
@@ -111,9 +118,17 @@ class HousesController extends AppController {
             $dataToSave['House']['created_by'] = $dataToSave['House']['modified_by'] = $this->loginMember['id'];
             $this->House->create();
             if ($this->House->save($dataToSave)) {
-                $id = $this->House->getInsertID();
+                $this->House->HouseLog->create();
+                $this->House->HouseLog->save(array('HouseLog' => array(
+                        'id' => $this->House->getNewUUID(),
+                        'house_id' => $dataToSave['House']['id'],
+                        'status' => $dataToSave['House']['status'],
+                        'date_visited' => $dataToSave['HouseLog']['date_visited'],
+                        'created_by' => $this->loginMember['id'],
+                        'note' => $dataToSave['HouseLog']['note'],
+                )));
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->redirect(array('action' => 'view', bin2hex($id)));
+                $this->redirect(array('action' => 'view', bin2hex($dataToSave['House']['id'])));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
@@ -135,6 +150,15 @@ class HousesController extends AppController {
             $this->House->id = $id;
             $dataToSave['House']['modified_by'] = $this->loginMember['id'];
             if ($this->House->save($dataToSave)) {
+                $this->House->HouseLog->create();
+                $this->House->HouseLog->save(array('HouseLog' => array(
+                        'id' => $this->House->getNewUUID(),
+                        'house_id' => $id,
+                        'status' => $dataToSave['House']['status'],
+                        'date_visited' => $dataToSave['HouseLog']['date_visited'],
+                        'created_by' => $this->loginMember['id'],
+                        'note' => $dataToSave['HouseLog']['note'],
+                )));
                 $this->Session->setFlash(__('The data has been saved', true));
                 $this->redirect(array('action' => 'view', bin2hex($id)));
             } else {

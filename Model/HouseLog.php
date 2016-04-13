@@ -10,6 +10,10 @@ class HouseLog extends AppModel {
             'foreignKey' => 'house_id',
             'className' => 'House',
         ),
+        'Creator' => array(
+            'foreignKey' => 'created_by',
+            'className' => 'Member',
+        ),
     );
 
 }

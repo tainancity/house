@@ -35,6 +35,19 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+            echo $this->Form->input('HouseLog.date_visited', array(
+                'label' => '訪視日期',
+                'type' => 'text',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('HouseLog.note', array(
+                'label' => '備註',
+                'type' => 'textarea',
+                'rows' => 5,
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
             ?>
         </div>
     </div>
