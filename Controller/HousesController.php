@@ -92,8 +92,9 @@ class HousesController extends AppController {
             $dataToSave['House']['created_by'] = $dataToSave['House']['modified_by'] = $this->loginMember['id'];
             $this->House->create();
             if ($this->House->save($dataToSave)) {
+                $id = $this->House->getInsertID();
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->redirect(array('action' => 'index'));
+                $this->redirect(array('action' => 'view', bin2hex($id)));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
@@ -103,46 +104,32 @@ class HousesController extends AppController {
     }
 
     function admin_edit($id = null) {
+        if (!empty($id)) {
+            $id = hex2bin($id);
+        }
         if (!$id && empty($this->data)) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
-            if ($this->House->save($this->data)) {
+            $dataToSave = $this->data;
+            $this->House->id = $id;
+            $dataToSave['House']['modified_by'] = $this->loginMember['id'];
+            if ($this->House->save($dataToSave)) {
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->redirect(array('action' => 'index'));
+                $this->redirect(array('action' => 'view', bin2hex($id)));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
         $this->set('id', $id);
         $this->data = $this->House->read(null, $id);
-
-        $belongsToModels = array(
-            'listDoor' => array(
-                'label' => '門牌',
-                'modelName' => 'Door',
-                'foreignKey' => 'door_id',
-            ),
-            'listGroup' => array(
-                'label' => '群組',
-                'modelName' => 'Group',
-                'foreignKey' => 'group_id',
-            ),
-            'listTask' => array(
-                'label' => '專案任務',
-                'modelName' => 'Task',
-                'foreignKey' => 'task_id',
-            ),
-        );
-
-        foreach ($belongsToModels AS $key => $model) {
-            $this->set($key, $this->House->$model['modelName']->find('list'));
-        }
-        $this->set('belongsToModels', $belongsToModels);
     }
 
     function admin_delete($id = null) {
+        if (!empty($id)) {
+            $id = hex2bin($id);
+        }
         if (!$id) {
             $this->Session->setFlash(__('Please do following links in the page', true));
         } else if ($this->House->delete($id)) {
