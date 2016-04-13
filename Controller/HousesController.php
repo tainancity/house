@@ -61,8 +61,27 @@ class HousesController extends AppController {
     function admin_view($id = null) {
         if (!empty($id)) {
             $id = hex2bin($id);
+            $item = $this->House->find('first', array(
+                'conditions' => array('House.id' => $id),
+                'contain' => array(
+                    'Group' => array(
+                        'fields' => array('name'),
+                    ),
+                    'Task' => array(
+                        'fields' => array('title'),
+                    ),
+                    'Creator' => array(
+                        'fields' => array('username'),
+                    ),
+                    'Modifier' => array(
+                        'fields' => array('username'),
+                    ),
+                ),
+            ));
         }
-        if (!$id || !$this->data = $this->House->read(null, $id)) {
+        if (!empty($item)) {
+            $this->set('item', $item);
+        } else {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action' => 'index'));
         }
