@@ -3,19 +3,31 @@
     <head>
         <?php echo $this->Html->charset(); ?>
         <title>
-House::
+            House::
             <?php echo $title_for_layout; ?>
         </title><?php
-            echo $this->Html->meta('icon');
-            echo $this->Html->css('jquery-ui');
-            echo $this->Html->css('bootstrap');
-            echo $this->Html->css('default');
-            echo $this->Html->script('jquery');
-            echo $this->Html->script('jquery-ui');
-            echo $this->Html->script('bootstrap.min');
-            echo $this->Html->script('olc');
-            echo $scripts_for_layout;
-            ?>
+        echo $this->Html->meta('icon');
+        echo $this->Html->css('jquery-ui');
+        echo $this->Html->css('bootstrap');
+        echo $this->Html->css('default');
+        echo $this->Html->script('jquery');
+        echo $this->Html->script('jquery-ui');
+        echo $this->Html->script('bootstrap.min');
+        echo $this->Html->script('olc');
+        echo $scripts_for_layout;
+        ?>
+        <style>
+            .ajax-loader {
+                position: absolute;
+                left: 40%;
+                top: 50%;
+                font-size: 50pt;
+                background-color: pink;
+                color: black;
+                border: 1px solid yellow;
+                padding: 20px;
+            }
+        </style>
     </head>
     <body>
         <div class="container">
@@ -53,8 +65,8 @@ House::
         ?>
         <script type="text/javascript">
             //<![CDATA[
-            $(function() {
-                $('a.dialogControl').click(function() {
+            $(function () {
+                $('a.dialogControl').click(function () {
                     dialogFull(this);
                     return false;
                 });
