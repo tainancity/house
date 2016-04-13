@@ -18,6 +18,14 @@ class House extends AppModel {
             'foreignKey' => 'task_id',
             'className' => 'Task',
         ),
+        'Creator' => array(
+            'foreignKey' => 'created_by',
+            'className' => 'Member',
+        ),
+        'Modifier' => array(
+            'foreignKey' => 'modified_by',
+            'className' => 'Member',
+        ),
     );
     var $hasMany = array(
         'HouseLog' => array(

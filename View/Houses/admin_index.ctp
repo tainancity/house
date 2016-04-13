@@ -39,9 +39,6 @@ if (!empty($foreignId) && !empty($foreignModel)) {
     <table class="table table-bordered" id="HousesAdminIndexTable">
         <thead>
             <tr>
-                <?php if ($foreignModel !== 'Door') { ?>
-                    <th>門牌</th>
-                <?php } ?>
                 <?php if ($foreignModel !== 'Group') { ?>
                     <th><?php echo $this->Paginator->sort('House.group_id', '群組', array('url' => $url)); ?></th>
                 <?php } ?>
@@ -65,32 +62,27 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 }
                 ?>
                 <tr<?php echo $class; ?>>
-                    <?php if ($foreignModel !== 'Door') { ?>
-                        <td><?php
-                            echo $item['House']['door_id'];
-                            ?></td>
-                    <?php } ?>
                     <?php if ($foreignModel !== 'Group') { ?>
                         <td><?php
-                            echo $item['House']['group_id'];
+                            echo $groups[$item['House']['group_id']];
                             ?></td>
                     <?php } ?>
                     <?php if ($foreignModel !== 'Task') { ?>
                         <td><?php
-                            echo $item['House']['task_id'];
+                            echo isset($tasks[$item['House']['task_id']]) ? $tasks[$item['House']['task_id']] : '--';
                             ?></td>
                     <?php } ?>
                     <td><?php
                         echo $item['House']['title'];
                         ?></td>
                     <td><?php
-                        echo $item['House']['status'];
+                        echo $this->Olc->status[$item['House']['status']];
                         ?></td>
                     <td><?php
-                        echo $item['House']['created'];
+                        echo $item['House']['modified'];
                         ?></td>
                     <td><?php
-                        echo $item['House']['created_by'];
+                        echo $item['Modifier']['username'];
                         ?></td>
                     <td class="actions">
                         <?php echo $this->Html->link('檢視', array('action' => 'view', $item['House']['id'])); ?>

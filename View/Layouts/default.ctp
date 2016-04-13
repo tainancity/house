@@ -38,7 +38,6 @@
                 <div class="btn-group">
                     <?php if ($this->Session->read('Auth.User.id')): ?>
                         <?php echo $this->Html->link('任務', '/admin/tasks', array('class' => 'btn')); ?>
-                        <?php echo $this->Html->link('房屋', '/admin/houses', array('class' => 'btn')); ?>
                         <?php echo $this->Html->link('Members', '/admin/members', array('class' => 'btn')); ?>
                         <?php echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn')); ?>
                         <?php echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn')); ?>

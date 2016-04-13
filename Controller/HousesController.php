@@ -22,6 +22,7 @@ class HousesController extends AppController {
         if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             $scope['House.' . $foreignKeys[$foreignModel]] = $foreignId;
         } else {
+            $this->redirect(array('controller' => 'tasks'));
             $foreignModel = '';
         }
         $foreignInfo = array();
@@ -40,6 +41,11 @@ class HousesController extends AppController {
         }
         $this->set('scope', $scope);
         $this->paginate['House']['limit'] = 20;
+        $this->paginate['House']['contain'] = array(
+            'Modifier' => array(
+                'fields' => array('username'),
+            ),
+        );
         $items = $this->paginate($this->House, $scope);
         foreach ($items AS $k => $item) {
             $items[$k]['House']['id'] = bin2hex($item['House']['id']);
@@ -48,6 +54,8 @@ class HousesController extends AppController {
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
         $this->set('foreignInfo', $foreignInfo);
+        $this->set('groups', $this->House->Group->find('list'));
+        $this->set('tasks', $this->House->Task->find('list'));
     }
 
     function admin_view($id = null) {
@@ -69,6 +77,9 @@ class HousesController extends AppController {
         );
         if (!array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             $foreignModel = '';
+        }
+        if (empty($foreignModel)) {
+            $this->redirect(array('controller' => 'tasks'));
         }
         if (!empty($this->data)) {
             $dataToSave = $this->data;
