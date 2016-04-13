@@ -8,46 +8,14 @@ class HousesController extends AppController {
     public $paginate = array();
     public $helpers = array();
 
-    function index($foreignModel = null, $foreignId = 0) {
-        $foreignId = intval($foreignId);
-        $foreignKeys = array();
-
-        $foreignKeys = array(
-            'Door' => 'Door_id',
-            'Group' => 'Group_id',
-            'Task' => 'Task_id',
-        );
-
-
-        $scope = array();
-        if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
-            $scope['House.' . $foreignKeys[$foreignModel]] = $foreignId;
-        } else {
-            $foreignModel = '';
-        }
-        $this->set('scope', $scope);
-        $this->paginate['House']['limit'] = 20;
-        $items = $this->paginate($this->House, $scope);
-        $this->set('items', $items);
-        $this->set('foreignId', $foreignId);
-        $this->set('foreignModel', $foreignModel);
-    }
-
-    function view($id = null) {
-        if (!$id || !$this->data = $this->House->read(null, $id)) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
-            $this->redirect(array('action' => 'index'));
-        }
-    }
-
     function admin_index($foreignModel = null, $foreignId = 0, $op = null) {
         $foreignId = intval($foreignId);
         $foreignKeys = array();
 
         $foreignKeys = array(
-            'Door' => 'Door_id',
-            'Group' => 'Group_id',
-            'Task' => 'Task_id',
+            'Door' => 'door_id',
+            'Group' => 'group_id',
+            'Task' => 'task_id',
         );
 
 
@@ -76,9 +44,9 @@ class HousesController extends AppController {
     function admin_add($foreignModel = null, $foreignId = 0) {
         $foreignId = intval($foreignId);
         $foreignKeys = array(
-            'Door' => 'Door_id',
-            'Group' => 'Group_id',
-            'Task' => 'Task_id',
+            'Door' => 'door_id',
+            'Group' => 'group_id',
+            'Task' => 'task_id',
         );
         if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             if (!empty($this->data)) {
@@ -103,17 +71,17 @@ class HousesController extends AppController {
             'listDoor' => array(
                 'label' => '門牌',
                 'modelName' => 'Door',
-                'foreignKey' => 'Door_id',
+                'foreignKey' => 'door_id',
             ),
             'listGroup' => array(
                 'label' => '群組',
                 'modelName' => 'Group',
-                'foreignKey' => 'Group_id',
+                'foreignKey' => 'group_id',
             ),
             'listTask' => array(
                 'label' => '專案任務',
                 'modelName' => 'Task',
-                'foreignKey' => 'Task_id',
+                'foreignKey' => 'task_id',
             ),
         );
 
@@ -147,17 +115,17 @@ class HousesController extends AppController {
             'listDoor' => array(
                 'label' => '門牌',
                 'modelName' => 'Door',
-                'foreignKey' => 'Door_id',
+                'foreignKey' => 'door_id',
             ),
             'listGroup' => array(
                 'label' => '群組',
                 'modelName' => 'Group',
-                'foreignKey' => 'Group_id',
+                'foreignKey' => 'group_id',
             ),
             'listTask' => array(
                 'label' => '專案任務',
                 'modelName' => 'Task',
-                'foreignKey' => 'Task_id',
+                'foreignKey' => 'task_id',
             ),
         );
 

@@ -8,59 +8,6 @@ class TasksController extends AppController {
     public $paginate = array();
     public $helpers = array();
 
-    function index($foreignModel = null, $foreignId = 0) {
-        $foreignId = intval($foreignId);
-        $foreignKeys = array();
-
-
-        $habtmKeys = array(
-            'Group' => 'Group_id',
-        );
-        $foreignKeys = array_merge($habtmKeys, $foreignKeys);
-
-        $scope = array();
-        if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
-            $scope['Task.' . $foreignKeys[$foreignModel]] = $foreignId;
-
-            $joins = array(
-                'Group' => array(
-                    0 => array(
-                        'table' => 'groups_tasks',
-                        'alias' => 'GroupsTask',
-                        'type' => 'inner',
-                        'conditions' => array('GroupsTask.Task_id = Task.id'),
-                    ),
-                    1 => array(
-                        'table' => 'groups',
-                        'alias' => 'Group',
-                        'type' => 'inner',
-                        'conditions' => array('GroupsTask.Group_id = Group.id'),
-                    ),
-                ),
-            );
-            if (array_key_exists($foreignModel, $habtmKeys)) {
-                unset($scope['Task.' . $foreignKeys[$foreignModel]]);
-                $scope[$joins[$foreignModel][0]['alias'] . '.' . $foreignKeys[$foreignModel]] = $foreignId;
-                $this->paginate['Task']['joins'] = $joins[$foreignModel];
-            }
-        } else {
-            $foreignModel = '';
-        }
-        $this->set('scope', $scope);
-        $this->paginate['Task']['limit'] = 20;
-        $items = $this->paginate($this->Task, $scope);
-        $this->set('items', $items);
-        $this->set('foreignId', $foreignId);
-        $this->set('foreignModel', $foreignModel);
-    }
-
-    function view($id = null) {
-        if (!$id || !$this->data = $this->Task->read(null, $id)) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
-            $this->redirect(array('action' => 'index'));
-        }
-    }
-
     function admin_index($foreignModel = null, $foreignId = 0, $op = null) {
         $foreignId = intval($foreignId);
         $foreignKeys = array();
