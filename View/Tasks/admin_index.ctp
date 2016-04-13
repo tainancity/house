@@ -45,17 +45,12 @@ if (!isset($url)) {
                     }
                     ?>
 
-                    <td><?php
-                        echo $item['Task']['title'];
-                        ?></td>
-                    <td><?php
-                        echo $item['Task']['description'];
-                        ?></td>
-                    <td><?php
-                        echo $item['Task']['created'];
-                        ?></td>
+                    <td><?php echo $item['Task']['title']; ?></td>
+                    <td><?php echo $item['Task']['description']; ?></td>
+                    <td><?php echo $item['Task']['created']; ?></td>
                     <td class="actions">
-                        <?php echo $this->Html->link('檢視', array('action' => 'view', $item['Task']['id']), array('class' => 'dialogControl')); ?>
+                        <?php echo $this->Html->link('檢視', array('action' => 'view', $item['Task']['id'])); ?>
+                        <?php echo $this->Html->link('設定群組', array('controller' => 'groups', 'action' => 'tasks', 'Task', $item['Task']['id'], 'set'), array('class' => 'dialogControl')); ?>
                         <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['Task']['id']), array('class' => 'dialogControl')); ?>
                         <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['Task']['id']), null, '確定要刪除？'); ?>
                     </td>

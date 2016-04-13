@@ -14,7 +14,7 @@ class TasksController extends AppController {
 
 
         $habtmKeys = array(
-            'Group' => 'Group_id',
+            'Group' => 'group_id',
         );
         $foreignKeys = array_merge($habtmKeys, $foreignKeys);
 
@@ -116,48 +116,6 @@ class TasksController extends AppController {
             $this->Session->setFlash(__('The data has been deleted', true));
         }
         $this->redirect(array('action' => 'index'));
-    }
-
-    function admin_habtmSet($foreignModel = null, $foreignId = 0, $id = 0, $switch = null) {
-        $habtmKeys = array(
-            'Group' => array(
-                'associationForeignKey' => 'Group_id',
-                'foreignKey' => 'Task_id',
-                'alias' => 'GroupsTask',
-            ),
-        );
-        $foreignModel = array_key_exists($foreignModel, $habtmKeys) ? $foreignModel : null;
-        $foreignId = intval($foreignId);
-        $id = intval($id);
-        $switch = in_array($switch, array('on', 'off')) ? $switch : null;
-        if (empty($foreignModel) || $foreignId <= 0 || $id <= 0 || empty($switch)) {
-            $this->set('habtmMessage', __('Wrong Parameters'));
-        } else {
-            $habtmModel = &$this->Task->$habtmKeys[$foreignModel]['alias'];
-            $conditions = array(
-                $habtmKeys[$foreignModel]['associationForeignKey'] => $foreignId,
-                $habtmKeys[$foreignModel]['foreignKey'] => $id,
-            );
-            $status = ($habtmModel->find('count', array(
-                        'conditions' => $conditions,
-                    ))) ? 'on' : 'off';
-            if ($status == $switch) {
-                $this->set('habtmMessage', __('Duplicated operactions', true));
-            } else if ($switch == 'on') {
-                $habtmModel->create();
-                if ($habtmModel->save(array($habtmKeys[$foreignModel]['alias'] => $conditions))) {
-                    $this->set('habtmMessage', __('Updated', true));
-                } else {
-                    $this->set('habtmMessage', __('Update failed', true));
-                }
-            } else {
-                if ($habtmModel->deleteAll($conditions)) {
-                    $this->set('habtmMessage', __('Updated', true));
-                } else {
-                    $this->set('habtmMessage', __('Update failed', true));
-                }
-            }
-        }
     }
 
 }

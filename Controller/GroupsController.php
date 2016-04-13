@@ -31,6 +31,115 @@ class GroupsController extends AppController {
         }
     }
 
+    function admin_tasks($foreignModel = null, $foreignId = 0, $op = null) {
+        $foreignId = intval($foreignId);
+        $foreignKeys = array();
+
+
+        $habtmKeys = array(
+            'Task' => 'task_id',
+        );
+        $foreignKeys = array_merge($habtmKeys, $foreignKeys);
+
+        $scope = array();
+        if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
+            $scope['Task.' . $foreignKeys[$foreignModel]] = $foreignId;
+
+            $joins = array(
+                'Task' => array(
+                    0 => array(
+                        'table' => 'groups_tasks',
+                        'alias' => 'GroupsTask',
+                        'type' => 'inner',
+                        'conditions' => array('GroupsTask.group_id = Group.id'),
+                    ),
+                    1 => array(
+                        'table' => 'tasks',
+                        'alias' => 'Task',
+                        'type' => 'inner',
+                        'conditions' => array('GroupsTask.task_id = Task.id'),
+                    ),
+                ),
+            );
+            if (array_key_exists($foreignModel, $habtmKeys)) {
+                unset($scope['Task.' . $foreignKeys[$foreignModel]]);
+                if ($op != 'set') {
+                    $scope[$joins[$foreignModel][0]['alias'] . '.' . $foreignKeys[$foreignModel]] = $foreignId;
+                    $this->paginate['Group']['joins'] = $joins[$foreignModel];
+                }
+            }
+        } else {
+            $foreignModel = '';
+        }
+        $this->set('scope', $scope);
+        $this->paginate['Group']['limit'] = 20;
+        $items = $this->paginate($this->Group, $scope);
+
+        if ($op == 'set' && !empty($joins[$foreignModel]) && !empty($foreignModel) && !empty($foreignId) && !empty($items)) {
+            foreach ($items AS $key => $item) {
+                $items[$key]['option'] = $this->Group->find('count', array(
+                    'joins' => $joins[$foreignModel],
+                    'conditions' => array(
+                        'Group.id' => $item['Group']['id'],
+                        $foreignModel . '.id' => $foreignId,
+                    ),
+                ));
+                if ($items[$key]['option'] > 0) {
+                    $items[$key]['option'] = 1;
+                }
+            }
+            $this->set('op', $op);
+        }
+
+        $this->set('items', $items);
+        $this->set('foreignId', $foreignId);
+        $this->set('foreignModel', $foreignModel);
+    }
+
+    function admin_habtmSet($foreignModel = null, $foreignId = 0, $id = 0, $switch = null) {
+        $habtmKeys = array(
+            'Task' => array(
+                'associationForeignKey' => 'task_id',
+                'foreignKey' => 'group_id',
+                'alias' => 'GroupsTask',
+            ),
+        );
+        $foreignModel = array_key_exists($foreignModel, $habtmKeys) ? $foreignModel : null;
+        $foreignId = intval($foreignId);
+        $id = intval($id);
+        $switch = in_array($switch, array('on', 'off')) ? $switch : null;
+        if (empty($foreignModel) || $foreignId <= 0 || $id <= 0 || empty($switch)) {
+            $this->set('habtmMessage', __('Wrong Parameters'));
+        } else {
+            $this->Group->id = $id;
+            $habtmModel = &$this->Group->$habtmKeys[$foreignModel]['alias'];
+            $conditions = array(
+                $habtmKeys[$foreignModel]['associationForeignKey'] => $foreignId,
+                $habtmKeys[$foreignModel]['foreignKey'] => $id,
+                'title' => $this->Group->field('name'),
+            );
+            $status = ($habtmModel->find('count', array(
+                        'conditions' => $conditions,
+                    ))) ? 'on' : 'off';
+            if ($status == $switch) {
+                $this->set('habtmMessage', __('Duplicated operactions', true));
+            } else if ($switch == 'on') {
+                $habtmModel->create();
+                if ($habtmModel->save(array($habtmKeys[$foreignModel]['alias'] => $conditions))) {
+                    $this->set('habtmMessage', __('Updated', true));
+                } else {
+                    $this->set('habtmMessage', __('Update failed', true));
+                }
+            } else {
+                if ($habtmModel->deleteAll($conditions)) {
+                    $this->set('habtmMessage', __('Updated', true));
+                } else {
+                    $this->set('habtmMessage', __('Update failed', true));
+                }
+            }
+        }
+    }
+
     public function admin_add($parentId = 0) {
         if (!empty($this->request->data)) {
             $this->Group->create();
