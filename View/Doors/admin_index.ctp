@@ -45,41 +45,41 @@ if (!isset($url)) {
                 <tr<?php echo $class; ?>>
 
                     <td><?php
-                    echo $item['Door']['area_code'];
-                    ?></td>
+                        echo $item['Door']['area_code'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['area'];
-                    ?></td>
+                        echo $item['Door']['area'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['cunli'];
-                    ?></td>
+                        echo $item['Door']['cunli'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['lin'];
-                    ?></td>
+                        echo $item['Door']['lin'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['road'];
-                    ?></td>
+                        echo $item['Door']['road'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['place'];
-                    ?></td>
+                        echo $item['Door']['place'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['lane'];
-                    ?></td>
+                        echo $item['Door']['lane'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['alley'];
-                    ?></td>
+                        echo $item['Door']['alley'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['number'];
-                    ?></td>
+                        echo $item['Door']['number'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['floor'];
-                    ?></td>
+                        echo $item['Door']['floor'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['longitude'];
-                    ?></td>
+                        echo $item['Door']['longitude'];
+                        ?></td>
                     <td><?php
-                    echo $item['Door']['latitude'];
-                    ?></td>
+                        echo $item['Door']['latitude'];
+                        ?></td>
                     <td class="actions">
                         <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['Door']['id']), array('class' => 'dialogControl')); ?>
                         <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $item['Door']['id']), array('class' => 'dialogControl')); ?>
@@ -93,12 +93,12 @@ if (!isset($url)) {
     <div id="DoorsAdminIndexPanel"></div>
     <script type="text/javascript">
         //<![CDATA[
-        $(function() {
-            $('#DoorsAdminIndexTable th a, #DoorsAdminIndex div.paging a').click(function() {
+        $(function () {
+            $('#DoorsAdminIndexTable th a, #DoorsAdminIndex div.paging a').click(function () {
                 $('#DoorsAdminIndex').parent().load(this.href);
                 return false;
             });
-    });
-    //]]>
+        });
+        //]]>
     </script>
 </div>

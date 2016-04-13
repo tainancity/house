@@ -8,7 +8,7 @@
 
                 echo $this->data['Task']['title'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">描述</div>
         <div class="col-md-9">&nbsp;<?php
@@ -16,7 +16,7 @@
 
                 echo $this->data['Task']['description'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">建立時間</div>
         <div class="col-md-9">&nbsp;<?php
@@ -24,7 +24,7 @@
 
                 echo $this->data['Task']['created'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
     </div>
     <hr />
@@ -38,15 +38,15 @@
         </ul>
     </div>
     <div id="TasksAdminViewPanel"></div>
-<?php
-echo $this->Html->scriptBlock('
+    <?php
+    echo $this->Html->scriptBlock('
 
 ');
-?>
+    ?>
     <script type="text/javascript">
         //<![CDATA[
-        $(function() {
-            $('a.TasksAdminViewControl').click(function() {
+        $(function () {
+            $('a.TasksAdminViewControl').click(function () {
                 $('#TasksAdminViewPanel').parent().load(this.href);
                 return false;
             });

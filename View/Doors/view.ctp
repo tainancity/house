@@ -8,7 +8,7 @@
 
                 echo $this->data['Door']['area_code'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">區域</div>
         <div class="col-md-9"><?php
@@ -16,7 +16,7 @@
 
                 echo $this->data['Door']['area'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">村里</div>
         <div class="col-md-9"><?php
@@ -24,7 +24,7 @@
 
                 echo $this->data['Door']['cunli'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">鄰</div>
         <div class="col-md-9"><?php
@@ -32,7 +32,7 @@
 
                 echo $this->data['Door']['lin'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">路段</div>
         <div class="col-md-9"><?php
@@ -40,7 +40,7 @@
 
                 echo $this->data['Door']['road'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">地名</div>
         <div class="col-md-9"><?php
@@ -48,7 +48,7 @@
 
                 echo $this->data['Door']['place'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">巷</div>
         <div class="col-md-9"><?php
@@ -56,7 +56,7 @@
 
                 echo $this->data['Door']['lane'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">弄</div>
         <div class="col-md-9"><?php
@@ -64,7 +64,7 @@
 
                 echo $this->data['Door']['alley'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">號</div>
         <div class="col-md-9"><?php
@@ -72,7 +72,7 @@
 
                 echo $this->data['Door']['number'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">樓層</div>
         <div class="col-md-9"><?php
@@ -80,7 +80,7 @@
 
                 echo $this->data['Door']['floor'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">經度</div>
         <div class="col-md-9"><?php
@@ -88,7 +88,7 @@
 
                 echo $this->data['Door']['longitude'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">緯度</div>
         <div class="col-md-9"><?php
@@ -96,7 +96,7 @@
 
                 echo $this->data['Door']['latitude'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
     </div>
     <div class="actions">
@@ -107,8 +107,8 @@
     <div id="DoorsViewPanel"></div>
     <script type="text/javascript">
         //<![CDATA[
-        $(function() {
-            $('a.DoorsViewControl').click(function() {
+        $(function () {
+            $('a.DoorsViewControl').click(function () {
                 $('#DoorsViewPanel').parent().load(this.href);
                 return false;
             });

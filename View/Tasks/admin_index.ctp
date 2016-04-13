@@ -52,14 +52,14 @@ if (!isset($url)) {
                     ?>
 
                     <td><?php
-                    echo $item['Task']['title'];
-                    ?></td>
+                        echo $item['Task']['title'];
+                        ?></td>
                     <td><?php
-                    echo $item['Task']['description'];
-                    ?></td>
+                        echo $item['Task']['description'];
+                        ?></td>
                     <td><?php
-                    echo $item['Task']['created'];
-                    ?></td>
+                        echo $item['Task']['created'];
+                        ?></td>
                     <td class="actions">
                         <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['Task']['id']), array('class' => 'dialogControl')); ?>
                         <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $item['Task']['id']), array('class' => 'dialogControl')); ?>
@@ -73,8 +73,8 @@ if (!isset($url)) {
     <div id="TasksAdminIndexPanel"></div>
     <script type="text/javascript">
         //<![CDATA[
-        $(function() {
-            $('#TasksAdminIndexTable th a, #TasksAdminIndex div.paging a').click(function() {
+        $(function () {
+            $('#TasksAdminIndexTable th a, #TasksAdminIndex div.paging a').click(function () {
                 $('#TasksAdminIndex').parent().load(this.href);
                 return false;
             });
@@ -82,19 +82,19 @@ if (!isset($url)) {
 if (!empty($op)) {
     $remoteUrl = $this->Html->url(array('action' => 'habtmSet', $foreignModel, $foreignId));
     ?>
-                $('#TasksAdminIndexTable input.habtmSet').click(function() {
+                $('#TasksAdminIndexTable input.habtmSet').click(function () {
                     var remoteUrl = '<?php echo $remoteUrl; ?>/' + this.value + '/';
                     if (this.checked == true) {
                         remoteUrl = remoteUrl + 'on';
                     } else {
                         remoteUrl = remoteUrl + 'off';
                     }
-                    $('div#messageSet' + this.value) . load(remoteUrl);
+                    $('div#messageSet' + this.value).load(remoteUrl);
                 });
     <?php
 }
 ?>
-    });
-    //]]>
+        });
+        //]]>
     </script>
 </div>

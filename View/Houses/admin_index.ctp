@@ -57,77 +57,77 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 <tr<?php echo $class; ?>>
                     <?php if (empty($scope['House.Door_id'])): ?>
                         <td><?php
-                if (empty($item['Door']['id'])) {
-                    echo '--';
-                } else {
-                    echo $this->Html->link($item['Door']['id'], array(
-                        'controller' => 'doors',
-                        'action' => 'view',
-                        $item['Door']['id']
-                    ));
-                }
-                        ?></td>
+                            if (empty($item['Door']['id'])) {
+                                echo '--';
+                            } else {
+                                echo $this->Html->link($item['Door']['id'], array(
+                                    'controller' => 'doors',
+                                    'action' => 'view',
+                                    $item['Door']['id']
+                                ));
+                            }
+                            ?></td>
                     <?php endif; ?>
                     <?php if (empty($scope['House.Group_id'])): ?>
                         <td><?php
-                if (empty($item['Group']['id'])) {
-                    echo '--';
-                } else {
-                    echo $this->Html->link($item['Group']['id'], array(
-                        'controller' => 'groups',
-                        'action' => 'view',
-                        $item['Group']['id']
-                    ));
-                }
-                        ?></td>
+                            if (empty($item['Group']['id'])) {
+                                echo '--';
+                            } else {
+                                echo $this->Html->link($item['Group']['id'], array(
+                                    'controller' => 'groups',
+                                    'action' => 'view',
+                                    $item['Group']['id']
+                                ));
+                            }
+                            ?></td>
                     <?php endif; ?>
                     <?php if (empty($scope['House.Task_id'])): ?>
                         <td><?php
-                if (empty($item['Task']['id'])) {
-                    echo '--';
-                } else {
-                    echo $this->Html->link($item['Task']['id'], array(
-                        'controller' => 'tasks',
-                        'action' => 'view',
-                        $item['Task']['id']
-                    ));
-                }
-                        ?></td>
+                            if (empty($item['Task']['id'])) {
+                                echo '--';
+                            } else {
+                                echo $this->Html->link($item['Task']['id'], array(
+                                    'controller' => 'tasks',
+                                    'action' => 'view',
+                                    $item['Task']['id']
+                                ));
+                            }
+                            ?></td>
                     <?php endif; ?>
 
                     <td><?php
-                    echo $item['House']['door_id'];
-                    ?></td>
+                        echo $item['House']['door_id'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['group_id'];
-                    ?></td>
+                        echo $item['House']['group_id'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['task_id'];
-                    ?></td>
+                        echo $item['House']['task_id'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['title'];
-                    ?></td>
+                        echo $item['House']['title'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['latitude'];
-                    ?></td>
+                        echo $item['House']['latitude'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['longitude'];
-                    ?></td>
+                        echo $item['House']['longitude'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['status'];
-                    ?></td>
+                        echo $item['House']['status'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['created'];
-                    ?></td>
+                        echo $item['House']['created'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['created_by'];
-                    ?></td>
+                        echo $item['House']['created_by'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['modified'];
-                    ?></td>
+                        echo $item['House']['modified'];
+                        ?></td>
                     <td><?php
-                    echo $item['House']['modified_by'];
-                    ?></td>
+                        echo $item['House']['modified_by'];
+                        ?></td>
                     <td class="actions">
                         <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['House']['id']), array('class' => 'dialogControl')); ?>
                         <?php echo $this->Html->link(__('Edit', true), array('action' => 'edit', $item['House']['id']), array('class' => 'dialogControl')); ?>
@@ -141,12 +141,12 @@ if (!empty($foreignId) && !empty($foreignModel)) {
     <div id="HousesAdminIndexPanel"></div>
     <script type="text/javascript">
         //<![CDATA[
-        $(function() {
-            $('#HousesAdminIndexTable th a, #HousesAdminIndex div.paging a').click(function() {
+        $(function () {
+            $('#HousesAdminIndexTable th a, #HousesAdminIndex div.paging a').click(function () {
                 $('#HousesAdminIndex').parent().load(this.href);
                 return false;
             });
-    });
-    //]]>
+        });
+        //]]>
     </script>
 </div>

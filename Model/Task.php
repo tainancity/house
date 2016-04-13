@@ -13,26 +13,20 @@ class Task extends AppModel {
             ),
         ),
     );
-    var $actsAs = array(
-    );
     var $hasAndBelongsToMany = array(
         'Group' => array(
             'joinTable' => 'groups_tasks',
-            'foreignKey' => 'Task_id',
-            'associationForeignKey' => 'Group_id',
+            'foreignKey' => 'task_id',
+            'associationForeignKey' => 'group_id',
             'className' => 'Group',
         ),
     );
     var $hasMany = array(
         'House' => array(
-            'foreignKey' => 'Task_id',
+            'foreignKey' => 'task_id',
             'dependent' => false,
             'className' => 'House',
         ),
     );
-
-    function afterSave($created, $options = array()) {
-        
-    }
 
 }

@@ -45,36 +45,36 @@
                 <tr<?php echo $class; ?>>
                     <?php if (empty($scope['HouseLog.House_id'])): ?>
                         <td><?php
-                if (empty($item['House']['id'])) {
-                    echo '--';
-                } else {
-                    echo $this->Html->link($item['House']['id'], array(
-                        'controller' => 'houses',
-                        'action' => 'view',
-                        $item['House']['id']
-                    ));
-                }
-                        ?></td>
+                            if (empty($item['House']['id'])) {
+                                echo '--';
+                            } else {
+                                echo $this->Html->link($item['House']['id'], array(
+                                    'controller' => 'houses',
+                                    'action' => 'view',
+                                    $item['House']['id']
+                                ));
+                            }
+                            ?></td>
                     <?php endif; ?>
 
                     <td><?php
-                    echo $item['HouseLog']['house_id'];
-                    ?></td>
+                        echo $item['HouseLog']['house_id'];
+                        ?></td>
                     <td><?php
-                    echo $item['HouseLog']['status'];
-                    ?></td>
+                        echo $item['HouseLog']['status'];
+                        ?></td>
                     <td><?php
-                    echo $item['HouseLog']['date_visited'];
-                    ?></td>
+                        echo $item['HouseLog']['date_visited'];
+                        ?></td>
                     <td><?php
-                    echo $item['HouseLog']['created'];
-                    ?></td>
+                        echo $item['HouseLog']['created'];
+                        ?></td>
                     <td><?php
-                    echo $item['HouseLog']['created_by'];
-                    ?></td>
+                        echo $item['HouseLog']['created_by'];
+                        ?></td>
                     <td><?php
-                    echo $item['HouseLog']['note'];
-                    ?></td>
+                        echo $item['HouseLog']['note'];
+                        ?></td>
                     <td class="actions">
                         <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['HouseLog']['id']), array('class' => 'HouseLogsIndexControl')); ?>
                     </td>
@@ -86,8 +86,8 @@
     <div id="HouseLogsIndexPanel"></div>
     <script type="text/javascript">
         //<![CDATA[
-        $(function() {
-            $('#HouseLogsIndexTable th a, div.paging a, a.HouseLogsIndexControl').click(function() {
+        $(function () {
+            $('#HouseLogsIndexTable th a, div.paging a, a.HouseLogsIndexControl').click(function () {
                 $('#HouseLogsIndex').parent().load(this.href);
                 return false;
             });

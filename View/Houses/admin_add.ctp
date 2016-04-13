@@ -1,5 +1,5 @@
 <div id="HousesAdminAdd">
-        <?php
+    <?php
     $url = array();
     if (!empty($foreignId) && !empty($foreignModel)) {
         $url = array('action' => 'add', $foreignModel, $foreignId);
@@ -82,7 +82,7 @@
             ?>
         </fieldset>
     </div>
-        <?php
+    <?php
     echo $this->Form->end(__('Submit', true));
     ?>
 </div>

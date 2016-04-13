@@ -70,7 +70,7 @@
             ?>
         </fieldset>
     </div>
-            <?php
-            echo $this->Form->end(__('Submit', true));
-            ?>
+    <?php
+    echo $this->Form->end(__('Submit', true));
+    ?>
 </div>

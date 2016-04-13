@@ -35,14 +35,14 @@
                 <tr<?php echo $class; ?>>
 
                     <td><?php
-                    echo $item['Task']['title'];
-                    ?></td>
+                        echo $item['Task']['title'];
+                        ?></td>
                     <td><?php
-                    echo $item['Task']['description'];
-                    ?></td>
+                        echo $item['Task']['description'];
+                        ?></td>
                     <td><?php
-                    echo $item['Task']['created'];
-                    ?></td>
+                        echo $item['Task']['created'];
+                        ?></td>
                     <td class="actions">
                         <?php echo $this->Html->link(__('View', true), array('action' => 'view', $item['Task']['id']), array('class' => 'TasksIndexControl')); ?>
                     </td>
@@ -54,8 +54,8 @@
     <div id="TasksIndexPanel"></div>
     <script type="text/javascript">
         //<![CDATA[
-        $(function() {
-            $('#TasksIndexTable th a, div.paging a, a.TasksIndexControl').click(function() {
+        $(function () {
+            $('#TasksIndexTable th a, div.paging a, a.TasksIndexControl').click(function () {
                 $('#TasksIndex').parent().load(this.href);
                 return false;
             });

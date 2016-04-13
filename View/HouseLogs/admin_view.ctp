@@ -3,16 +3,16 @@
     <div class="col-md-12">
         <div class="col-md-2">房屋</div>
         <div class="col-md-9">&nbsp;<?php
-if (empty($this->data['House']['id'])) {
-    echo '--';
-} else {
-    echo $this->Html->link($this->data['House']['id'], array(
-        'controller' => 'houses',
-        'action' => 'view',
-        $this->data['House']['id']
-    ));
-}
-?></div>
+            if (empty($this->data['House']['id'])) {
+                echo '--';
+            } else {
+                echo $this->Html->link($this->data['House']['id'], array(
+                    'controller' => 'houses',
+                    'action' => 'view',
+                    $this->data['House']['id']
+                ));
+            }
+            ?></div>
 
         <div class="col-md-2">房屋</div>
         <div class="col-md-9">&nbsp;<?php
@@ -20,7 +20,7 @@ if (empty($this->data['House']['id'])) {
 
                 echo $this->data['HouseLog']['house_id'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">狀態</div>
         <div class="col-md-9">&nbsp;<?php
@@ -28,7 +28,7 @@ if (empty($this->data['House']['id'])) {
 
                 echo $this->data['HouseLog']['status'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">訪視日期</div>
         <div class="col-md-9">&nbsp;<?php
@@ -36,7 +36,7 @@ if (empty($this->data['House']['id'])) {
 
                 echo $this->data['HouseLog']['date_visited'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">建立時間</div>
         <div class="col-md-9">&nbsp;<?php
@@ -44,7 +44,7 @@ if (empty($this->data['House']['id'])) {
 
                 echo $this->data['HouseLog']['created'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">建立人</div>
         <div class="col-md-9">&nbsp;<?php
@@ -52,7 +52,7 @@ if (empty($this->data['House']['id'])) {
 
                 echo $this->data['HouseLog']['created_by'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
         <div class="col-md-2">備註</div>
         <div class="col-md-9">&nbsp;<?php
@@ -60,7 +60,7 @@ if (empty($this->data['House']['id'])) {
 
                 echo $this->data['HouseLog']['note'];
             }
-?>&nbsp;
+            ?>&nbsp;
         </div>
     </div>
     <hr />
@@ -71,15 +71,15 @@ if (empty($this->data['House']['id'])) {
         </ul>
     </div>
     <div id="HouseLogsAdminViewPanel"></div>
-<?php
-echo $this->Html->scriptBlock('
+    <?php
+    echo $this->Html->scriptBlock('
 
 ');
-?>
+    ?>
     <script type="text/javascript">
         //<![CDATA[
-        $(function() {
-            $('a.HouseLogsAdminViewControl').click(function() {
+        $(function () {
+            $('a.HouseLogsAdminViewControl').click(function () {
                 $('#HouseLogsAdminViewPanel').parent().load(this.href);
                 return false;
             });
