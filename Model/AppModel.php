@@ -20,4 +20,8 @@ class AppModel extends Model {
         }
     }
 
+    public function getNewUUID() {
+        return hex2bin(str_replace('-', '', uuid_create()));
+    }
+
 }

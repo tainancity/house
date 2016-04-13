@@ -10,16 +10,21 @@
     echo $this->Form->create('House', array('type' => 'file', 'url' => $url));
     ?>
     <div class="Houses form">
-        <fieldset>
-            <legend><?php
-                echo __('Add 房屋', true);
-                ?></legend>
+        <h3>新增房屋</h3>
+        <?php
+        echo $this->Form->hidden('House.door_id');
+        echo $this->Form->input('House.title', array(
+            'label' => '名稱(住址)',
+            'div' => 'form-group',
+            'class' => 'form-control',
+        ));
+        ?><div class="col-md-6">
+            <input type="text" class="col-md-12" id="doorHelper" />
+            <div class="clearfix"></div>
+            <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
+        </div>
+        <div class="col-md-6">
             <?php
-            echo $this->Form->input('House.title', array(
-                'label' => '名稱',
-                'div' => 'form-group',
-                'class' => 'form-control',
-            ));
             echo $this->Form->input('House.latitude', array(
                 'label' => '緯度',
                 'div' => 'form-group',
@@ -32,13 +37,21 @@
             ));
             echo $this->Form->input('House.status', array(
                 'label' => '狀態',
+                'type' => 'select',
+                'options' => $this->Olc->status,
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
             ?>
-        </fieldset>
+        </div>
     </div>
     <?php
     echo $this->Form->end('送出');
     ?>
 </div>
+<script>
+    var queryUrl = '<?php echo $this->Html->url('/doors/q/'); ?>';
+</script>
+<?php
+$this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
+$this->Html->script('c/houses/add', array('inline' => false));
