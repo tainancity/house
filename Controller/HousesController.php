@@ -67,15 +67,15 @@ class HousesController extends AppController {
             'Group' => 'group_id',
             'Task' => 'task_id',
         );
-        if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
-            if (!empty($this->data)) {
-                $this->data['House'][$foreignKeys[$foreignModel]] = $foreignId;
-            }
-        } else {
+        if (!array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             $foreignModel = '';
         }
         if (!empty($this->data)) {
             $dataToSave = $this->data;
+            if (!empty($foreignModel)) {
+                $dataToSave['House'][$foreignKeys[$foreignModel]] = $foreignId;
+            }
+
             $dataToSave['House']['id'] = $this->House->getNewUUID();
             $dataToSave['House']['group_id'] = $this->loginMember['group_id'];
             $dataToSave['House']['created_by'] = $dataToSave['House']['modified_by'] = $this->loginMember['id'];
