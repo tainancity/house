@@ -119,19 +119,26 @@ class MembersController extends AppController {
     }
 
     public function admin_edit($id = null) {
-        if (!$id && empty($this->request->data)) {
+        if (!empty($id)) {
+            $member = $this->Member->read(null, $id);
+        }
+        if (empty($member)) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect(array('action' => 'index'));
         }
         if (!empty($this->request->data)) {
-            $oldgroupid = $this->Member->field('group_id', array('Member.id' => $this->request->data['Member']['id']));
-            if ($this->Member->save($this->request->data)) {
-                if ($oldgroupid !== $this->request->data['Member']['group_id']) {
+            $oldgroupid = $member['Member']['group_id'];
+            $dataToSave = $this->request->data;
+            if (empty($dataToSave['Member']['password'])) {
+                unset($dataToSave['Member']['password']);
+            }
+            if ($this->Member->save($dataToSave)) {
+                if ($oldgroupid !== $dataToSave['Member']['group_id']) {
                     $aro = & $this->Acl->Aro;
-                    $member = $aro->findByForeignKeyAndModel($this->request->data['Member']['id'], 'Member');
-                    $group = $aro->findByForeignKeyAndModel($this->request->data['Member']['group_id'], 'Group');
-                    $aro->id = $member['Aro']['id'];
-                    $aro->save(array('parent_id' => $group['Aro']['id']));
+                    $memberAro = $aro->findByForeignKeyAndModel($member['Member']['id'], 'Member');
+                    $groupAro = $aro->findByForeignKeyAndModel($dataToSave['Member']['group_id'], 'Group');
+                    $aro->id = $memberAro['Aro']['id'];
+                    $aro->save(array('parent_id' => $groupAro['Aro']['id']));
                 }
                 $this->Session->setFlash(__('The data has been saved', true));
                 $this->redirect(array('action' => 'index'));
@@ -140,7 +147,7 @@ class MembersController extends AppController {
             }
         }
         if (empty($this->request->data)) {
-            $this->request->data = $this->Member->read(null, $id);
+            $this->request->data = $member;
         }
         $this->set('groups', $this->Member->Group->find('list'));
     }

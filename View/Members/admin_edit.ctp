@@ -16,9 +16,9 @@
             'div' => 'form-group',
             'class' => 'form-control',
         ));
-        echo $this->Form->input('Member.', array(
+        echo $this->Form->input('Member.password', array(
             'type' => 'password',
-            'label' => 'password',
+            'label' => '密碼',
             'value' => '',
             'div' => 'form-group',
             'class' => 'form-control',
