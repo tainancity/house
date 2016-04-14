@@ -30,7 +30,17 @@ class AppController extends Controller {
                 'group_id' => 0,
                 'username' => '',
             );
+        } else {
+            if (!isset($this->loginMember['Task'])) {
+                $memberModel = ClassRegistry::init('Member');
+                $this->Session->write('Auth.User.Task', $memberModel->Group->GroupsTask->find('list', array(
+                            'conditions' => array('group_id' => $this->loginMember['group_id']),
+                            'fields' => array('task_id', 'task_id'),
+                )));
+                $this->loginMember = $this->Session->read('Auth.User');
+            }
         }
+
         Configure::write('loginMember', $this->loginMember);
         $this->set('loginMember', $this->loginMember);
     }

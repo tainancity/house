@@ -29,4 +29,12 @@ class Task extends AppModel {
         ),
     );
 
+    public function beforeFind($query) {
+        $loginMember = Configure::read('loginMember');
+        if ($loginMember['group_id'] != 0 && $loginMember['group_id'] != 1) {
+            $query['conditions']['Task.id'] = $loginMember['Task'];
+        }
+        return $query;
+    }
+
 }

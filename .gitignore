@@ -4,6 +4,7 @@ Config/database.php
 tmp
 webroot/.htaccess
 webroot/media
+webroot/json
 
 error
 stats
