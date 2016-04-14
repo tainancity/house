@@ -6,7 +6,11 @@ if (!isset($url)) {
 <div id="TasksAdminIndex">
     <h2>專案任務</h2>
     <div class="btn-group">
-        <?php echo $this->Html->link('新增', array('action' => 'add'), array('class' => 'btn dialogControl')); ?>
+        <?php
+        if ($loginMember['group_id'] == 1) {
+            echo $this->Html->link('新增', array('action' => 'add'), array('class' => 'btn btn-default dialogControl'));
+        }
+        ?>
     </div>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <table class="table table-bordered" id="TasksAdminIndexTable">
@@ -49,13 +53,19 @@ if (!isset($url)) {
                     <td><?php echo $item['Task']['description']; ?></td>
                     <td><?php echo $item['Task']['created']; ?></td>
                     <td class="actions">
-                        <?php echo $this->Html->link('相關房屋', array('controller' => 'houses', 'action' => 'index', 'Task', $item['Task']['id'])); ?>
-                        <?php echo $this->Html->link('設定群組', array('controller' => 'groups', 'action' => 'tasks', 'Task', $item['Task']['id'], 'set'), array('class' => 'dialogControl')); ?>
-                        <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['Task']['id']), array('class' => 'dialogControl')); ?>
-                        <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['Task']['id']), null, '確定要刪除？'); ?>
+                        <div class="btn-group">
+                            <?php echo $this->Html->link('相關房屋', array('controller' => 'houses', 'action' => 'index', 'Task', $item['Task']['id']), array('class' => 'btn btn-default')); ?>
+                            <?php
+                            if ($loginMember['group_id'] == 1) {
+                                echo $this->Html->link('設定群組', array('controller' => 'groups', 'action' => 'tasks', 'Task', $item['Task']['id'], 'set'), array('class' => 'dialogControl btn btn-default'));
+                                echo $this->Html->link('編輯', array('action' => 'edit', $item['Task']['id']), array('class' => 'dialogControl btn btn-default'));
+                                echo $this->Html->link('刪除', array('action' => 'delete', $item['Task']['id']), array('class' => 'btn btn-default'), '確定要刪除？');
+                            }
+                            ?>
+                        </div>
                     </td>
                 </tr>
-            <?php } // End of foreach ($items as $item) {  ?>
+            <?php } // End of foreach ($items as $item) {   ?>
         </tbody>
     </table>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>

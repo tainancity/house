@@ -36,18 +36,24 @@
             </div>
             <div id="content">
                 <div class="btn-group">
-                    <?php if ($this->Session->read('Auth.User.id')): ?>
-                        <?php echo $this->Html->link('任務', '/admin/tasks', array('class' => 'btn')); ?>
-                        <?php echo $this->Html->link('Members', '/admin/members', array('class' => 'btn')); ?>
-                        <?php echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn')); ?>
-                        <?php echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn')); ?>
-                    <?php else: ?>
-                        <?php echo $this->Html->link('Login', '/members/login', array('class' => 'btn')); ?>
-                    <?php endif; ?>
                     <?php
+                    switch ($loginMember['group_id']) {
+                        case 1:
+                            echo $this->Html->link('任務', '/admin/tasks', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('Members', '/admin/members', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn btn-default'));
+                            break;
+                        case 0:
+                            echo $this->Html->link('Login', '/members/login', array('class' => 'btn btn-default'));
+                            break;
+                        default:
+                            echo $this->Html->link('任務', '/admin/tasks', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn btn-default'));
+                    }
                     if (!empty($actions_for_layout)) {
                         foreach ($actions_for_layout as $title => $url) {
-                            echo $this->Html->link($title, $url, array('class' => 'btn'));
+                            echo $this->Html->link($title, $url, array('class' => 'btn btn-default'));
                         }
                     }
                     ?>

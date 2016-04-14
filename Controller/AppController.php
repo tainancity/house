@@ -32,6 +32,7 @@ class AppController extends Controller {
             );
         }
         Configure::write('loginMember', $this->loginMember);
+        $this->set('loginMember', $this->loginMember);
     }
 
 }
