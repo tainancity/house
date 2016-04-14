@@ -50,7 +50,7 @@ CREATE TABLE `aros` (
   `lft` int(11) DEFAULT NULL,
   `rght` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `aros_acos` (
   `_update` int(2) DEFAULT NULL,
   `_delete` int(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +136,7 @@ CREATE TABLE `groups` (
   `parent_id` int(11) DEFAULT NULL,
   `name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -200,6 +200,24 @@ CREATE TABLE `houses` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `lands`
+--
+
+DROP TABLE IF EXISTS `lands`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `lands` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `section_id` char(6) NOT NULL,
+  `code` char(8) NOT NULL,
+  `file` varchar(16) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `section_id` (`section_id`),
+  KEY `code` (`code`)
+) ENGINE=InnoDB AUTO_INCREMENT=1892528 DEFAULT CHARSET=latin1;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `members`
 --
 
@@ -215,7 +233,22 @@ CREATE TABLE `members` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `sections`
+--
+
+DROP TABLE IF EXISTS `sections`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `sections` (
+  `id` char(6) CHARACTER SET latin1 NOT NULL,
+  `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `name` (`name`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -243,4 +276,4 @@ CREATE TABLE `tasks` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-13 16:16:02
+-- Dump completed on 2016-04-14 15:53:21
