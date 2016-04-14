@@ -23,9 +23,14 @@ class LandsController extends AppController {
             'result' => array(),
         );
         $address = preg_replace('/\s+/', '', $address);
-        $pos = strrpos($address, '段');
-        if (false !== $pos) {
-            $sectionPart = substr($address, 0, $pos);
+        if (!empty($address)) {
+            $pos = strrpos($address, '段');
+            if (false === $pos) {
+                $sectionPart = $address;
+            } else {
+                $sectionPart = substr($address, 0, $pos);
+            }
+
             if (!empty($sectionPart)) {
                 $sections = $this->Land->Section->find('all', array(
                     'conditions' => array('Section.name LIKE' => '%' . $sectionPart . '%'),
