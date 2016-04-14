@@ -35,4 +35,12 @@ class House extends AppModel {
         ),
     );
 
+    public function beforeFind($query) {
+        $loginMember = Configure::read('loginMember');
+        if ($loginMember['group_id'] != 1) {
+            $query['conditions']['House.group_id'] = $loginMember['group_id'];
+        }
+        return $query;
+    }
+
 }
