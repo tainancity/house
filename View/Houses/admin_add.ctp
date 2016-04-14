@@ -25,6 +25,15 @@
         </div>
         <div class="col-md-6">
             <?php
+            if (!empty($groups)) {
+                echo $this->Form->input('House.group_id', array(
+                    'label' => '群組',
+                    'type' => 'select',
+                    'options' => $groups,
+                    'div' => 'form-group',
+                    'class' => 'form-control',
+                ));
+            }
             echo $this->Form->input('House.latitude', array(
                 'label' => '緯度',
                 'div' => 'form-group',

@@ -114,7 +114,10 @@ class HousesController extends AppController {
             }
 
             $dataToSave['House']['id'] = $this->House->getNewUUID();
-            $dataToSave['House']['group_id'] = $this->loginMember['group_id'];
+            if ($this->loginMember['group_id'] != 1) {
+                $dataToSave['House']['group_id'] = $this->loginMember['group_id'];
+            }
+
             $dataToSave['House']['created_by'] = $dataToSave['House']['modified_by'] = $this->loginMember['id'];
             $this->House->create();
             if ($this->House->save($dataToSave)) {
@@ -133,21 +136,27 @@ class HousesController extends AppController {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
+        if ($this->loginMember['group_id'] == 1) {
+            $this->set('groups', $this->House->Group->find('list'));
+        }
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
     }
 
     function admin_edit($id = null) {
         if (!empty($id)) {
-            $id = hex2bin($id);
+            $item = $this->House->read(null, hex2bin($id));
         }
-        if (!$id && empty($this->data)) {
+        if (empty($item)) {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
             $dataToSave = $this->data;
-            $this->House->id = $id;
+            if ($this->loginMember['group_id'] != 1) {
+                $dataToSave['House']['group_id'] = $this->loginMember['group_id'];
+            }
+            $this->House->id = $item['House']['id'];
             $dataToSave['House']['modified_by'] = $this->loginMember['id'];
             if ($this->House->save($dataToSave)) {
                 $this->House->HouseLog->create();
@@ -165,18 +174,22 @@ class HousesController extends AppController {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
+        if ($this->loginMember['group_id'] == 1) {
+            $this->set('groups', $this->House->Group->find('list'));
+        }
         $this->set('id', $id);
-        $this->data = $this->House->read(null, $id);
+        $this->data = $item;
     }
 
     function admin_delete($id = null) {
         if (!empty($id)) {
-            $id = hex2bin($id);
-        }
-        if (!$id) {
+            if ($this->House->delete(hex2bin($id))) {
+                $this->Session->setFlash(__('The data has been deleted', true));
+            } else {
+                $this->Session->setFlash(__('Please do following links in the page', true));
+            }
+        } else {
             $this->Session->setFlash(__('Please do following links in the page', true));
-        } else if ($this->House->delete($id)) {
-            $this->Session->setFlash(__('The data has been deleted', true));
         }
         $this->redirect(array('action' => 'index'));
     }
