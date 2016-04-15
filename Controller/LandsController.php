@@ -11,7 +11,7 @@ class LandsController extends AppController {
     public function beforeFilter() {
         parent::beforeFilter();
         if (isset($this->Auth)) {
-            $this->Auth->allow(array('q'));
+            $this->Auth->allow(array('q', 'index'));
         }
     }
 
@@ -78,6 +78,10 @@ class LandsController extends AppController {
         } else {
             $this->response->body(json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         }
+    }
+    
+    public function index() {
+        
     }
 
 }
