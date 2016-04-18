@@ -1,15 +1,15 @@
-<div id="HousesAdminView">
+<div id="PlacesAdminView">
     <h2><?php
         echo implode(' > ', array(
             $this->Html->link('任務', array('controller' => 'tasks')),
-            $this->Html->link($item['Task']['title'], array('action' => 'index', 'Task', $item['House']['task_id'])),
-            $item['House']['title']
+            $this->Html->link($item['Task']['title'], array('action' => 'index', 'Task', $item['Place']['task_id'])),
+            $item['Place']['title']
         ));
         ?></h2>
     <hr />
     <div class="col-md-12">
         <div class="btn-group pull-right">
-            <?php echo $this->Html->link('修改', array('action' => 'edit', $item['House']['id']), array('class' => 'btn btn-primary')); ?>
+            <?php echo $this->Html->link('修改', array('action' => 'edit', $item['Place']['id']), array('class' => 'btn btn-primary')); ?>
         </div>
     </div>
     <div class="col-md-6">
@@ -22,27 +22,27 @@
             ?></div>
         <div class="col-md-3">名稱</div>
         <div class="col-md-9">&nbsp;<?php
-            echo $item['House']['title'];
+            echo $item['Place']['title'];
             ?>&nbsp;
         </div>
         <div class="col-md-3">緯度,經度</div>
         <div class="col-md-9">&nbsp;<?php
-            echo $item['House']['latitude'] . ',' . $item['House']['longitude'];
+            echo $item['Place']['latitude'] . ',' . $item['Place']['longitude'];
             ?>&nbsp;
         </div>
         <div class="col-md-3">狀態</div>
         <div class="col-md-9">&nbsp;<?php
-            echo $this->Olc->status[$item['House']['status']];
+            echo $this->Olc->status[$item['Place']['status']];
             ?>&nbsp;
         </div>
         <div class="col-md-3">建立人/建立時間</div>
         <div class="col-md-9">&nbsp;<?php
-            echo $item['Creator']['username'] . ' / ' . $item['House']['created'];
+            echo $item['Creator']['username'] . ' / ' . $item['Place']['created'];
             ?>&nbsp;
         </div>
         <div class="col-md-3">更新人/更新時間</div>
         <div class="col-md-9">&nbsp;<?php
-            echo $item['Modifier']['username'] . ' / ' . $item['House']['modified'];
+            echo $item['Modifier']['username'] . ' / ' . $item['Place']['modified'];
             ?>&nbsp;
         </div>
     </div>
@@ -57,7 +57,7 @@
                 <th>備註</th>
             </tr>
             <?php
-            foreach ($item['HouseLog'] AS $log) {
+            foreach ($item['PlaceLog'] AS $log) {
                 ?><tr>
                     <td><?php echo $log['created']; ?></td>
                     <td><?php echo $log['date_visited']; ?></td>
@@ -72,8 +72,8 @@
     </div>
 </div>
 <script>
-    var pointLatLng = new google.maps.LatLng(<?php echo $item['House']['latitude']; ?>, <?php echo $item['House']['longitude']; ?>);
+    var pointLatLng = new google.maps.LatLng(<?php echo $item['Place']['latitude']; ?>, <?php echo $item['Place']['longitude']; ?>);
 </script>
 <?php
 $this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
-$this->Html->script('c/houses/view', array('inline' => false));
+$this->Html->script('c/places/view', array('inline' => false));

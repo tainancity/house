@@ -3,7 +3,7 @@
     <head>
         <?php echo $this->Html->charset(); ?>
         <title>
-            House::
+            Place::
             <?php echo $title_for_layout; ?>
         </title><?php
         echo $this->Html->meta('icon');
@@ -32,7 +32,7 @@
     <body>
         <div class="container">
             <div id="header">
-                <h1><?php echo $this->Html->link('House', '/'); ?></h1>
+                <h1><?php echo $this->Html->link('Place', '/'); ?></h1>
             </div>
             <div id="content">
                 <div class="btn-group">

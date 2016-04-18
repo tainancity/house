@@ -1,4 +1,4 @@
-<div id="HouseLogsAdminAdd">
+<div id="PlaceLogsAdminAdd">
     <?php
     $url = array();
     if (!empty($foreignId) && !empty($foreignModel)) {
@@ -7,16 +7,16 @@
         $url = array('action' => 'add');
         $foreignModel = '';
     }
-    echo $this->Form->create('HouseLog', array('type' => 'file', 'url' => $url));
+    echo $this->Form->create('PlaceLog', array('type' => 'file', 'url' => $url));
     ?>
-    <div class="HouseLogs form">
+    <div class="PlaceLogs form">
         <fieldset>
             <legend><?php
                 echo __('Add 房屋記錄', true);
                 ?></legend>
             <?php
             foreach ($belongsToModels AS $key => $model) {
-                echo $this->Form->input('HouseLog.' . $model['foreignKey'], array(
+                echo $this->Form->input('PlaceLog.' . $model['foreignKey'], array(
                     'type' => 'select',
                     'label' => $model['label'],
                     'options' => $$key,
@@ -24,32 +24,32 @@
                     'class' => 'form-control',
                 ));
             }
-            echo $this->Form->input('HouseLog.house_id', array(
+            echo $this->Form->input('PlaceLog.place_id', array(
                 'label' => '房屋',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
-            echo $this->Form->input('HouseLog.status', array(
+            echo $this->Form->input('PlaceLog.status', array(
                 'label' => '狀態',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
-            echo $this->Form->input('HouseLog.date_visited', array(
+            echo $this->Form->input('PlaceLog.date_visited', array(
                 'label' => '訪視日期',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
-            echo $this->Form->input('HouseLog.created', array(
+            echo $this->Form->input('PlaceLog.created', array(
                 'label' => '建立時間',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
-            echo $this->Form->input('HouseLog.created_by', array(
+            echo $this->Form->input('PlaceLog.created_by', array(
                 'label' => '建立人',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
-            echo $this->Form->input('HouseLog.note', array(
+            echo $this->Form->input('PlaceLog.note', array(
                 'label' => '備註',
                 'div' => 'form-group',
                 'class' => 'form-control',

@@ -29,22 +29,22 @@ $(function () {
         },
         select: function (event, ui) {
             var point = new google.maps.LatLng(ui.item.latitude, ui.item.longitude);
-            $('#HouseLatitude').val(ui.item.latitude);
-            $('#HouseLongitude').val(ui.item.longitude);
-            $('#HouseTitle').val(ui.item.label);
-            $('#HouseDoorId').val(ui.item.id);
+            $('#PlaceLatitude').val(ui.item.latitude);
+            $('#PlaceLongitude').val(ui.item.longitude);
+            $('#PlaceTitle').val(ui.item.label);
+            $('#PlaceDoorId').val(ui.item.id);
             marker.setPosition(point);
             map.setCenter(point);
         },
         minLength: 2
     });
-    $('#HouseLogDateVisited').datepicker({
+    $('#PlaceLogDateVisited').datepicker({
         dateFormat: 'yy-mm-dd'
     });
 });
 
 function markerDrag(e) {
-    $('#HouseLatitude').val(e.latLng.lat());
-    $('#HouseLongitude').val(e.latLng.lng());
-    $('#HouseDoorId').val('');
+    $('#PlaceLatitude').val(e.latLng.lat());
+    $('#PlaceLongitude').val(e.latLng.lng());
+    $('#PlaceDoorId').val('');
 }

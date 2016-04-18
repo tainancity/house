@@ -7,7 +7,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
     $url = array($foreignModel, $foreignId);
 }
 ?>
-<div id="HousesAdminIndex">
+<div id="PlacesAdminIndex">
     <h2><?php
         if (!empty($foreignInfo['title'])) {
             switch ($foreignModel) {
@@ -36,19 +36,19 @@ if (!empty($foreignId) && !empty($foreignModel)) {
         <?php echo $this->Html->link('新增', array_merge($url, array('action' => 'add')), array('class' => 'btn btn-default')); ?>
     </div>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
-    <table class="table table-bordered" id="HousesAdminIndexTable">
+    <table class="table table-bordered" id="PlacesAdminIndexTable">
         <thead>
             <tr>
                 <?php if ($foreignModel !== 'Group') { ?>
-                    <th><?php echo $this->Paginator->sort('House.group_id', '群組', array('url' => $url)); ?></th>
+                    <th><?php echo $this->Paginator->sort('Place.group_id', '群組', array('url' => $url)); ?></th>
                 <?php } ?>
                 <?php if ($foreignModel !== 'Task') { ?>
-                    <th><?php echo $this->Paginator->sort('House.task_id', '任務', array('url' => $url)); ?></th>
+                    <th><?php echo $this->Paginator->sort('Place.task_id', '任務', array('url' => $url)); ?></th>
                 <?php } ?>
                 <th>名稱</th>
-                <th><?php echo $this->Paginator->sort('House.status', '狀態', array('url' => $url)); ?></th>
-                <th><?php echo $this->Paginator->sort('House.modified', '更新時間', array('url' => $url)); ?></th>
-                <th><?php echo $this->Paginator->sort('House.modified_by', '更新人', array('url' => $url)); ?></th>
+                <th><?php echo $this->Paginator->sort('Place.status', '狀態', array('url' => $url)); ?></th>
+                <th><?php echo $this->Paginator->sort('Place.modified', '更新時間', array('url' => $url)); ?></th>
+                <th><?php echo $this->Paginator->sort('Place.modified_by', '更新人', array('url' => $url)); ?></th>
                 <th class="actions">操作</th>
             </tr>
         </thead>
@@ -64,35 +64,35 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 <tr<?php echo $class; ?>>
                     <?php if ($foreignModel !== 'Group') { ?>
                         <td><?php
-                            echo $groups[$item['House']['group_id']];
+                            echo $groups[$item['Place']['group_id']];
                             ?></td>
                     <?php } ?>
                     <?php if ($foreignModel !== 'Task') { ?>
                         <td><?php
-                            echo isset($tasks[$item['House']['task_id']]) ? $tasks[$item['House']['task_id']] : '--';
+                            echo isset($tasks[$item['Place']['task_id']]) ? $tasks[$item['Place']['task_id']] : '--';
                             ?></td>
                     <?php } ?>
                     <td><?php
-                        echo $item['House']['title'];
+                        echo $item['Place']['title'];
                         ?></td>
                     <td><?php
-                        echo $this->Olc->status[$item['House']['status']];
+                        echo $this->Olc->status[$item['Place']['status']];
                         ?></td>
                     <td><?php
-                        echo $item['House']['modified'];
+                        echo $item['Place']['modified'];
                         ?></td>
                     <td><?php
                         echo $item['Modifier']['username'];
                         ?></td>
                     <td class="actions">
-                        <?php echo $this->Html->link('檢視', array('action' => 'view', $item['House']['id'])); ?>
-                        <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['House']['id'])); ?>
-                        <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['House']['id']), null, '確定要刪除？'); ?>
+                        <?php echo $this->Html->link('檢視', array('action' => 'view', $item['Place']['id'])); ?>
+                        <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['Place']['id'])); ?>
+                        <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['Place']['id']), null, '確定要刪除？'); ?>
                     </td>
                 </tr>
             <?php } // End of foreach ($items as $item) {   ?>
         </tbody>
     </table>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
-    <div id="HousesAdminIndexPanel"></div>
+    <div id="PlacesAdminIndexPanel"></div>
 </div>

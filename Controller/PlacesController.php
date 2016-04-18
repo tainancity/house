@@ -2,9 +2,9 @@
 
 App::uses('AppController', 'Controller');
 
-class HousesController extends AppController {
+class PlacesController extends AppController {
 
-    public $name = 'Houses';
+    public $name = 'Places';
     public $paginate = array();
     public $helpers = array('Olc');
 
@@ -20,7 +20,7 @@ class HousesController extends AppController {
 
         $scope = array();
         if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
-            $scope['House.' . $foreignKeys[$foreignModel]] = $foreignId;
+            $scope['Place.' . $foreignKeys[$foreignModel]] = $foreignId;
         } else {
             $this->redirect(array('controller' => 'tasks'));
             $foreignModel = '';
@@ -29,7 +29,7 @@ class HousesController extends AppController {
         if (!empty($foreignModel)) {
             switch ($foreignModel) {
                 case 'Task':
-                    $record = $this->House->Task->find('first', array(
+                    $record = $this->Place->Task->find('first', array(
                         'conditions' => array('Task.id' => $foreignId),
                     ));
                     $foreignInfo = array(
@@ -40,29 +40,29 @@ class HousesController extends AppController {
             }
         }
         $this->set('scope', $scope);
-        $this->paginate['House']['limit'] = 20;
-        $this->paginate['House']['contain'] = array(
+        $this->paginate['Place']['limit'] = 20;
+        $this->paginate['Place']['contain'] = array(
             'Modifier' => array(
                 'fields' => array('username'),
             ),
         );
-        $items = $this->paginate($this->House, $scope);
+        $items = $this->paginate($this->Place, $scope);
         foreach ($items AS $k => $item) {
-            $items[$k]['House']['id'] = bin2hex($item['House']['id']);
+            $items[$k]['Place']['id'] = bin2hex($item['Place']['id']);
         }
         $this->set('items', $items);
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
         $this->set('foreignInfo', $foreignInfo);
-        $this->set('groups', $this->House->Group->find('list'));
-        $this->set('tasks', $this->House->Task->find('list'));
+        $this->set('groups', $this->Place->Group->find('list'));
+        $this->set('tasks', $this->Place->Task->find('list'));
     }
 
     function admin_view($id = null) {
         if (!empty($id)) {
             $id = hex2bin($id);
-            $item = $this->House->find('first', array(
-                'conditions' => array('House.id' => $id),
+            $item = $this->Place->find('first', array(
+                'conditions' => array('Place.id' => $id),
                 'contain' => array(
                     'Group' => array(
                         'fields' => array('name'),
@@ -76,15 +76,15 @@ class HousesController extends AppController {
                     'Modifier' => array(
                         'fields' => array('username'),
                     ),
-                    'HouseLog' => array(
-                        'order' => array('HouseLog.created' => 'DESC'),
+                    'PlaceLog' => array(
+                        'order' => array('PlaceLog.created' => 'DESC'),
                         'Creator' => array(
                             'fields' => array('username'),
                         ),
                     ),
                 ),
             ));
-            $item['House']['id'] = bin2hex($item['House']['id']);
+            $item['Place']['id'] = bin2hex($item['Place']['id']);
         }
         if (!empty($item)) {
             $this->set('item', $item);
@@ -110,34 +110,34 @@ class HousesController extends AppController {
         if (!empty($this->data)) {
             $dataToSave = $this->data;
             if (!empty($foreignModel)) {
-                $dataToSave['House'][$foreignKeys[$foreignModel]] = $foreignId;
+                $dataToSave['Place'][$foreignKeys[$foreignModel]] = $foreignId;
             }
 
-            $dataToSave['House']['id'] = $this->House->getNewUUID();
+            $dataToSave['Place']['id'] = $this->Place->getNewUUID();
             if ($this->loginMember['group_id'] != 1) {
-                $dataToSave['House']['group_id'] = $this->loginMember['group_id'];
+                $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
             }
 
-            $dataToSave['House']['created_by'] = $dataToSave['House']['modified_by'] = $this->loginMember['id'];
-            $this->House->create();
-            if ($this->House->save($dataToSave)) {
-                $this->House->HouseLog->create();
-                $this->House->HouseLog->save(array('HouseLog' => array(
-                        'id' => $this->House->getNewUUID(),
-                        'house_id' => $dataToSave['House']['id'],
-                        'status' => $dataToSave['House']['status'],
-                        'date_visited' => $dataToSave['HouseLog']['date_visited'],
+            $dataToSave['Place']['created_by'] = $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
+            $this->Place->create();
+            if ($this->Place->save($dataToSave)) {
+                $this->Place->PlaceLog->create();
+                $this->Place->PlaceLog->save(array('PlaceLog' => array(
+                        'id' => $this->Place->getNewUUID(),
+                        'house_id' => $dataToSave['Place']['id'],
+                        'status' => $dataToSave['Place']['status'],
+                        'date_visited' => $dataToSave['PlaceLog']['date_visited'],
                         'created_by' => $this->loginMember['id'],
-                        'note' => $dataToSave['HouseLog']['note'],
+                        'note' => $dataToSave['PlaceLog']['note'],
                 )));
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->redirect(array('action' => 'view', bin2hex($dataToSave['House']['id'])));
+                $this->redirect(array('action' => 'view', bin2hex($dataToSave['Place']['id'])));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
         }
         if ($this->loginMember['group_id'] == 1) {
-            $this->set('groups', $this->House->Group->find('list'));
+            $this->set('groups', $this->Place->Group->find('list'));
         }
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
@@ -145,7 +145,7 @@ class HousesController extends AppController {
 
     function admin_edit($id = null) {
         if (!empty($id)) {
-            $item = $this->House->read(null, hex2bin($id));
+            $item = $this->Place->read(null, hex2bin($id));
         }
         if (empty($item)) {
             $this->Session->setFlash(__('Please do following links in the page', true));
@@ -154,19 +154,19 @@ class HousesController extends AppController {
         if (!empty($this->data)) {
             $dataToSave = $this->data;
             if ($this->loginMember['group_id'] != 1) {
-                $dataToSave['House']['group_id'] = $this->loginMember['group_id'];
+                $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
             }
-            $this->House->id = $item['House']['id'];
-            $dataToSave['House']['modified_by'] = $this->loginMember['id'];
-            if ($this->House->save($dataToSave)) {
-                $this->House->HouseLog->create();
-                $this->House->HouseLog->save(array('HouseLog' => array(
-                        'id' => $this->House->getNewUUID(),
+            $this->Place->id = $item['Place']['id'];
+            $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
+            if ($this->Place->save($dataToSave)) {
+                $this->Place->PlaceLog->create();
+                $this->Place->PlaceLog->save(array('PlaceLog' => array(
+                        'id' => $this->Place->getNewUUID(),
                         'house_id' => $id,
-                        'status' => $dataToSave['House']['status'],
-                        'date_visited' => $dataToSave['HouseLog']['date_visited'],
+                        'status' => $dataToSave['Place']['status'],
+                        'date_visited' => $dataToSave['PlaceLog']['date_visited'],
                         'created_by' => $this->loginMember['id'],
-                        'note' => $dataToSave['HouseLog']['note'],
+                        'note' => $dataToSave['PlaceLog']['note'],
                 )));
                 $this->Session->setFlash(__('The data has been saved', true));
                 $this->redirect(array('action' => 'view', bin2hex($id)));
@@ -175,7 +175,7 @@ class HousesController extends AppController {
             }
         }
         if ($this->loginMember['group_id'] == 1) {
-            $this->set('groups', $this->House->Group->find('list'));
+            $this->set('groups', $this->Place->Group->find('list'));
         }
         $this->set('id', $id);
         $this->data = $item;
@@ -183,7 +183,7 @@ class HousesController extends AppController {
 
     function admin_delete($id = null) {
         if (!empty($id)) {
-            if ($this->House->delete(hex2bin($id))) {
+            if ($this->Place->delete(hex2bin($id))) {
                 $this->Session->setFlash(__('The data has been deleted', true));
             } else {
                 $this->Session->setFlash(__('Please do following links in the page', true));

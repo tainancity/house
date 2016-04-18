@@ -2,27 +2,27 @@
 
 App::uses('AppController', 'Controller');
 
-class HouseLogsController extends AppController {
+class PlaceLogsController extends AppController {
 
-    public $name = 'HouseLogs';
+    public $name = 'PlaceLogs';
     public $paginate = array();
     public $helpers = array();
 
     function admin_add($foreignModel = null, $foreignId = 0) {
         $foreignId = intval($foreignId);
         $foreignKeys = array(
-            'House' => 'House_id',
+            'Place' => 'Place_id',
         );
         if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             if (!empty($this->data)) {
-                $this->data['HouseLog'][$foreignKeys[$foreignModel]] = $foreignId;
+                $this->data['PlaceLog'][$foreignKeys[$foreignModel]] = $foreignId;
             }
         } else {
             $foreignModel = '';
         }
         if (!empty($this->data)) {
-            $this->HouseLog->create();
-            if ($this->HouseLog->save($this->data)) {
+            $this->PlaceLog->create();
+            if ($this->PlaceLog->save($this->data)) {
                 $this->Session->setFlash(__('The data has been saved', true));
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -33,10 +33,10 @@ class HouseLogsController extends AppController {
         $this->set('foreignModel', $foreignModel);
 
         $belongsToModels = array(
-            'listHouse' => array(
+            'listPlace' => array(
                 'label' => '房屋',
-                'modelName' => 'House',
-                'foreignKey' => 'House_id',
+                'modelName' => 'Place',
+                'foreignKey' => 'Place_id',
             ),
         );
 
@@ -45,7 +45,7 @@ class HouseLogsController extends AppController {
                 unset($belongsToModels[$key]);
                 continue;
             }
-            $this->set($key, $this->HouseLog->$model['modelName']->find('list'));
+            $this->set($key, $this->PlaceLog->$model['modelName']->find('list'));
         }
         $this->set('belongsToModels', $belongsToModels);
     }

@@ -2,13 +2,23 @@
 
 App::uses('AppModel', 'Model');
 
-class House extends AppModel {
+class Place extends AppModel {
 
-    var $name = 'House';
+    var $name = 'Place';
     var $belongsTo = array(
         'Door' => array(
-            'foreignKey' => 'door_id',
+            'foreignKey' => 'foreign_id',
             'className' => 'Door',
+            'conditions' => array(
+                'Place.model' => 'Door',
+            ),
+        ),
+        'Land' => array(
+            'foreignKey' => 'foreign_id',
+            'className' => 'Land',
+            'conditions' => array(
+                'Place.model' => 'Land',
+            ),
         ),
         'Group' => array(
             'foreignKey' => 'group_id',
@@ -28,17 +38,17 @@ class House extends AppModel {
         ),
     );
     var $hasMany = array(
-        'HouseLog' => array(
-            'foreignKey' => 'house_id',
+        'PlaceLog' => array(
+            'foreignKey' => 'place_id',
             'dependent' => false,
-            'className' => 'HouseLog',
+            'className' => 'PlaceLog',
         ),
     );
 
     public function beforeFind($query) {
         $loginMember = Configure::read('loginMember');
         if ($loginMember['group_id'] != 0 && $loginMember['group_id'] != 1) {
-            $query['conditions']['House.group_id'] = $loginMember['group_id'];
+            $query['conditions']['Place.group_id'] = $loginMember['group_id'];
         }
         return $query;
     }
