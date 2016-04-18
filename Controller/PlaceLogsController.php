@@ -23,10 +23,10 @@ class PlaceLogsController extends AppController {
         if (!empty($this->data)) {
             $this->PlaceLog->create();
             if ($this->PlaceLog->save($this->data)) {
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash('操作發生錯誤，請重試');
             }
         }
         $this->set('foreignId', $foreignId);

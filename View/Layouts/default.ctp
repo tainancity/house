@@ -32,10 +32,10 @@
     <body>
         <div class="container">
             <div id="header">
-                <h1><?php echo $this->Html->link('Place', '/'); ?></h1>
+                <h1><?php echo $this->Html->link('空屋空地管理系統', '/'); ?></h1>
             </div>
             <div id="content">
-                <div class="btn-group">
+                <div class="btn-group pull-right">
                     <?php
                     switch ($loginMember['group_id']) {
                         case 1:
@@ -63,7 +63,10 @@
                 <div id="viewContent"><?php echo $content_for_layout; ?></div>
             </div>
             <div id="footer">
-                &nbsp;
+                &nbsp;<br /><br />
+                <div class="pull-right">
+                    本系統由 研考會-資訊中心-規劃設計組 建置，如有疑問請聯繫 <a href="mailto:kiang@mail.tainan.gov.tw">kiang@mail.tainan.gov.tw</a>
+                </div>
             </div>
         </div>
         <?php

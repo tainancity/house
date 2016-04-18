@@ -75,7 +75,7 @@ class TasksController extends AppController {
 
     function admin_view($id = null) {
         if (!$id || !$this->data = $this->Task->read(null, $id)) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash('請依照網址指示操作');
             $this->redirect(array('action' => 'index'));
         }
     }
@@ -84,25 +84,25 @@ class TasksController extends AppController {
         if (!empty($this->data)) {
             $this->Task->create();
             if ($this->Task->save($this->data)) {
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash('操作發生錯誤，請重試');
             }
         }
     }
 
     function admin_edit($id = null) {
         if (!$id && empty($this->data)) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash('請依照網址指示操作');
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
             if ($this->Task->save($this->data)) {
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'index'));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash('操作發生錯誤，請重試');
             }
         }
         $this->set('id', $id);
@@ -111,9 +111,9 @@ class TasksController extends AppController {
 
     function admin_delete($id = null) {
         if (!$id) {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash('請依照網址指示操作');
         } else if ($this->Task->delete($id)) {
-            $this->Session->setFlash(__('The data has been deleted', true));
+            $this->Session->setFlash('資料已經刪除');
         }
         $this->redirect(array('action' => 'index'));
     }

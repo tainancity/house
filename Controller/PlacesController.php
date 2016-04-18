@@ -100,7 +100,7 @@ class PlacesController extends AppController {
         if (!empty($item)) {
             $this->set('item', $item);
         } else {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash('請依照網址指示操作');
             $this->redirect(array('action' => 'index'));
         }
     }
@@ -144,10 +144,10 @@ class PlacesController extends AppController {
                         'created_by' => $this->loginMember['id'],
                         'note' => $dataToSave['PlaceLog']['note'],
                 )));
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'view', bin2hex($dataToSave['Place']['id'])));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash('操作發生錯誤，請重試');
             }
         }
         if ($this->loginMember['group_id'] == 1) {
@@ -172,7 +172,7 @@ class PlacesController extends AppController {
             }
             $item['Place']['foreign_id'] = bin2hex($item['Place']['foreign_id']);
         } else {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash('請依照網址指示操作');
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
@@ -195,10 +195,10 @@ class PlacesController extends AppController {
                         'created_by' => $this->loginMember['id'],
                         'note' => $dataToSave['PlaceLog']['note'],
                 )));
-                $this->Session->setFlash(__('The data has been saved', true));
+                $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'view', $id));
             } else {
-                $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
+                $this->Session->setFlash('操作發生錯誤，請重試');
             }
         }
         if ($this->loginMember['group_id'] == 1) {
@@ -212,12 +212,12 @@ class PlacesController extends AppController {
     function admin_delete($id = null) {
         if (!empty($id)) {
             if ($this->Place->delete(hex2bin($id))) {
-                $this->Session->setFlash(__('The data has been deleted', true));
+                $this->Session->setFlash('資料已經刪除');
             } else {
-                $this->Session->setFlash(__('Please do following links in the page', true));
+                $this->Session->setFlash('請依照網址指示操作');
             }
         } else {
-            $this->Session->setFlash(__('Please do following links in the page', true));
+            $this->Session->setFlash('請依照網址指示操作');
         }
         $this->redirect(array('action' => 'index'));
     }
