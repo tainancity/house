@@ -1,7 +1,6 @@
 var map, marker;
 var loadedJson = {}, loadingFile = '', currentObj = false;
 $(function () {
-    var pointLatLng = new google.maps.LatLng(23.01, 120.22);
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
         zoom: 14,
         center: pointLatLng,
@@ -16,6 +15,15 @@ $(function () {
         title: '土地'
     });
     marker.addListener('dragend', markerDrag);
+
+    $.getJSON(jsonBaseUrl + place.Land.file, {}, function (r) {
+        loadedJson[loadingFile] = r;
+        for (k in r.features) {
+            if (place.Land.code == r.features[k].properties.AA49) {
+                showJson(r.features[k]);
+            }
+        }
+    });
 
     $('input#mapHelper').autocomplete({
         source: function (request, response) {
@@ -52,7 +60,7 @@ $(function () {
                 $('#PlaceForeignId').val(ui.item.id);
             }
         },
-        minLength: 1
+        minLength: 2
     });
     $('#PlaceLogDateVisited').datepicker({
         dateFormat: 'yy-mm-dd'

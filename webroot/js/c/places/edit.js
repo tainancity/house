@@ -32,7 +32,7 @@ $(function () {
             $('#PlaceLatitude').val(ui.item.latitude);
             $('#PlaceLongitude').val(ui.item.longitude);
             $('#PlaceTitle').val(ui.item.label);
-            $('#PlaceDoorId').val(ui.item.id);
+            $('#PlaceForeignId').val(ui.item.id);
             marker.setPosition(point);
             map.setCenter(point);
         },
@@ -46,5 +46,4 @@ $(function () {
 function markerDrag(e) {
     $('#PlaceLatitude').val(e.latLng.lat());
     $('#PlaceLongitude').val(e.latLng.lng());
-    $('#PlaceDoorId').val('');
 }

@@ -62,10 +62,27 @@
     </div>
     <?php
     echo $this->Form->end('送出');
+    $typeModel = $this->data['Place']['model'];
+    $place = $this->data;
+    $place['Place']['id'] = bin2hex($this->data['Place']['id']);
+    $place['Place']['foreign_id'] = bin2hex($this->data['Place']['foreign_id']);
+    if (isset($this->data['Land']['id'])) {
+        $place['Land']['id'] = bin2hex($this->data['Land']['id']);
+    }
     ?>
 </div>
 <script>
-    var queryUrl = '<?php echo $this->Html->url('/doors/q/'); ?>';
+    var queryUrl = '<?php
+    switch ($typeModel) {
+        case 'Door':
+            echo $this->Html->url('/doors/q/');
+            break;
+        case 'Land':
+            echo $this->Html->url('/lands/q/');
+            break;
+    }
+    ?>';
+    var place = <?php echo json_encode($place); ?>;
     var pointLatLng = new google.maps.LatLng(<?php echo $this->data['Place']['latitude']; ?>, <?php echo $this->data['Place']['longitude']; ?>);
     var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>

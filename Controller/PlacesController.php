@@ -119,7 +119,7 @@ class PlacesController extends AppController {
 
             $dataToSave['Place']['id'] = $this->Place->getNewUUID();
             $dataToSave['Place']['model'] = $typeModel;
-            if(!empty($dataToSave['Place']['foreign_id'])) {
+            if (!empty($dataToSave['Place']['foreign_id'])) {
                 $dataToSave['Place']['foreign_id'] = hex2bin($dataToSave['Place']['foreign_id']);
             }
             if ($this->loginMember['group_id'] != 1) {
@@ -156,13 +156,18 @@ class PlacesController extends AppController {
         if (!empty($id)) {
             $item = $this->Place->read(null, hex2bin($id));
         }
-        if (empty($item)) {
+        if (!empty($item)) {
+            if($item['Place']['model'] === 'Land') {
+                $land = $this->Place->Land->read(null, $item['Place']['foreign_id']);
+                $item['Land'] = $land['Land'];
+            }
+        } else {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
             $dataToSave = $this->data;
-            if(!empty($dataToSave['Place']['foreign_id'])) {
+            if (!empty($dataToSave['Place']['foreign_id'])) {
                 $dataToSave['Place']['foreign_id'] = hex2bin($dataToSave['Place']['foreign_id']);
             }
             if ($this->loginMember['group_id'] != 1) {
