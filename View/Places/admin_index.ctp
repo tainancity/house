@@ -78,10 +78,12 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                     <td><?php
                         echo $item['Modifier']['username'];
                         ?></td>
-                    <td class="actions">
-                        <?php echo $this->Html->link('檢視', array('action' => 'view', $item['Place']['id'])); ?>
-                        <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['Place']['id'])); ?>
-                        <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['Place']['id']), null, '確定要刪除？'); ?>
+                    <td>
+                        <div class="btn-group">
+                            <?php echo $this->Html->link('檢視', array('action' => 'view', $item['Place']['id']), array('class' => 'btn btn-default')); ?>
+                            <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['Place']['id']), array('class' => 'btn btn-default')); ?>
+                            <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['Place']['id']), array('class' => 'btn btn-default'), '確定要刪除？'); ?>
+                        </div>
                     </td>
                 </tr>
             <?php } // End of foreach ($items as $item) {   ?>

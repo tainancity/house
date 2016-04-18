@@ -2,9 +2,8 @@
     <h2><?php echo __('Members', true); ?></h2>
     <div class="btn-group">
         <?php echo $this->Html->link('新增', array('action' => 'add'), array('class' => 'btn dialogControl')); ?>
-        <?php echo $this->Html->link(__('Groups', true), array('controller' => 'groups'), array('class' => 'btn')); ?>
-        <?php echo $this->Html->link(__('Generate testing members', true), array('action' => 'test'), array('class' => 'btn')); ?>
-        <?php echo $this->Html->link(__('Generate ACOs', true), array('action' => 'acos'), array('class' => 'btn')); ?>
+        <?php echo $this->Html->link('群組', array('controller' => 'groups'), array('class' => 'btn')); ?>
+        <?php echo $this->Html->link('權限更新', array('action' => 'acos'), array('class' => 'btn')); ?>
     </div>
     <?php
     echo 'Filter: ' . $this->Form->text('Member.filter', array(
@@ -58,22 +57,22 @@
     <div id="MembersAdminIndexPanel"></div>
     <?php
     $jsUri = $this->Html->url() . '/index';
-    echo $this->Html->scriptBlock('
-$(function() {
-    $(\'#MembersAdminIndexTable th a, #MembersAdminIndex div.paging a\').click(function() {
-        $(\'#MembersAdminIndex\').parent().load(this.href);
-        return false;
-    });
-    $(\'#memberFilter\').autocomplete({
-        delay: 1000,
-        minLength: 0,
-        search: function(event, ui) {
-            var targetUri = \'' . $jsUri . '/keyword:\' + $(this).val();
-            $(\'#MembersAdminIndex\').parent().load(encodeURI(targetUri));
-            return false;
-        }
-    });
-});
-');
     ?>
+    <script>
+        $(function () {
+            $('#MembersAdminIndexTable th a, #MembersAdminIndex div.paging a').click(function () {
+                $('#MembersAdminIndex').parent().load(this.href);
+                return false;
+            });
+            $('#memberFilter').autocomplete({
+                delay: 1000,
+                minLength: 0,
+                search: function (event, ui) {
+                    var targetUri = '<?php echo $jsUri; ?>/keyword:' + $(this).val();
+                    $('#MembersAdminIndex').parent().load(encodeURI(targetUri));
+                    return false;
+                }
+            });
+        });
+    </script>
 </div>
