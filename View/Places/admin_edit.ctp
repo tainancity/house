@@ -70,4 +70,11 @@
 </script>
 <?php
 $this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
-$this->Html->script('c/places/edit', array('inline' => false));
+switch ($typeModel) {
+    case 'Door':
+        $this->Html->script('c/places/edit', array('inline' => false));
+        break;
+    case 'Land':
+        $this->Html->script('c/places/edit_land', array('inline' => false));
+        break;
+}

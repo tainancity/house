@@ -2,13 +2,13 @@
 
 App::uses('AppModel', 'Model');
 
-class HouseLog extends AppModel {
+class PlaceLog extends AppModel {
 
-    var $name = 'HouseLog';
+    var $name = 'PlaceLog';
     var $belongsTo = array(
-        'House' => array(
-            'foreignKey' => 'house_id',
-            'className' => 'House',
+        'Place' => array(
+            'foreignKey' => 'place_id',
+            'className' => 'Place',
         ),
         'Creator' => array(
             'foreignKey' => 'created_by',

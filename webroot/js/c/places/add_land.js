@@ -12,7 +12,7 @@ $(function () {
         position: pointLatLng,
         draggable: true,
         map: map,
-        title: '房屋'
+        title: '土地'
     });
     marker.addListener('dragend', markerDrag);
 

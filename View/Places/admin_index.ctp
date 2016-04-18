@@ -4,7 +4,7 @@ if (!isset($url)) {
 }
 
 if (!empty($foreignId) && !empty($foreignModel)) {
-    $url = array($foreignModel, $foreignId);
+    $url = array($typeModel, $foreignModel, $foreignId);
 }
 ?>
 <div id="PlacesAdminIndex">
@@ -14,13 +14,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 case 'Task':
                     echo implode(' > ', array(
                         $this->Html->link('任務', array('controller' => 'tasks')),
-                        $foreignInfo['title'] . '相關房屋',
-                    ));
-                    break;
-                case 'Door':
-                    echo implode(' > ', array(
-                        $this->Html->link('門牌', array('controller' => 'doors')),
-                        $foreignInfo['title'] . '相關房屋',
+                        $foreignInfo['title'] . '相關' . (($typeModel === 'Door') ? '房屋' : '土地'),
                     ));
                     break;
                 case 'Group':

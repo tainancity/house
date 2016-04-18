@@ -8,17 +8,21 @@ class PlacesController extends AppController {
     public $paginate = array();
     public $helpers = array('Olc');
 
-    function admin_index($foreignModel = null, $foreignId = 0, $op = null) {
+    function admin_index($typeModel = 'Door', $foreignModel = null, $foreignId = 0, $op = null) {
         $foreignId = intval($foreignId);
         $foreignKeys = array();
+        if (!in_array($typeModel, array('Door', 'Land'))) {
+            $typeModel = 'Door';
+        }
 
         $foreignKeys = array(
-            'Door' => 'door_id',
             'Group' => 'group_id',
             'Task' => 'task_id',
         );
 
-        $scope = array();
+        $scope = array(
+            'Place.model' => $typeModel,
+        );
         if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
             $scope['Place.' . $foreignKeys[$foreignModel]] = $foreignId;
         } else {
@@ -54,6 +58,7 @@ class PlacesController extends AppController {
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
         $this->set('foreignInfo', $foreignInfo);
+        $this->set('typeModel', $typeModel);
         $this->set('groups', $this->Place->Group->find('list'));
         $this->set('tasks', $this->Place->Task->find('list'));
     }
@@ -94,10 +99,9 @@ class PlacesController extends AppController {
         }
     }
 
-    function admin_add($foreignModel = null, $foreignId = 0) {
+    function admin_add($typeModel = 'Door', $foreignModel = null, $foreignId = 0) {
         $foreignId = intval($foreignId);
         $foreignKeys = array(
-            'Door' => 'door_id',
             'Group' => 'group_id',
             'Task' => 'task_id',
         );
@@ -114,6 +118,10 @@ class PlacesController extends AppController {
             }
 
             $dataToSave['Place']['id'] = $this->Place->getNewUUID();
+            $dataToSave['Place']['model'] = $typeModel;
+            if(!empty($dataToSave['Place']['foreign_id'])) {
+                $dataToSave['Place']['foreign_id'] = hex2bin($dataToSave['Place']['foreign_id']);
+            }
             if ($this->loginMember['group_id'] != 1) {
                 $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
             }
@@ -124,7 +132,7 @@ class PlacesController extends AppController {
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save(array('PlaceLog' => array(
                         'id' => $this->Place->getNewUUID(),
-                        'house_id' => $dataToSave['Place']['id'],
+                        'place_id' => $dataToSave['Place']['id'],
                         'status' => $dataToSave['Place']['status'],
                         'date_visited' => $dataToSave['PlaceLog']['date_visited'],
                         'created_by' => $this->loginMember['id'],
@@ -139,6 +147,7 @@ class PlacesController extends AppController {
         if ($this->loginMember['group_id'] == 1) {
             $this->set('groups', $this->Place->Group->find('list'));
         }
+        $this->set('typeModel', $typeModel);
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
     }
@@ -153,6 +162,9 @@ class PlacesController extends AppController {
         }
         if (!empty($this->data)) {
             $dataToSave = $this->data;
+            if(!empty($dataToSave['Place']['foreign_id'])) {
+                $dataToSave['Place']['foreign_id'] = hex2bin($dataToSave['Place']['foreign_id']);
+            }
             if ($this->loginMember['group_id'] != 1) {
                 $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
             }
@@ -162,7 +174,7 @@ class PlacesController extends AppController {
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save(array('PlaceLog' => array(
                         'id' => $this->Place->getNewUUID(),
-                        'house_id' => $id,
+                        'place_id' => $id,
                         'status' => $dataToSave['Place']['status'],
                         'date_visited' => $dataToSave['PlaceLog']['date_visited'],
                         'created_by' => $this->loginMember['id'],

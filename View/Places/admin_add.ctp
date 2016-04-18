@@ -2,7 +2,7 @@
     <?php
     $url = array();
     if (!empty($foreignId) && !empty($foreignModel)) {
-        $url = array('action' => 'add', $foreignModel, $foreignId);
+        $url = array('action' => 'add', $typeModel, $foreignModel, $foreignId);
     } else {
         $url = array('action' => 'add');
         $foreignModel = '';
@@ -10,9 +10,9 @@
     echo $this->Form->create('Place', array('type' => 'file', 'url' => $url));
     ?>
     <div class="Places form">
-        <h3>新增房屋</h3>
+        <h3>新增<?php echo ($typeModel === 'Door') ? '房屋' : '土地'; ?></h3>
         <?php
-        echo $this->Form->hidden('Place.door_id');
+        echo $this->Form->hidden('Place.foreign_id');
         echo $this->Form->input('Place.title', array(
             'label' => '名稱(住址)',
             'div' => 'form-group',
@@ -76,4 +76,12 @@
 </script>
 <?php
 $this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
-$this->Html->script('c/places/add', array('inline' => false));
+switch ($typeModel) {
+    case 'Door':
+        $this->Html->script('c/places/add', array('inline' => false));
+        break;
+    case 'Land':
+        $this->Html->script('c/places/add_land', array('inline' => false));
+        break;
+}
+
