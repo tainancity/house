@@ -90,6 +90,12 @@ class PlacesController extends AppController {
                 ),
             ));
             $item['Place']['id'] = bin2hex($item['Place']['id']);
+            if ($item['Place']['model'] === 'Land') {
+                $land = $this->Place->Land->read(null, $item['Place']['foreign_id']);
+                if (isset($land['Land'])) {
+                    $item['Land'] = $land['Land'];
+                }
+            }
         }
         if (!empty($item)) {
             $this->set('item', $item);
@@ -147,6 +153,7 @@ class PlacesController extends AppController {
         if ($this->loginMember['group_id'] == 1) {
             $this->set('groups', $this->Place->Group->find('list'));
         }
+        $this->set('task', $this->Place->Task->read(null, $foreignId));
         $this->set('typeModel', $typeModel);
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
@@ -157,10 +164,13 @@ class PlacesController extends AppController {
             $item = $this->Place->read(null, hex2bin($id));
         }
         if (!empty($item)) {
-            if($item['Place']['model'] === 'Land') {
+            if ($item['Place']['model'] === 'Land') {
                 $land = $this->Place->Land->read(null, $item['Place']['foreign_id']);
-                $item['Land'] = $land['Land'];
+                if (isset($land['Land'])) {
+                    $item['Land'] = $land['Land'];
+                }
             }
+            $item['Place']['foreign_id'] = bin2hex($item['Place']['foreign_id']);
         } else {
             $this->Session->setFlash(__('Please do following links in the page', true));
             $this->redirect($this->referer());
@@ -179,14 +189,14 @@ class PlacesController extends AppController {
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save(array('PlaceLog' => array(
                         'id' => $this->Place->getNewUUID(),
-                        'place_id' => $id,
+                        'place_id' => hex2bin($id),
                         'status' => $dataToSave['Place']['status'],
                         'date_visited' => $dataToSave['PlaceLog']['date_visited'],
                         'created_by' => $this->loginMember['id'],
                         'note' => $dataToSave['PlaceLog']['note'],
                 )));
                 $this->Session->setFlash(__('The data has been saved', true));
-                $this->redirect(array('action' => 'view', bin2hex($id)));
+                $this->redirect(array('action' => 'view', $id));
             } else {
                 $this->Session->setFlash(__('Something was wrong during saving, please try again', true));
             }
@@ -194,6 +204,7 @@ class PlacesController extends AppController {
         if ($this->loginMember['group_id'] == 1) {
             $this->set('groups', $this->Place->Group->find('list'));
         }
+        $this->set('task', $this->Place->Task->read(null, $item['Place']['task_id']));
         $this->set('id', $id);
         $this->data = $item;
     }

@@ -1,9 +1,16 @@
 <div id="PlacesAdminEdit">
+    <h2><?php
+        $typeModel = $this->data['Place']['model'];
+        echo implode(' > ', array(
+            $this->Html->link('任務', array('controller' => 'tasks')),
+            $this->Html->link($task['Task']['title'], array('action' => 'index', $typeModel, 'Task', $task['Task']['id'])),
+            ($typeModel === 'Door') ? '編輯房屋' : '編輯土地',
+        ));
+        ?></h2>
     <?php echo $this->Form->create('Place', array('type' => 'file')); ?>
     <div class="Places form">
-        <h3>新增房屋</h3>
         <?php
-        echo $this->Form->hidden('Place.door_id');
+        echo $this->Form->hidden('Place.foreign_id');
         echo $this->Form->input('Place.title', array(
             'label' => '名稱(住址)',
             'div' => 'form-group',
@@ -62,7 +69,6 @@
     </div>
     <?php
     echo $this->Form->end('送出');
-    $typeModel = $this->data['Place']['model'];
     $place = $this->data;
     $place['Place']['id'] = bin2hex($this->data['Place']['id']);
     $place['Place']['foreign_id'] = bin2hex($this->data['Place']['foreign_id']);

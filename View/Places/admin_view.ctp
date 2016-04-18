@@ -2,9 +2,15 @@
     <h2><?php
         echo implode(' > ', array(
             $this->Html->link('任務', array('controller' => 'tasks')),
-            $this->Html->link($item['Task']['title'], array('action' => 'index', 'Task', $item['Place']['task_id'])),
+            $this->Html->link($item['Task']['title'], array('action' => 'index', $item['Place']['model'], 'Task', $item['Place']['task_id'])),
             $item['Place']['title']
         ));
+        $place = $item;
+        $place['Place']['foreign_id'] = bin2hex($item['Place']['foreign_id']);
+        if (isset($item['Land']['id'])) {
+            $place['Land']['id'] = bin2hex($item['Land']['id']);
+        }
+        unset($place['PlaceLog']);
         ?></h2>
     <hr />
     <div class="col-md-12">
@@ -73,7 +79,17 @@
 </div>
 <script>
     var pointLatLng = new google.maps.LatLng(<?php echo $item['Place']['latitude']; ?>, <?php echo $item['Place']['longitude']; ?>);
+    var place = <?php echo json_encode($place); ?>;
+    var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>
 <?php
 $this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
-$this->Html->script('c/places/view', array('inline' => false));
+switch($item['Place']['model']) {
+    case 'Door':
+        $this->Html->script('c/places/view', array('inline' => false));
+        break;
+    case 'Land':
+        $this->Html->script('c/places/view_land', array('inline' => false));
+        break;
+}
+

@@ -1,4 +1,11 @@
 <div id="PlacesAdminAdd">
+    <h2><?php
+        echo implode(' > ', array(
+            $this->Html->link('任務', array('controller' => 'tasks')),
+            $this->Html->link($task['Task']['title'], array('action' => 'index', $typeModel, 'Task', $foreignId)),
+            ($typeModel === 'Door') ? '新增房屋' : '新增土地',
+        ));
+        ?></h2>
     <?php
     $url = array();
     if (!empty($foreignId) && !empty($foreignModel)) {
@@ -10,7 +17,6 @@
     echo $this->Form->create('Place', array('type' => 'file', 'url' => $url));
     ?>
     <div class="Places form">
-        <h3>新增<?php echo ($typeModel === 'Door') ? '房屋' : '土地'; ?></h3>
         <?php
         echo $this->Form->hidden('Place.foreign_id');
         echo $this->Form->input('Place.title', array(

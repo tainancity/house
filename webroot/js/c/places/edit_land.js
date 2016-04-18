@@ -16,14 +16,16 @@ $(function () {
     });
     marker.addListener('dragend', markerDrag);
 
-    $.getJSON(jsonBaseUrl + place.Land.file, {}, function (r) {
-        loadedJson[loadingFile] = r;
-        for (k in r.features) {
-            if (place.Land.code == r.features[k].properties.AA49) {
-                showJson(r.features[k]);
+    if (place.Land) {
+        $.getJSON(jsonBaseUrl + place.Land.file, {}, function (r) {
+            loadedJson[loadingFile] = r;
+            for (k in r.features) {
+                if (place.Land.code == r.features[k].properties.AA49) {
+                    showJson(r.features[k], false);
+                }
             }
-        }
-    });
+        });
+    }
 
     $('input#mapHelper').autocomplete({
         source: function (request, response) {
@@ -72,7 +74,7 @@ function markerDrag(e) {
     $('#PlaceLongitude').val(e.latLng.lng());
 }
 
-function showJson(obj) {
+function showJson(obj, fillForm) {
     if (currentObj) {
         for (k in currentObj) {
             map.data.remove(currentObj[k]);
@@ -86,8 +88,11 @@ function showJson(obj) {
         }
     }
     map.fitBounds(newBounds);
-    var centerPoint = newBounds.getCenter();
-    marker.setPosition(centerPoint);
-    $('#PlaceLatitude').val(centerPoint.lat());
-    $('#PlaceLongitude').val(centerPoint.lng());
+    if (false !== fillForm) {
+        var centerPoint = newBounds.getCenter();
+        marker.setPosition(centerPoint);
+        $('#PlaceLatitude').val(centerPoint.lat());
+        $('#PlaceLongitude').val(centerPoint.lng());
+    }
+
 }
