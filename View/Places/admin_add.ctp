@@ -19,7 +19,7 @@
             'class' => 'form-control',
         ));
         ?><div class="col-md-6">
-            <input type="text" class="col-md-12" id="doorHelper" />
+            <input type="text" class="col-md-12" id="mapHelper" />
             <div class="clearfix"></div>
             <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
         </div>
@@ -35,11 +35,13 @@
                 ));
             }
             echo $this->Form->input('Place.latitude', array(
+                'type' => 'text',
                 'label' => '緯度',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
             echo $this->Form->input('Place.longitude', array(
+                'type' => 'text',
                 'label' => '經度',
                 'div' => 'form-group',
                 'class' => 'form-control',
@@ -72,7 +74,17 @@
     ?>
 </div>
 <script>
-    var queryUrl = '<?php echo $this->Html->url('/doors/q/'); ?>';
+    var queryUrl = '<?php
+    switch ($typeModel) {
+        case 'Door':
+            echo $this->Html->url('/doors/q/');
+            break;
+        case 'Land':
+            echo $this->Html->url('/lands/q/');
+            break;
+    }
+    ?>';
+    var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>
 <?php
 $this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));

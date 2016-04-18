@@ -16,7 +16,7 @@ $(function () {
     });
     marker.addListener('dragend', markerDrag);
 
-    $('input#doorHelper').autocomplete({
+    $('input#mapHelper').autocomplete({
         source: function (request, response) {
             currentTerm = request.term;
             $.ajax({

@@ -10,7 +10,7 @@
             'class' => 'form-control',
         ));
         ?><div class="col-md-6">
-            <input type="text" class="col-md-12" id="doorHelper" />
+            <input type="text" class="col-md-12" id="mapHelper" />
             <div class="clearfix"></div>
             <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
         </div>
@@ -67,6 +67,7 @@
 <script>
     var queryUrl = '<?php echo $this->Html->url('/doors/q/'); ?>';
     var pointLatLng = new google.maps.LatLng(<?php echo $this->data['Place']['latitude']; ?>, <?php echo $this->data['Place']['longitude']; ?>);
+    var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>
 <?php
 $this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
