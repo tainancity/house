@@ -43,7 +43,7 @@ class LandsController extends AppController {
                 if (count($sections) === 1 && !empty($landPart)) {
                     $landPartLength = strlen($landPart);
                     if ($landPartLength <= 4) {
-                        $landPart = str_pad($landPart, 4, '0', STR_PAD_LEFT) . '%';
+                        $landPart = '%' . $landPart . '%';
                     } elseif ($landPartLength < 8) {
                         $landPart .= '%';
                     } elseif ($landPartLength > 8) {
