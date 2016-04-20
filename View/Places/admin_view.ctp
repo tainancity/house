@@ -60,6 +60,7 @@
                 <th>訪視日期</th>
                 <th>狀態</th>
                 <th>操作人</th>
+                <th>照片</th>
                 <th>備註</th>
             </tr>
             <?php
@@ -69,6 +70,12 @@
                     <td><?php echo $log['date_visited']; ?></td>
                     <td><?php echo $this->Olc->status[$log['status']]; ?></td>
                     <td><?php echo $log['Creator']['username']; ?></td>
+                    <td><?php
+                        if (!empty($log['basename'])) {
+                            echo '<a href="' . $this->Media->url("original/{$log['dirname']}/{$log['basename']}") . '" target="_blank">';
+                            echo $this->Media->embed("m/{$log['dirname']}/{$log['basename']}") . '</a>';
+                        }
+                        ?></td>
                     <td><?php echo $log['note']; ?></td>
                 </tr>
                 <?php

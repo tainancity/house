@@ -59,6 +59,15 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+            echo $this->Form->input('PlaceLog.file', array(
+                'label' => '照片',
+                'type' => 'file',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('PlaceLog.dirname', array('type' => 'hidden'));
+            echo $this->Form->input('PlaceLog.basename', array('type' => 'hidden'));
+            echo $this->Form->input('PlaceLog.checksum', array('type' => 'hidden'));
             echo $this->Form->input('PlaceLog.date_visited', array(
                 'label' => '訪視日期',
                 'type' => 'text',

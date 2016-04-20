@@ -207,6 +207,10 @@ CREATE TABLE `place_logs` (
   `date_visited` date DEFAULT NULL,
   `created` datetime NOT NULL,
   `created_by` int(11) NOT NULL,
+  `file` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `dirname` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `basename` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `checksum` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `note` text COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -277,4 +281,4 @@ CREATE TABLE `tasks` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-20 16:22:33
+-- Dump completed on 2016-04-20 17:22:18

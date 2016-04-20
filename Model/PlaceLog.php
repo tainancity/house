@@ -15,5 +15,11 @@ class PlaceLog extends AppModel {
             'className' => 'Member',
         ),
     );
+    var $actsAs = array(
+        'Media.Transfer',
+        'Media.Coupler',
+        'Media.Meta',
+        'Media.Generator',
+    );
 
 }

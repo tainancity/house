@@ -6,7 +6,7 @@ class PlacesController extends AppController {
 
     public $name = 'Places';
     public $paginate = array();
-    public $helpers = array('Olc');
+    public $helpers = array('Olc', 'Media.Media');
 
     function admin_index($typeModel = 'Door', $foreignModel = null, $foreignId = 0, $op = null) {
         $foreignId = intval($foreignId);
@@ -120,6 +120,10 @@ class PlacesController extends AppController {
         }
         if (!empty($this->data)) {
             $dataToSave = $this->data;
+            if (!empty($dataToSave['PlaceLog']['file']['name'])) {
+                $p = pathinfo($dataToSave['PlaceLog']['file']['name']);
+                $dataToSave['PlaceLog']['file']['name'] = uuid_create() . '.' . strtolower($p['extension']);
+            }
             if (!empty($foreignModel)) {
                 $dataToSave['Place'][$foreignKeys[$foreignModel]] = $foreignId;
             }
@@ -136,15 +140,12 @@ class PlacesController extends AppController {
             $dataToSave['Place']['created_by'] = $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
             $this->Place->create();
             if ($this->Place->save($dataToSave)) {
+                $dataToSave['PlaceLog']['id'] = $this->Place->getNewUUID();
+                $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
+                $dataToSave['PlaceLog']['place_id'] = $dataToSave['Place']['id'];
+                $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                 $this->Place->PlaceLog->create();
-                $this->Place->PlaceLog->save(array('PlaceLog' => array(
-                        'id' => $this->Place->getNewUUID(),
-                        'place_id' => $dataToSave['Place']['id'],
-                        'status' => $dataToSave['Place']['status'],
-                        'date_visited' => isset($dataToSave['PlaceLog']['date_visited']) ? $dataToSave['PlaceLog']['date_visited'] : '',
-                        'created_by' => $this->loginMember['id'],
-                        'note' => isset($dataToSave['PlaceLog']['note']) ? $dataToSave['PlaceLog']['note'] : '',
-                )));
+                $this->Place->PlaceLog->save($dataToSave);
                 $this->Session->setFlash('資料已經儲存');
                 if (!$this->request->isAjax()) {
                     $this->redirect(array('action' => 'view', bin2hex($dataToSave['Place']['id'])));
@@ -198,6 +199,10 @@ class PlacesController extends AppController {
         }
         if (!empty($this->data)) {
             $dataToSave = $this->data;
+            if (!empty($dataToSave['PlaceLog']['file']['name'])) {
+                $p = pathinfo($dataToSave['PlaceLog']['file']['name']);
+                $dataToSave['PlaceLog']['file']['name'] = uuid_create() . '.' . strtolower($p['extension']);
+            }
             if (!empty($dataToSave['Place']['foreign_id'])) {
                 $dataToSave['Place']['foreign_id'] = hex2bin($dataToSave['Place']['foreign_id']);
             }
@@ -208,15 +213,12 @@ class PlacesController extends AppController {
             $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
             $dataToSave['Place']['modified'] = date('Y-m-d H:i:s');
             if ($this->Place->save($dataToSave)) {
+                $dataToSave['PlaceLog']['id'] = $this->Place->getNewUUID();
+                $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
+                $dataToSave['PlaceLog']['place_id'] = hex2bin($id);
+                $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                 $this->Place->PlaceLog->create();
-                $this->Place->PlaceLog->save(array('PlaceLog' => array(
-                        'id' => $this->Place->getNewUUID(),
-                        'place_id' => hex2bin($id),
-                        'status' => $dataToSave['Place']['status'],
-                        'date_visited' => $dataToSave['PlaceLog']['date_visited'],
-                        'created_by' => $this->loginMember['id'],
-                        'note' => $dataToSave['PlaceLog']['note'],
-                )));
+                $this->Place->PlaceLog->save($dataToSave);
                 $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'view', $id));
             } else {
