@@ -205,6 +205,7 @@ class PlacesController extends AppController {
             }
             $this->Place->id = $item['Place']['id'];
             $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
+            $dataToSave['Place']['modified'] = date('Y-m-d H:i:s');
             if ($this->Place->save($dataToSave)) {
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save(array('PlaceLog' => array(
