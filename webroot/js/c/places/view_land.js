@@ -9,14 +9,12 @@ $(function () {
     });
     if (place.Land) {
         $.getJSON(jsonBaseUrl + place.Land.file, {}, function (r) {
-            for (k in r.features) {
-                if (place.Land.code == r.features[k].properties.AA49) {
-                    console.log(place);
-                    console.log(r.features[k].properties);
+            for (b in r.features) {
+                if (place.Land.code == r.features[b].properties.AA49) {
                     var newBounds = new google.maps.LatLngBounds;
-                    for (k in r.features[k].geometry.coordinates) {
-                        for (j in r.features[k].geometry.coordinates[k]) {
-                            newBounds.extend(new google.maps.LatLng(r.features[k].geometry.coordinates[k][j][1], r.features[k].geometry.coordinates[k][j][0]));
+                    for (k in r.features[b].geometry.coordinates) {
+                        for (j in r.features[b].geometry.coordinates[k]) {
+                            newBounds.extend(new google.maps.LatLng(r.features[b].geometry.coordinates[k][j][1], r.features[b].geometry.coordinates[k][j][0]));
                         }
                     }
                     map.fitBounds(newBounds);
@@ -29,10 +27,11 @@ $(function () {
                         title: '土地'
                     });
                     map.setCenter(pointLatLng);
-                    map.data.addGeoJson(r.features[k]);
+                    map.data.addGeoJson(r.features[b]);
                 }
             }
         });
+
     } else if (pointLatLng) {
         marker = new google.maps.Marker({
             position: pointLatLng,
