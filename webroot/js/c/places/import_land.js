@@ -1,3 +1,4 @@
+var map, marker;
 $(function () {
     var resultCount = 0;
     $('a#btnImport').click(function () {
@@ -6,7 +7,7 @@ $(function () {
         $('div#importResult').html('處理結果：<ul id="importResultLines"></ul>');
         $('div.ajax-loader').show();
         for (k in arrayOfLines) {
-            if(arrayOfLines[k] === '') {
+            if (arrayOfLines[k] === '') {
                 continue;
             }
             $.getJSON(queryUrl + arrayOfLines[k], {}, function (r) {
@@ -17,13 +18,13 @@ $(function () {
                 }
                 var data = {data: {
                         Place: {
-                            model: 'Door',
+                            model: 'Land',
                             title: r.queryString,
                             group_id: $('#PlaceGroupId').val(),
                             status: 1
                         }
                     }};
-                if (r.result.length) {
+                if (r.result.length && r.result[0].code) {
                     data.data.Place.title = r.result[0].label;
                     data.data.Place.foreign_id = r.result[0].id;
                     data.data.Place.latitude = r.result[0].latitude;

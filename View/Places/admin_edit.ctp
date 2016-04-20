@@ -89,7 +89,10 @@
     }
     ?>';
     var place = <?php echo json_encode($place); ?>;
-    var pointLatLng = new google.maps.LatLng(<?php echo $this->data['Place']['latitude']; ?>, <?php echo $this->data['Place']['longitude']; ?>);
+    var pointLatLng = false;
+<?php if (!empty($this->data['Place']['latitude'])) { ?>
+        pointLatLng = new google.maps.LatLng(<?php echo $this->data['Place']['latitude']; ?>, <?php echo $this->data['Place']['longitude']; ?>);
+<?php } ?>
     var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>
 <?php

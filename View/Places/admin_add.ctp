@@ -102,4 +102,3 @@ switch ($typeModel) {
         $this->Html->script('c/places/add_land', array('inline' => false));
         break;
 }
-

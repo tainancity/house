@@ -43,6 +43,7 @@ switch ($typeModel) {
     var viewUrl = '<?php echo $this->Html->url(array('action' => 'view')); ?>/';
 </script>
 <?php
+$this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
 switch ($typeModel) {
     case 'Door':
         $this->Html->script('c/places/import', array('inline' => false));

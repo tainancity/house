@@ -59,7 +59,7 @@ class LandsController extends AppController {
                     }
                     $lands = $this->Land->find('all', array(
                         'conditions' => $conditions,
-                        'limit' => 10,
+                        'limit' => 10
                     ));
                     foreach ($lands AS $k => $item) {
                         $item['Land']['id'] = bin2hex($item['Land']['id']);

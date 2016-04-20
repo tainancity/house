@@ -3,18 +3,20 @@ var loadedJson = {}, loadingFile = '', currentObj = false;
 $(function () {
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
         zoom: 14,
-        center: pointLatLng,
         scaleControl: true,
         navigationControl: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    marker = new google.maps.Marker({
-        position: pointLatLng,
-        draggable: true,
-        map: map,
-        title: '土地'
-    });
-    marker.addListener('dragend', markerDrag);
+    if (pointLatLng) {
+        marker = new google.maps.Marker({
+            position: pointLatLng,
+            draggable: true,
+            map: map,
+            title: '土地'
+        });
+        marker.addListener('dragend', markerDrag);
+        map.setCenter(pointLatLng);
+    }
 
     if (place.Land) {
         $.getJSON(jsonBaseUrl + place.Land.file, {}, function (r) {
