@@ -7,16 +7,18 @@ $(function () {
         navigationControl: true,
         mapTypeId: google.maps.MapTypeId.ROADMAP
     });
-    if (pointLatLng) {
-        marker = new google.maps.Marker({
-            position: pointLatLng,
-            draggable: true,
-            map: map,
-            title: '土地'
-        });
-        marker.addListener('dragend', markerDrag);
-        map.setCenter(pointLatLng);
+    if (!pointLatLng) {
+        pointLatLng = new google.maps.LatLng(22.989992, 120.184843);
     }
+
+    marker = new google.maps.Marker({
+        position: pointLatLng,
+        draggable: true,
+        map: map,
+        title: '土地'
+    });
+    marker.addListener('dragend', markerDrag);
+    map.setCenter(pointLatLng);
 
     if (place.Land) {
         $.getJSON(jsonBaseUrl + place.Land.file, {}, function (r) {
@@ -64,7 +66,7 @@ $(function () {
                 $('#PlaceForeignId').val(ui.item.id);
             }
         },
-        minLength: 2
+        minLength: 1
     });
     $('#PlaceLogDateVisited').datepicker({
         dateFormat: 'yy-mm-dd'
