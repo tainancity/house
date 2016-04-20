@@ -78,13 +78,16 @@
     </div>
 </div>
 <script>
-    var pointLatLng = new google.maps.LatLng(<?php echo $item['Place']['latitude']; ?>, <?php echo $item['Place']['longitude']; ?>);
+    var pointLatLng = false;
+<?php if (!empty($item['Place']['latitude'])) { ?>
+        pointLatLng = new google.maps.LatLng(<?php echo $item['Place']['latitude']; ?>, <?php echo $item['Place']['longitude']; ?>);
+<?php } ?>
     var place = <?php echo json_encode($place); ?>;
     var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>
 <?php
 $this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
-switch($item['Place']['model']) {
+switch ($item['Place']['model']) {
     case 'Door':
         $this->Html->script('c/places/view', array('inline' => false));
         break;
