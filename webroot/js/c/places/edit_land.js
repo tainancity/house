@@ -25,7 +25,11 @@ $(function () {
             loadedJson[loadingFile] = r;
             for (k in r.features) {
                 if (place.Land.code == r.features[k].properties.AA49) {
-                    showJson(r.features[k], false);
+                    if ($('#PlaceLatitude').val() === '') {
+                        showJson(r.features[k]);
+                    } else {
+                        showJson(r.features[k], false);
+                    }
                 }
             }
         });
