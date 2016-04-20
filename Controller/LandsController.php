@@ -39,8 +39,15 @@ class LandsController extends AppController {
                 $landPart = substr($address, $pos);
                 $numbersMap = array('０' => 0, '１' => 1, '２' => 2, '３' => 3, '４' => 4, '５' => 5, '６' => 6, '７' => 7, '８' => 8, '９' => 9,);
                 $landPart = strtr($landPart, $numbersMap);
-                $landPart = preg_replace('/[^0-9]/', '', $landPart);
+                $landPart = preg_replace('/[^0-9\\-]/', '', $landPart);
                 if (count($sections) === 1 && !empty($landPart)) {
+                    $conditions = array(
+                        'Land.section_id' => $sections[0]['Section']['id'],
+                    );
+                    $pos = strpos($landPart, '-');
+                    if (false !== $pos) {
+                        $landPart = str_pad(substr($landPart, 0, $pos), 4, '0', STR_PAD_LEFT) . str_pad(substr($landPart, $pos + 1), 4, '0', STR_PAD_LEFT);
+                    }
                     $landPartLength = strlen($landPart);
                     if ($landPartLength <= 4) {
                         $landPart = '%' . $landPart . '%';
@@ -49,9 +56,6 @@ class LandsController extends AppController {
                     } elseif ($landPartLength > 8) {
                         $landPart = substr($landPart, 0, 8);
                     }
-                    $conditions = array(
-                        'Land.section_id' => $sections[0]['Section']['id'],
-                    );
                     if (false !== strpos($landPart, '%')) {
                         $conditions['Land.code LIKE'] = $landPart;
                     } else {
@@ -80,7 +84,7 @@ class LandsController extends AppController {
             $this->response->body(json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         }
     }
-    
+
     public function index() {
         
     }
