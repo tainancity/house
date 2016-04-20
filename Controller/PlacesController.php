@@ -61,6 +61,7 @@ class PlacesController extends AppController {
         $this->set('typeModel', $typeModel);
         $this->set('groups', $this->Place->Group->find('list'));
         $this->set('tasks', $this->Place->Task->find('list'));
+        $this->set('url', array($typeModel, $foreignModel, $foreignId));
     }
 
     function admin_view($id = null) {
