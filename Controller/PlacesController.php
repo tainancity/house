@@ -140,12 +140,20 @@ class PlacesController extends AppController {
                         'id' => $this->Place->getNewUUID(),
                         'place_id' => $dataToSave['Place']['id'],
                         'status' => $dataToSave['Place']['status'],
-                        'date_visited' => $dataToSave['PlaceLog']['date_visited'],
+                        'date_visited' => isset($dataToSave['PlaceLog']['date_visited']) ? $dataToSave['PlaceLog']['date_visited'] : '',
                         'created_by' => $this->loginMember['id'],
-                        'note' => $dataToSave['PlaceLog']['note'],
+                        'note' => isset($dataToSave['PlaceLog']['note']) ? $dataToSave['PlaceLog']['note'] : '',
                 )));
                 $this->Session->setFlash('資料已經儲存');
-                $this->redirect(array('action' => 'view', bin2hex($dataToSave['Place']['id'])));
+                if (!$this->request->isAjax()) {
+                    $this->redirect(array('action' => 'view', bin2hex($dataToSave['Place']['id'])));
+                } else {
+                    echo json_encode(array(
+                        'id' => bin2hex($dataToSave['Place']['id']),
+                        'title' => $dataToSave['Place']['title'],
+                    ));
+                    exit();
+                }
             } else {
                 $this->Session->setFlash('操作發生錯誤，請重試');
             }
@@ -157,6 +165,18 @@ class PlacesController extends AppController {
         $this->set('typeModel', $typeModel);
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
+    }
+
+    function admin_import($typeModel = 'Door', $taskId = '') {
+        if (empty($taskId)) {
+            $this->Session->setFlash('請依照網址指示操作');
+            $this->redirect('/');
+        }
+        if ($this->loginMember['group_id'] == 1) {
+            $this->set('groups', $this->Place->Group->find('list'));
+        }
+        $this->set('typeModel', $typeModel);
+        $this->set('task', $this->Place->Task->read(null, $taskId));
     }
 
     function admin_edit($id = null) {
