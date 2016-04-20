@@ -32,7 +32,13 @@
     <body>
         <div class="container">
             <div id="header">
-                <h1><?php echo $this->Html->link('空屋空地管理系統', '/'); ?></h1>
+                <h1><?php
+                    if ($loginMember['group_id'] == 0) {
+                        echo $this->Html->link('空屋空地管理系統', '/');
+                    } else {
+                        echo $this->Html->link('空屋空地管理系統', '/admin/tasks');
+                    }
+                    ?></h1>
             </div>
             <div id="content">
                 <div class="btn-group pull-right">
