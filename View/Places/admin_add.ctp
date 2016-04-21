@@ -25,6 +25,10 @@
             'class' => 'form-control',
         ));
         ?><div class="col-md-6">
+            <div class="btn-group">
+                <a href="#" id="geoInput" class="btn btn-default">衛星定位</a>
+                <a href="#" id="geoGoogle" class="btn btn-default">Google搜尋</a>
+            </div>
             <input type="text" class="col-md-12" id="mapHelper" />
             <div class="clearfix"></div>
             <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
@@ -102,7 +106,7 @@
     var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>
 <?php
-$this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
+$this->Html->script('http://maps.google.com/maps/api/js?language=zh-tw', array('inline' => false));
 switch ($typeModel) {
     case 'Door':
         $this->Html->script('c/places/add', array('inline' => false));
