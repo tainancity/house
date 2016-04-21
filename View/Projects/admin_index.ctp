@@ -8,7 +8,7 @@ if (!isset($url)) {
     <div class="btn-group">
         <?php
         if ($loginMember['group_id'] == 1) {
-            echo $this->Html->link('新增', array('action' => 'add'), array('class' => 'btn btn-default dialogControl'));
+            echo $this->Html->link('新增', array('action' => 'add'), array('class' => 'btn btn-default'));
         }
         ?>
     </div>
@@ -21,9 +21,10 @@ if (!isset($url)) {
                     echo '<th>&nbsp;</th>';
                 }
                 ?>
-                <th><?php echo $this->Paginator->sort('Project.title', '標題', array('url' => $url)); ?></th>
-                <th><?php echo $this->Paginator->sort('Project.description', '描述', array('url' => $url)); ?></th>
-                <th><?php echo $this->Paginator->sort('Project.created', '建立時間', array('url' => $url)); ?></th>
+                <th>標題</th>
+                <th><?php echo $this->Paginator->sort('Project.date_begin', '期間', array('url' => $url)); ?></th>
+                <th><?php echo $this->Paginator->sort('Project.count_created', '案件數', array('url' => $url)); ?></th>
+                <th><?php echo $this->Paginator->sort('Project.modified', '更新時間', array('url' => $url)); ?></th>
                 <th class="actions">操作</th>
             </tr>
         </thead>
@@ -50,15 +51,14 @@ if (!isset($url)) {
                     ?>
 
                     <td><?php echo $item['Project']['title']; ?></td>
-                    <td><?php echo $item['Project']['description']; ?></td>
-                    <td><?php echo $item['Project']['created']; ?></td>
+                    <td><?php echo $item['Project']['date_begin']; ?> ~ <?php echo $item['Project']['date_end']; ?></td>
+                    <td><?php echo $item['Project']['count_completed']; ?> / <?php echo $item['Project']['count_created']; ?></td>
+                    <td><?php echo $item['Project']['modified']; ?></td>
                     <td class="actions">
                         <div class="btn-group">
-                            <?php echo $this->Html->link('相關房屋', array('controller' => 'places', 'action' => 'index', 'Door', 'Project', $item['Project']['id']), array('class' => 'btn btn-default')); ?>
-                            <?php echo $this->Html->link('相關土地', array('controller' => 'places', 'action' => 'index', 'Land', 'Project', $item['Project']['id']), array('class' => 'btn btn-default')); ?>
                             <?php
                             if ($loginMember['group_id'] == 1) {
-                                echo $this->Html->link('編輯', array('action' => 'edit', $item['Project']['id']), array('class' => 'dialogControl btn btn-default'));
+                                echo $this->Html->link('編輯', array('action' => 'edit', $item['Project']['id']), array('class' => 'btn btn-default'));
                                 echo $this->Html->link('刪除', array('action' => 'delete', $item['Project']['id']), array('class' => 'btn btn-default'), '確定要刪除？');
                             }
                             ?>
