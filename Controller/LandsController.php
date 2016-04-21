@@ -33,7 +33,12 @@ class LandsController extends AppController {
 
             if (!empty($sectionPart)) {
                 $sections = $this->Land->Section->find('all', array(
-                    'conditions' => array('Section.name LIKE' => '%' . $sectionPart . '%'),
+                    'conditions' => array(
+                        'OR' => array(
+                            'Section.id LIKE' => '%' . $sectionPart . '%',
+                            'Section.name LIKE' => '%' . $sectionPart . '%'
+                        ),
+                    ),
                     'limit' => 10,
                 ));
                 $landPart = substr($address, $pos);
