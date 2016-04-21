@@ -242,6 +242,29 @@ CREATE TABLE `places` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `projects`
+--
+
+DROP TABLE IF EXISTS `projects`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `projects` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `title` varchar(128) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `count_created` int(11) unsigned NOT NULL,
+  `count_completed` int(11) unsigned NOT NULL,
+  `date_begin` date NOT NULL,
+  `date_end` date DEFAULT NULL,
+  `created` datetime NOT NULL,
+  `created_by` int(11) unsigned NOT NULL,
+  `modified` datetime NOT NULL,
+  `modified_by` int(11) unsigned NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `sections`
 --
 
@@ -271,6 +294,26 @@ CREATE TABLE `tasks` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Table structure for table `trackers`
+--
+
+DROP TABLE IF EXISTS `trackers`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `trackers` (
+  `id` binary(16) NOT NULL,
+  `project_id` int(11) unsigned DEFAULT NULL,
+  `place_id` binary(16) NOT NULL,
+  `group_id` int(11) unsigned NOT NULL,
+  `created` datetime NOT NULL,
+  `created_by` int(11) unsigned NOT NULL,
+  `completed` datetime DEFAULT NULL,
+  `completed_by` int(11) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -281,4 +324,4 @@ CREATE TABLE `tasks` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-04-20 17:22:18
+-- Dump completed on 2016-04-21 16:31:15
