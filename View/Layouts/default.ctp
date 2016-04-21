@@ -32,6 +32,7 @@
                     switch ($loginMember['group_id']) {
                         case 1:
                             echo $this->Html->link('任務', '/admin/tasks', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('專案', '/admin/projects', array('class' => 'btn btn-default'));
                             echo $this->Html->link('Members', '/admin/members', array('class' => 'btn btn-default'));
                             echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn btn-default'));
                             echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn btn-default'));
