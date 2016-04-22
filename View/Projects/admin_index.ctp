@@ -57,6 +57,7 @@ if (!isset($url)) {
                     <td class="actions">
                         <div class="btn-group">
                             <?php
+                            echo $this->Html->link('追蹤項目', array('controller' => 'trackers', 'action' => 'index', $item['Project']['id']), array('class' => 'btn btn-default'));
                             if ($loginMember['group_id'] == 1) {
                                 echo $this->Html->link('編輯', array('action' => 'edit', $item['Project']['id']), array('class' => 'btn btn-default'));
                                 echo $this->Html->link('刪除', array('action' => 'delete', $item['Project']['id']), array('class' => 'btn btn-default'), '確定要刪除？');

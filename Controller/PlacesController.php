@@ -8,6 +8,34 @@ class PlacesController extends AppController {
     public $paginate = array();
     public $helpers = array('Olc', 'Media.Media');
 
+    public function admin_q($address = '') {
+        $this->autoRender = false;
+        $this->response->type('json');
+        $result = array(
+            'queryString' => $address,
+            'result' => array(),
+        );
+        if (!empty($address)) {
+            $items = $this->Place->find('all', array(
+                'conditions' => array(
+                    'Place.title LIKE' => '%' . $address . '%',
+                ),
+                'limit' => 10,
+            ));
+            foreach ($items AS $k => $item) {
+                $item['Place']['label'] = $item['Place']['value'] = $item['Place']['title'];
+                $item['Place']['id'] = bin2hex($item['Place']['id']);
+                $item['Place']['foreign_id'] = bin2hex($item['Place']['foreign_id']);
+                $result['result'][] = $item['Place'];
+            }
+        }
+        if (!isset($_GET['pretty'])) {
+            $this->response->body(json_encode($result));
+        } else {
+            $this->response->body(json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
+        }
+    }
+
     function admin_index($typeModel = 'Door', $foreignModel = null, $foreignId = 0, $op = null) {
         $foreignId = intval($foreignId);
         $foreignKeys = array();
