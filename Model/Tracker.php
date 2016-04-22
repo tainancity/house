@@ -20,8 +20,8 @@ class Tracker extends AppModel {
             'foreignKey' => 'created_by',
             'className' => 'Member',
         ),
-        'Modifier' => array(
-            'foreignKey' => 'modified_by',
+        'Completer' => array(
+            'foreignKey' => 'completed_by',
             'className' => 'Member',
         ),
     );
