@@ -23,8 +23,10 @@ class ProjectsController extends AppController {
 
     function admin_add() {
         if (!empty($this->data)) {
+            $dataToSave = $this->data;
+            $dataToSave['Project']['created_by'] = $dataToSave['Project']['modified_by'] = $this->loginMember['id'];
             $this->Project->create();
-            if ($this->Project->save($this->data)) {
+            if ($this->Project->save($dataToSave)) {
                 $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'index'));
             } else {
@@ -39,7 +41,10 @@ class ProjectsController extends AppController {
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
-            if ($this->Project->save($this->data)) {
+            $dataToSave = $this->data;
+            $dataToSave['Project']['id'] = $id;
+            $dataToSave['Project']['modified_by'] = $this->loginMember['id'];
+            if ($this->Project->save($dataToSave)) {
                 $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'index'));
             } else {
