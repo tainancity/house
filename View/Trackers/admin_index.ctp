@@ -16,10 +16,29 @@ if (!empty($foreignId) && !empty($foreignModel)) {
         ?></h2>
     <div class="btn-group">
         <a id="addTracker" href="#" class="btn btn-default">新增</a>
-        <?php echo $this->Html->link('匯入', array('action' => 'import', $projectId), array('class' => 'btn btn-default')); ?>
+        <a id="mapTracker" href="#" class="btn btn-default">地圖新增</a>
     </div>
     <div class="form-group" id="trackerForm" style="display: none;">
         <input id="placeQuery" type="text" class="form-control" />
+    </div>
+    <div class="form-group" id="mapForm" style="display: none;">
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-addon">住址搜尋</span>
+                <input id="mapQuery" type="text" class="form-control" />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <span class="input-group-addon">範圍</span>
+                <input id="rectMeters" type="text" value="100" class="form-control" />
+                <span class="input-group-addon">公尺</span>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <a href="#" id="markerPush" class="btn btn-primary">新增</a>
+        </div>
+        <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
     </div>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <table class="table table-bordered" id="TrackersAdminIndexTable">
@@ -69,8 +88,10 @@ if (!empty($foreignId) && !empty($foreignModel)) {
 </div>
 <script>
     var queryUrl = '<?php echo $this->Html->url('/admin/places/q/'); ?>';
-    var addUrl = '<?php echo $this->Html->url('/admin/trackers/add/' . $projectId); ?>';
     var indexUrl = '<?php echo $this->Html->url('/admin/trackers/index/' . $projectId); ?>';
+    var addUrl = '<?php echo $this->Html->url('/admin/trackers/add/' . $projectId); ?>';
+    var importUrl = '<?php echo $this->Html->url('/admin/trackers/import/' . $projectId); ?>';
 </script>
 <?php
+$this->Html->script('http://maps.google.com/maps/api/js?libraries=places', array('inline' => false));
 echo $this->Html->script('c/trackers/index');

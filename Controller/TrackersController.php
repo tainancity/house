@@ -89,15 +89,54 @@ class TrackersController extends AppController {
         $this->set('project', $this->Tracker->Project->read(null, $projectId));
     }
 
-    function admin_import($projectId = '') {
-        if (empty($projectId)) {
-            $this->Session->setFlash('請依照網址指示操作');
-            $this->redirect('/');
+    function admin_import($projectId = 0, $meters = 0, $latitude = 0, $longitude = 0) {
+        $this->autoRender = false;
+        $this->response->type('json');
+        $projectId = intval($projectId);
+        $latitude = floatval($latitude);
+        $longitude = floatval($longitude);
+        $meters = intval($meters);
+        $result = array(
+            'queryString' => array(
+                $projectId,
+                $meters,
+                $latitude,
+                $longitude,
+            ),
+            'result' => array(),
+        );
+        if ($projectId > 0 && $meters > 0) {
+            // info from http://gis.stackexchange.com/questions/19760/how-do-i-calculate-the-bounding-box-for-given-a-distance-and-latitude-longitude
+            $distance = $meters / 2 * 0.0000089982311916;
+            $items = $this->Tracker->Place->find('all', array(
+                'fields' => array('Place.id', 'Place.group_id'),
+                'conditions' => array(
+                    'Place.latitude >' => $latitude - $distance,
+                    'Place.latitude <' => $latitude + $distance,
+                    'Place.longitude >' => $longitude - $distance,
+                    'Place.longitude <' => $longitude + $distance,
+                ),
+            ));
+            foreach ($items AS $k => $item) {
+                $dataToSave = array(
+                    'Tracker' => array(),
+                );
+                $dataToSave['Tracker']['id'] = $this->Tracker->getNewUUID();
+                $dataToSave['Tracker']['project_id'] = $projectId;
+                $dataToSave['Tracker']['created_by'] = $this->loginMember['id'];
+                $dataToSave['Tracker']['place_id'] = $items[$k]['Place']['id'];
+                $dataToSave['Tracker']['group_id'] = $items[$k]['Place']['group_id'];
+                $this->Tracker->create();
+                $this->Tracker->save($dataToSave);
+                $items[$k]['Place']['id'] = bin2hex($items[$k]['Place']['id']);
+            }
+            $result['result'] = $items;
         }
-        if ($this->loginMember['group_id'] == 1) {
-            $this->set('groups', $this->Tracker->Group->find('list'));
+        if (!isset($_GET['pretty'])) {
+            $this->response->body(json_encode($result));
+        } else {
+            $this->response->body(json_encode($result, JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT));
         }
-        $this->set('project', $this->Tracker->Project->read(null, $projectId));
     }
 
     function admin_delete($id = null) {

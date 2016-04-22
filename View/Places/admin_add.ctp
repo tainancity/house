@@ -69,9 +69,6 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
-            echo $this->Form->input('PlaceLog.dirname', array('type' => 'hidden'));
-            echo $this->Form->input('PlaceLog.basename', array('type' => 'hidden'));
-            echo $this->Form->input('PlaceLog.checksum', array('type' => 'hidden'));
             echo $this->Form->input('PlaceLog.date_visited', array(
                 'label' => '訪視日期',
                 'type' => 'text',

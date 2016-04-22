@@ -93,7 +93,7 @@
     var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>
 <?php
-$this->Html->script('http://maps.google.com/maps/api/js?sensor=false', array('inline' => false));
+$this->Html->script('http://maps.google.com/maps/api/js', array('inline' => false));
 switch ($item['Place']['model']) {
     case 'Door':
         $this->Html->script('c/places/view', array('inline' => false));
