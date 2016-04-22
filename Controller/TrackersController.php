@@ -118,16 +118,25 @@ class TrackersController extends AppController {
                 ),
             ));
             foreach ($items AS $k => $item) {
-                $dataToSave = array(
-                    'Tracker' => array(),
-                );
-                $dataToSave['Tracker']['id'] = $this->Tracker->getNewUUID();
-                $dataToSave['Tracker']['project_id'] = $projectId;
-                $dataToSave['Tracker']['created_by'] = $this->loginMember['id'];
-                $dataToSave['Tracker']['place_id'] = $items[$k]['Place']['id'];
-                $dataToSave['Tracker']['group_id'] = $items[$k]['Place']['group_id'];
-                $this->Tracker->create();
-                $this->Tracker->save($dataToSave);
+                // check if the place existed
+                $countTracker = $this->Tracker->find('count', array(
+                    'conditions' => array(
+                        'Tracker.project_id' => $projectId,
+                        'Tracker.place_id' => $items[$k]['Place']['id'],
+                    ),
+                ));
+                if ($countTracker === 0) {
+                    $dataToSave = array(
+                        'Tracker' => array(),
+                    );
+                    $dataToSave['Tracker']['id'] = $this->Tracker->getNewUUID();
+                    $dataToSave['Tracker']['project_id'] = $projectId;
+                    $dataToSave['Tracker']['created_by'] = $this->loginMember['id'];
+                    $dataToSave['Tracker']['place_id'] = $items[$k]['Place']['id'];
+                    $dataToSave['Tracker']['group_id'] = $items[$k]['Place']['group_id'];
+                    $this->Tracker->create();
+                    $this->Tracker->save($dataToSave);
+                }
                 $items[$k]['Place']['id'] = bin2hex($items[$k]['Place']['id']);
             }
             $result['result'] = $items;
