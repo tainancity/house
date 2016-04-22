@@ -21,6 +21,9 @@ class TrackersController extends AppController {
             ),
         );
         $items = $this->paginate($this->Tracker);
+        foreach ($items AS $k => $item) {
+            $items[$k]['Tracker']['id'] = bin2hex($items[$k]['Tracker']['id']);
+        }
         $this->set('groups', $this->Tracker->Group->find('list'));
         $this->set('items', $items);
         $this->set('projectId', $projectId);
@@ -159,15 +162,17 @@ class TrackersController extends AppController {
 
     function admin_delete($id = null) {
         if (!empty($id)) {
-            if ($this->Tracker->delete(hex2bin($id))) {
+            $tracker = $this->Tracker->read(array('id', 'project_id'), hex2bin($id));
+            if ($this->Tracker->delete($tracker['Tracker']['id'])) {
                 $this->Session->setFlash('資料已經刪除');
             } else {
                 $this->Session->setFlash('請依照網址指示操作');
             }
+            $this->redirect(array('action' => 'index', $tracker['Tracker']['project_id']));
         } else {
             $this->Session->setFlash('請依照網址指示操作');
         }
-        $this->redirect(array('action' => 'index'));
+        $this->redirect('/');
     }
 
 }
