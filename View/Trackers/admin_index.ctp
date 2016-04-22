@@ -46,7 +46,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                         echo $groups[$item['Tracker']['group_id']];
                         ?></td>
                     <td><?php
-                        echo isset($item['Place']['title']) ? $item['Place']['title'] : '--';
+                        echo isset($item['Place']['title']) ? $this->Html->link($item['Place']['title'], '/admin/places/view/' . bin2hex($item['Place']['id']), array('target' => '_blank')) : '--';
                         ?></td>
                     <td><?php
                         echo $item['Tracker']['created'];
@@ -57,7 +57,6 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                     <td>
                         <div class="btn-group">
                             <?php echo $this->Html->link('檢視', array('action' => 'view', $item['Tracker']['id']), array('class' => 'btn btn-default')); ?>
-                            <?php echo $this->Html->link('編輯', array('action' => 'edit', $item['Tracker']['id']), array('class' => 'btn btn-default')); ?>
                             <?php echo $this->Html->link('刪除', array('action' => 'delete', $item['Tracker']['id']), array('class' => 'btn btn-default'), '確定要刪除？'); ?>
                         </div>
                     </td>
