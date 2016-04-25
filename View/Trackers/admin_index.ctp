@@ -3,15 +3,12 @@ if (!isset($url)) {
     $url = array();
 }
 
-if (!empty($foreignId) && !empty($foreignModel)) {
-    $url = array($typeModel, $foreignModel, $foreignId);
-}
 ?>
 <div id="TrackersAdminIndex">
     <h2><?php
         echo implode(' > ', array(
             $this->Html->link('專案', array('controller' => 'projects')),
-            '追蹤項目',
+            $project['Project']['title'] . '追蹤項目',
         ));
         ?></h2>
     <div class="btn-group">
@@ -88,9 +85,9 @@ if (!empty($foreignId) && !empty($foreignModel)) {
 </div>
 <script>
     var queryUrl = '<?php echo $this->Html->url('/admin/places/q/'); ?>';
-    var indexUrl = '<?php echo $this->Html->url('/admin/trackers/index/' . $projectId); ?>';
-    var addUrl = '<?php echo $this->Html->url('/admin/trackers/add/' . $projectId); ?>';
-    var importUrl = '<?php echo $this->Html->url('/admin/trackers/import/' . $projectId); ?>';
+    var indexUrl = '<?php echo $this->Html->url('/admin/trackers/index/' . $project['Project']['id']); ?>';
+    var addUrl = '<?php echo $this->Html->url('/admin/trackers/add/' . $project['Project']['id']); ?>';
+    var importUrl = '<?php echo $this->Html->url('/admin/trackers/import/' . $project['Project']['id']); ?>';
 </script>
 <?php
 $this->Html->script('http://maps.google.com/maps/api/js?libraries=places', array('inline' => false));

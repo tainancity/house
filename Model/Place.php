@@ -43,6 +43,11 @@ class Place extends AppModel {
             'dependent' => false,
             'className' => 'PlaceLog',
         ),
+        'Tracker' => array(
+            'foreignKey' => 'place_id',
+            'dependent' => false,
+            'className' => 'Tracker',
+        ),
     );
 
     public function beforeFind($query) {

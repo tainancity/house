@@ -247,6 +247,17 @@ class PlacesController extends AppController {
                 $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save($dataToSave);
+
+                /*
+                 * close related tracker
+                 */
+                $this->Place->Tracker->updateAll(array(
+                    'completed' => 'now()',
+                    'completed_by' => $this->loginMember['id'],
+                        ), array(
+                    'Tracker.completed IS NULL',
+                    'Tracker.place_id' => $dataToSave['PlaceLog']['place_id'],
+                ));
                 $this->Session->setFlash('資料已經儲存');
                 $this->redirect(array('action' => 'view', $id));
             } else {

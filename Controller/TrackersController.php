@@ -10,7 +10,8 @@ class TrackersController extends AppController {
 
     function admin_index($projectId = 0) {
         $projectId = intval($projectId);
-        if ($projectId <= 0) {
+        $project = $this->Tracker->Project->read(null, $projectId);
+        if (empty($project)) {
             $this->Session->setFlash('請依照網址指示操作');
             $this->redirect(array('action' => 'index'));
         }
@@ -26,7 +27,7 @@ class TrackersController extends AppController {
         }
         $this->set('groups', $this->Tracker->Group->find('list'));
         $this->set('items', $items);
-        $this->set('projectId', $projectId);
+        $this->set('project', $project);
         $this->set('url', array($projectId));
     }
 
