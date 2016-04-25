@@ -90,5 +90,5 @@ if (!isset($url)) {
     var importUrl = '<?php echo $this->Html->url('/admin/trackers/import/' . $project['Project']['id']); ?>';
 </script>
 <?php
-$this->Html->script('http://maps.google.com/maps/api/js?libraries=places', array('inline' => false));
+$this->Html->script('https://maps.google.com/maps/api/js?language=zh-tw&libraries=places', array('inline' => false));
 echo $this->Html->script('c/trackers/index');

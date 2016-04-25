@@ -103,7 +103,7 @@
     var jsonBaseUrl = '<?php echo $this->Html->url(Configure::read('jsonBaseUrl')); ?>';
 </script>
 <?php
-$this->Html->script('http://maps.google.com/maps/api/js?language=zh-tw', array('inline' => false));
+$this->Html->script('https://maps.google.com/maps/api/js?language=zh-tw', array('inline' => false));
 switch ($typeModel) {
     case 'Door':
         $this->Html->script('c/places/add', array('inline' => false));
