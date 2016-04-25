@@ -42,6 +42,7 @@
                             break;
                         default:
                             echo $this->Html->link('任務', '/admin/tasks', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('追蹤項目', '/admin/trackers/user', array('class' => 'btn btn-default'));
                             echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn btn-default'));
                     }
                     if (!empty($actions_for_layout)) {

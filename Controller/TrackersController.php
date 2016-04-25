@@ -164,4 +164,26 @@ class TrackersController extends AppController {
         $this->redirect('/');
     }
 
+    public function admin_user($trackerType = 'todo') {
+        $this->paginate['Tracker']['limit'] = 20;
+        $this->paginate['Tracker']['contain'] = array(
+            'Place' => array(
+                'fields' => array('id', 'title'),
+            ),
+        );
+        $scope = array('Tracker.group_id' => $this->loginMember['group_id']);
+        if ($trackerType === 'completed') {
+            $scope[] = 'Tracker.completed IS NOT NULL';
+        } else {
+            $scope[] = 'Tracker.completed IS NULL';
+        }
+        $items = $this->paginate($this->Tracker, $scope);
+        foreach ($items AS $k => $item) {
+            $items[$k]['Tracker']['id'] = bin2hex($items[$k]['Tracker']['id']);
+        }
+        $this->set('groups', $this->Tracker->Group->find('list'));
+        $this->set('items', $items);
+        $this->set('url', array($trackerType));
+    }
+
 }
