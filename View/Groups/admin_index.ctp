@@ -52,14 +52,4 @@
     </table>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <div id="GroupsAdminIndexPanel"></div>
-    <?php
-    echo $this->Html->scriptBlock('
-$(function() {
-    $(\'#GroupsAdminIndexTable th a, #GroupsAdminIndex div.paging a\').click(function() {
-        $(\'#GroupsAdminIndex\').parent().load(this.href);
-        return false;
-    });
-});
-');
-    ?>
 </div>

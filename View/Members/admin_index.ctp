@@ -60,10 +60,6 @@
     ?>
     <script>
         $(function () {
-            $('#MembersAdminIndexTable th a, #MembersAdminIndex div.paging a').click(function () {
-                $('#MembersAdminIndex').parent().load(this.href);
-                return false;
-            });
             $('#memberFilter').autocomplete({
                 delay: 1000,
                 minLength: 0,
