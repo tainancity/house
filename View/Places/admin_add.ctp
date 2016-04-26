@@ -66,6 +66,7 @@
             echo $this->Form->input('PlaceLog.file', array(
                 'label' => '照片',
                 'type' => 'file',
+                'accept' => 'image/*',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
