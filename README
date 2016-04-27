@@ -1,0 +1,9 @@
+to install uuid extension in ubuntu
+
+# apt-get install php-pear php5-dev uuid-dev
+# pecl install uuid
+# nano /etc/php5/mods-available/uuid.ini
+
+"extension=uuid.so"
+
+# php5enmod uuid
