@@ -29,6 +29,7 @@ class GroupsController extends AppController {
         } else {
             $this->set('groups', $groups);
         }
+        $this->set('url', array($parentId));
     }
 
     function admin_tasks($foreignModel = null, $foreignId = 0, $op = null) {
