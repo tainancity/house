@@ -46,6 +46,11 @@
             echo $this->Olc->status[$item['Place']['status']];
             ?>&nbsp;
         </div>
+        <div class="col-md-3">待改善情形</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $this->Olc->issue[$item['Place']['issue']];
+            ?>&nbsp;
+        </div>
         <div class="col-md-3">建立人/建立時間</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Creator']['username'] . ' / ' . $item['Place']['created'];
