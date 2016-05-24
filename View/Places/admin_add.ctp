@@ -24,6 +24,11 @@
             'div' => 'form-group',
             'class' => 'form-control',
         ));
+        echo $this->Form->input('Place.description', array(
+            'label' => '位址描述',
+            'div' => 'form-group',
+            'class' => 'form-control',
+        ));
         ?><div class="col-md-6">
             <div class="btn-group">
                 <a href="#" id="geoInput" class="btn btn-default">衛星定位</a>
@@ -60,6 +65,13 @@
                 'label' => '狀態',
                 'type' => 'select',
                 'options' => $this->Olc->status,
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.issue', array(
+                'label' => '待改善情形',
+                'type' => 'select',
+                'options' => $this->Olc->issue,
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));

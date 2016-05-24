@@ -20,7 +20,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 case 'Group':
                     echo implode(' > ', array(
                         $this->Html->link('群組', array('controller' => 'groups')),
-                        $foreignInfo['title'] . '相關房屋',
+                        $foreignInfo['title'] . '空屋',
                     ));
                     break;
             }
@@ -72,6 +72,9 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                         ?></td>
                     <td><?php
                         echo $this->Olc->status[$item['Place']['status']];
+                        ?></td>
+                    <td><?php
+                        echo $this->Olc->issue[$item['Place']['issue']];
                         ?></td>
                     <td><?php
                         echo $item['Place']['modified'];

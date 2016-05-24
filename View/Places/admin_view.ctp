@@ -31,6 +31,11 @@
             echo $item['Place']['title'];
             ?>&nbsp;
         </div>
+        <div class="col-md-3">位址描述</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['description'];
+            ?>&nbsp;
+        </div>
         <div class="col-md-3">緯度,經度</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['latitude'] . ',' . $item['Place']['longitude'];

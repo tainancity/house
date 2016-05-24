@@ -16,6 +16,11 @@
             'div' => 'form-group',
             'class' => 'form-control',
         ));
+        echo $this->Form->input('Place.description', array(
+            'label' => '位址描述',
+            'div' => 'form-group',
+            'class' => 'form-control',
+        ));
         ?><div class="col-md-6">
             <input type="text" class="col-md-12" id="mapHelper" />
             <div class="clearfix"></div>
@@ -48,6 +53,13 @@
                 'label' => '狀態',
                 'type' => 'select',
                 'options' => $this->Olc->status,
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.issue', array(
+                'label' => '待改善情形',
+                'type' => 'select',
+                'options' => $this->Olc->issue,
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
