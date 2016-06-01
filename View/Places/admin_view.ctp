@@ -32,15 +32,17 @@
             echo $item['Place']['description'];
             ?>&nbsp;
         </div>
-        <div class="col-md-3">地號</div>
-        <div class="col-md-9"><ul>&nbsp;<?php
-                if (!empty($item['PlaceLink'])) {
-                    foreach ($item['PlaceLink'] AS $land) {
-                        echo "<li>{$land['Section']['name']}{$land['Land']['code']}</li>";
+        <?php if ($item['Place']['model'] === 'Land') { ?>
+            <div class="col-md-3">地號</div>
+            <div class="col-md-9"><ul>&nbsp;<?php
+                    if (!empty($item['PlaceLink'])) {
+                        foreach ($item['PlaceLink'] AS $land) {
+                            echo "<li>{$land['Section']['name']}{$land['Land']['code']}</li>";
+                        }
                     }
-                }
-                ?></ul>&nbsp;
-        </div>
+                    ?></ul>&nbsp;
+            </div>
+        <?php } ?>
         <div class="col-md-3">緯度,經度</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['latitude'] . ',' . $item['Place']['longitude'];
