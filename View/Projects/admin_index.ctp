@@ -4,7 +4,7 @@ if (!isset($url)) {
 }
 ?>
 <div id="ProjectsAdminIndex">
-    <h2>專案</h2>
+    <h2>空地空屋列管資料</h2>
     <div class="btn-group">
         <?php
         if ($loginMember['group_id'] == 1) {

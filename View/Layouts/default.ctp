@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="zh-TW">
     <head>
         <?php echo $this->Html->charset(); ?>
-        <title>空屋空地管理系統::<?php echo $title_for_layout; ?></title>
+        <title>空地空屋管理系統::<?php echo $title_for_layout; ?></title>
         <?php
         echo $this->Html->meta('icon');
         echo $this->Html->css('jquery-ui');
@@ -20,9 +20,9 @@
             <div id="header">
                 <h1><?php
                     if ($loginMember['group_id'] == 0) {
-                        echo $this->Html->link('空屋空地管理系統', '/');
+                        echo $this->Html->link('空地空屋管理系統', '/');
                     } else {
-                        echo $this->Html->link('空屋空地管理系統', '/admin/tasks');
+                        echo $this->Html->link('空地空屋管理系統', '/admin/tasks');
                     }
                     ?></h1>
             </div>
@@ -31,7 +31,7 @@
                     <?php
                     switch ($loginMember['group_id']) {
                         case 1:
-                            echo $this->Html->link('任務', '/admin/tasks', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('空地空屋列管資料', '/admin/tasks', array('class' => 'btn btn-default'));
                             echo $this->Html->link('專案', '/admin/projects', array('class' => 'btn btn-default'));
                             echo $this->Html->link('Members', '/admin/members', array('class' => 'btn btn-default'));
                             echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn btn-default'));
@@ -41,7 +41,7 @@
                             echo $this->Html->link('登入', '/members/login', array('class' => 'btn btn-default'));
                             break;
                         default:
-                            echo $this->Html->link('任務', '/admin/tasks', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('空地空屋列管資料', '/admin/tasks', array('class' => 'btn btn-default'));
                             echo $this->Html->link('追蹤項目', '/admin/trackers/user', array('class' => 'btn btn-default'));
                             echo $this->Html->link('登出', '/members/logout', array('class' => 'btn btn-default'));
                     }

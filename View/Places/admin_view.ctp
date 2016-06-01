@@ -41,6 +41,11 @@
             echo $item['Place']['latitude'] . ',' . $item['Place']['longitude'];
             ?>&nbsp;
         </div>
+        <div class="col-md-3">是否為認養地？</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['is_adopt'];
+            ?>&nbsp;
+        </div>
         <div class="col-md-3">狀態</div>
         <div class="col-md-9">&nbsp;<?php
             echo $this->Olc->status[$item['Place']['status']];
@@ -49,6 +54,11 @@
         <div class="col-md-3">待改善情形</div>
         <div class="col-md-9">&nbsp;<?php
             echo $this->Olc->issue[$item['Place']['issue']];
+            ?>&nbsp;
+        </div>
+        <div class="col-md-3">稽查單位</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['inspect'];
             ?>&nbsp;
         </div>
         <div class="col-md-3">建立人/建立時間</div>

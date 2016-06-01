@@ -49,6 +49,12 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+            echo $this->Form->input('Place.is_adopt', array(
+                'type' => 'checkbox',
+                'label' => '是否為認養地？',
+                'div' => 'form-group',
+                'class' => false,
+            ));
             echo $this->Form->input('Place.status', array(
                 'label' => '狀態',
                 'type' => 'select',
@@ -60,6 +66,12 @@
                 'label' => '待改善情形',
                 'type' => 'select',
                 'options' => $this->Olc->issue,
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.inspect', array(
+                'type' => 'text',
+                'label' => '稽查單位',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));

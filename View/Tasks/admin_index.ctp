@@ -4,7 +4,7 @@ if (!isset($url)) {
 }
 ?>
 <div id="TasksAdminIndex">
-    <h2>專案任務</h2>
+    <h2>空地空屋列管資料</h2>
     <div class="btn-group">
         <?php
         if ($loginMember['group_id'] == 1) {
@@ -54,8 +54,8 @@ if (!isset($url)) {
                     <td><?php echo $item['Task']['created']; ?></td>
                     <td class="actions">
                         <div class="btn-group">
-                            <?php echo $this->Html->link('空屋', array('controller' => 'places', 'action' => 'index', 'Door', 'Task', $item['Task']['id']), array('class' => 'btn btn-default')); ?>
                             <?php echo $this->Html->link('空地', array('controller' => 'places', 'action' => 'index', 'Land', 'Task', $item['Task']['id']), array('class' => 'btn btn-default')); ?>
+                            <?php echo $this->Html->link('空屋', array('controller' => 'places', 'action' => 'index', 'Door', 'Task', $item['Task']['id']), array('class' => 'btn btn-default')); ?>
                             <?php
                             if ($loginMember['group_id'] == 1) {
                                 echo $this->Html->link('設定群組', array('controller' => 'groups', 'action' => 'tasks', 'Task', $item['Task']['id'], 'set'), array('class' => 'dialogControl btn btn-default'));
