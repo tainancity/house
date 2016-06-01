@@ -28,7 +28,6 @@ class DoorsController extends AppController {
                 'limit' => 10,
             ));
             foreach ($doors AS $k => $item) {
-                $item['Door']['id'] = bin2hex($item['Door']['id']);
                 $item['Door']['lin'] = intval($item['Door']['lin']);
                 $item['Door']['label'] = $item['Door']['value'] = "{$item['Door']['area']}{$item['Door']['cunli']}{$item['Door']['lin']}鄰{$item['Door']['road']}{$item['Door']['place']}{$item['Door']['lane']}{$item['Door']['alley']}{$item['Door']['number']}";
                 $result['result'][] = $item['Door'];

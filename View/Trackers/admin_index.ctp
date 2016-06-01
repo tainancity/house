@@ -62,7 +62,7 @@ if (!isset($url)) {
                         echo $groups[$item['Tracker']['group_id']];
                         ?></td>
                     <td><?php
-                        echo isset($item['Place']['title']) ? $this->Html->link($item['Place']['title'], '/admin/places/view/' . bin2hex($item['Place']['id']), array('target' => '_blank')) : '--';
+                        echo isset($item['Place']['title']) ? $this->Html->link($item['Place']['title'], '/admin/places/view/' . $item['Place']['id'], array('target' => '_blank')) : '--';
                         ?></td>
                     <td><?php
                         echo $item['Tracker']['created'];

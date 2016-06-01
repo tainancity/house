@@ -24,8 +24,6 @@ class PlacesController extends AppController {
             ));
             foreach ($items AS $k => $item) {
                 $item['Place']['label'] = $item['Place']['value'] = $item['Place']['title'];
-                $item['Place']['id'] = bin2hex($item['Place']['id']);
-                $item['Place']['foreign_id'] = bin2hex($item['Place']['foreign_id']);
                 $result['result'][] = $item['Place'];
             }
         }
@@ -79,9 +77,6 @@ class PlacesController extends AppController {
             ),
         );
         $items = $this->paginate($this->Place, $scope);
-        foreach ($items AS $k => $item) {
-            $items[$k]['Place']['id'] = bin2hex($item['Place']['id']);
-        }
         $this->set('items', $items);
         $this->set('foreignId', $foreignId);
         $this->set('foreignModel', $foreignModel);
@@ -94,7 +89,6 @@ class PlacesController extends AppController {
 
     function admin_view($id = null) {
         if (!empty($id)) {
-            $id = hex2bin($id);
             $item = $this->Place->find('first', array(
                 'conditions' => array('Place.id' => $id),
                 'contain' => array(
@@ -118,7 +112,6 @@ class PlacesController extends AppController {
                     ),
                 ),
             ));
-            $item['Place']['id'] = bin2hex($item['Place']['id']);
             if ($item['Place']['model'] === 'Land') {
                 $land = $this->Place->Land->read(null, $item['Place']['foreign_id']);
                 if (isset($land['Land'])) {
@@ -156,11 +149,7 @@ class PlacesController extends AppController {
                 $dataToSave['Place'][$foreignKeys[$foreignModel]] = $foreignId;
             }
 
-            $dataToSave['Place']['id'] = $this->Place->getNewUUID();
             $dataToSave['Place']['model'] = $typeModel;
-            if (!empty($dataToSave['Place']['foreign_id'])) {
-                $dataToSave['Place']['foreign_id'] = hex2bin($dataToSave['Place']['foreign_id']);
-            }
             if ($this->loginMember['group_id'] != 1) {
                 $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
             }
@@ -168,18 +157,17 @@ class PlacesController extends AppController {
             $dataToSave['Place']['created_by'] = $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
             $this->Place->create();
             if ($this->Place->save($dataToSave)) {
-                $dataToSave['PlaceLog']['id'] = $this->Place->getNewUUID();
+                $dataToSave['PlaceLog']['place_id'] = $this->Place->getInsertID();
                 $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
-                $dataToSave['PlaceLog']['place_id'] = $dataToSave['Place']['id'];
                 $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save($dataToSave);
                 $this->Session->setFlash('資料已經儲存');
                 if (!$this->request->isAjax()) {
-                    $this->redirect(array('action' => 'view', bin2hex($dataToSave['Place']['id'])));
+                    $this->redirect(array('action' => 'view', $dataToSave['PlaceLog']['place_id']));
                 } else {
                     echo json_encode(array(
-                        'id' => bin2hex($dataToSave['Place']['id']),
+                        'id' => $dataToSave['Place']['id'],
                         'title' => $dataToSave['Place']['title'],
                     ));
                     exit();
@@ -211,7 +199,7 @@ class PlacesController extends AppController {
 
     function admin_edit($id = null) {
         if (!empty($id)) {
-            $item = $this->Place->read(null, hex2bin($id));
+            $item = $this->Place->read(null, $id);
         }
         if (!empty($item)) {
             if ($item['Place']['model'] === 'Land') {
@@ -220,19 +208,16 @@ class PlacesController extends AppController {
                     $item['Land'] = $land['Land'];
                 }
             }
-            $item['Place']['foreign_id'] = bin2hex($item['Place']['foreign_id']);
         } else {
             $this->Session->setFlash('請依照網址指示操作');
             $this->redirect($this->referer());
         }
         if (!empty($this->data)) {
             $dataToSave = $this->data;
+            $dataToSave['Place']['id'] = $id;
             if (!empty($dataToSave['PlaceLog']['file']['name'])) {
                 $p = pathinfo($dataToSave['PlaceLog']['file']['name']);
                 $dataToSave['PlaceLog']['file']['name'] = uuid_create() . '.' . strtolower($p['extension']);
-            }
-            if (!empty($dataToSave['Place']['foreign_id'])) {
-                $dataToSave['Place']['foreign_id'] = hex2bin($dataToSave['Place']['foreign_id']);
             }
             if ($this->loginMember['group_id'] != 1) {
                 $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
@@ -241,9 +226,8 @@ class PlacesController extends AppController {
             $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
             $dataToSave['Place']['modified'] = date('Y-m-d H:i:s');
             if ($this->Place->save($dataToSave)) {
-                $dataToSave['PlaceLog']['id'] = $this->Place->getNewUUID();
+                $dataToSave['PlaceLog']['place_id'] = $dataToSave['Place']['id'];
                 $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
-                $dataToSave['PlaceLog']['place_id'] = hex2bin($id);
                 $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save($dataToSave);
@@ -274,7 +258,7 @@ class PlacesController extends AppController {
 
     function admin_delete($id = null) {
         if (!empty($id)) {
-            if ($this->Place->delete(hex2bin($id))) {
+            if ($this->Place->delete($id)) {
                 $this->Session->setFlash('資料已經刪除');
             } else {
                 $this->Session->setFlash('請依照網址指示操作');

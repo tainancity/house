@@ -22,9 +22,6 @@ class TrackersController extends AppController {
             ),
         );
         $items = $this->paginate($this->Tracker);
-        foreach ($items AS $k => $item) {
-            $items[$k]['Tracker']['id'] = bin2hex($items[$k]['Tracker']['id']);
-        }
         $this->set('groups', $this->Tracker->Group->find('list'));
         $this->set('items', $items);
         $this->set('project', $project);
@@ -33,7 +30,6 @@ class TrackersController extends AppController {
 
     function admin_view($id = null) {
         if (!empty($id)) {
-            $id = hex2bin($id);
             $item = $this->Tracker->find('first', array(
                 'conditions' => array('Tracker.id' => $id),
                 'contain' => array(
@@ -54,8 +50,6 @@ class TrackersController extends AppController {
                     ),
                 ),
             ));
-            $item['Tracker']['id'] = bin2hex($item['Tracker']['id']);
-            $item['Tracker']['place_id'] = bin2hex($item['Tracker']['place_id']);
         }
         if (!empty($item)) {
             $this->set('item', $item);
@@ -69,17 +63,15 @@ class TrackersController extends AppController {
         $projectId = intval($projectId);
         if (!empty($this->data)) {
             $dataToSave = $this->data;
-            $dataToSave['Tracker']['id'] = $this->Tracker->getNewUUID();
             $dataToSave['Tracker']['project_id'] = $projectId;
             $dataToSave['Tracker']['created_by'] = $this->loginMember['id'];
-            $dataToSave['Tracker']['place_id'] = hex2bin($dataToSave['Tracker']['place_id']);
             $this->Tracker->create();
             if ($this->Tracker->save($dataToSave)) {
                 if (!$this->request->isAjax()) {
-                    $this->redirect(array('action' => 'view', bin2hex($dataToSave['Tracker']['id'])));
+                    $this->redirect(array('action' => 'view', $dataToSave['Tracker']['id']));
                 } else {
                     echo json_encode(array(
-                        'id' => bin2hex($dataToSave['Tracker']['id']),
+                        'id' => $dataToSave['Tracker']['id'],
                     ));
                     exit();
                 }
@@ -130,7 +122,6 @@ class TrackersController extends AppController {
                     $dataToSave = array(
                         'Tracker' => array(),
                     );
-                    $dataToSave['Tracker']['id'] = $this->Tracker->getNewUUID();
                     $dataToSave['Tracker']['project_id'] = $projectId;
                     $dataToSave['Tracker']['created_by'] = $this->loginMember['id'];
                     $dataToSave['Tracker']['place_id'] = $items[$k]['Place']['id'];
@@ -138,7 +129,6 @@ class TrackersController extends AppController {
                     $this->Tracker->create();
                     $this->Tracker->save($dataToSave);
                 }
-                $items[$k]['Place']['id'] = bin2hex($items[$k]['Place']['id']);
             }
             $result['result'] = $items;
         }
@@ -151,7 +141,7 @@ class TrackersController extends AppController {
 
     function admin_delete($id = null) {
         if (!empty($id)) {
-            $tracker = $this->Tracker->read(array('id', 'project_id'), hex2bin($id));
+            $tracker = $this->Tracker->read(array('id', 'project_id'), $id);
             if ($this->Tracker->delete($tracker['Tracker']['id'])) {
                 $this->Session->setFlash('資料已經刪除');
             } else {
@@ -178,9 +168,6 @@ class TrackersController extends AppController {
             $scope[] = 'Tracker.completed IS NULL';
         }
         $items = $this->paginate($this->Tracker, $scope);
-        foreach ($items AS $k => $item) {
-            $items[$k]['Tracker']['id'] = bin2hex($items[$k]['Tracker']['id']);
-        }
         $this->set('groups', $this->Tracker->Group->find('list'));
         $this->set('items', $items);
         $this->set('url', array($trackerType));

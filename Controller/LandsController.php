@@ -73,7 +73,6 @@ class LandsController extends AppController {
                         'limit' => 10
                     ));
                     foreach ($lands AS $k => $item) {
-                        $item['Land']['id'] = bin2hex($item['Land']['id']);
                         $item['Land']['label'] = $item['Land']['value'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
                         $result['result'][] = $item['Land'];
                     }

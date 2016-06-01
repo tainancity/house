@@ -6,10 +6,6 @@
             $item['Place']['title']
         ));
         $place = $item;
-        $place['Place']['foreign_id'] = bin2hex($item['Place']['foreign_id']);
-        if (isset($item['Land']['id'])) {
-            $place['Land']['id'] = bin2hex($item['Land']['id']);
-        }
         unset($place['PlaceLog']);
         ?></h2>
     <hr />
@@ -43,7 +39,7 @@
         </div>
         <div class="col-md-3">是否為認養地？</div>
         <div class="col-md-9">&nbsp;<?php
-            echo $item['Place']['is_adopt'];
+            echo ($item['Place']['is_adopt'] == 1) ? '是' : '否';
             ?>&nbsp;
         </div>
         <div class="col-md-3">狀態</div>

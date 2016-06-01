@@ -101,11 +101,6 @@
     <?php
     echo $this->Form->end('送出');
     $place = $this->data;
-    $place['Place']['id'] = bin2hex($this->data['Place']['id']);
-    $place['Place']['foreign_id'] = bin2hex($this->data['Place']['foreign_id']);
-    if (isset($this->data['Land']['id'])) {
-        $place['Land']['id'] = bin2hex($this->data['Land']['id']);
-    }
     ?>
 </div>
 <script>

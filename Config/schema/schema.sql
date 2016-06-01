@@ -31,7 +31,7 @@ CREATE TABLE `acos` (
   `lft` int(11) DEFAULT NULL,
   `rght` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -50,7 +50,7 @@ CREATE TABLE `aros` (
   `lft` int(11) DEFAULT NULL,
   `rght` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +69,7 @@ CREATE TABLE `aros_acos` (
   `_update` int(2) DEFAULT NULL,
   `_delete` int(2) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -80,7 +80,7 @@ DROP TABLE IF EXISTS `doors`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `doors` (
-  `id` binary(16) NOT NULL,
+  `id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `area_code` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
   `area` varchar(16) COLLATE utf8mb4_unicode_ci NOT NULL,
   `cunli` varchar(32) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -136,7 +136,7 @@ CREATE TABLE `groups` (
   `parent_id` int(11) DEFAULT NULL,
   `name` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -153,7 +153,7 @@ CREATE TABLE `groups_tasks` (
   `title` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   `count_houses` int(11) unsigned NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -164,10 +164,10 @@ DROP TABLE IF EXISTS `lands`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `lands` (
-  `id` binary(16) NOT NULL,
-  `section_id` char(6) NOT NULL,
-  `code` char(8) NOT NULL,
-  `file` varchar(16) NOT NULL,
+  `id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `section_id` char(6) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `code` char(8) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `file` varchar(16) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `section_id` (`section_id`),
   KEY `code` (`code`)
@@ -190,7 +190,7 @@ CREATE TABLE `members` (
   `created` datetime DEFAULT NULL,
   `modified` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -201,8 +201,8 @@ DROP TABLE IF EXISTS `place_logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `place_logs` (
-  `id` binary(16) NOT NULL,
-  `place_id` binary(16) NOT NULL,
+  `id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
+  `place_id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `status` int(11) NOT NULL,
   `date_visited` date DEFAULT NULL,
   `created` datetime NOT NULL,
@@ -224,9 +224,9 @@ DROP TABLE IF EXISTS `places`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `places` (
-  `id` binary(16) NOT NULL,
+  `id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `model` varchar(32) CHARACTER SET latin1 NOT NULL,
-  `foreign_id` binary(16) DEFAULT NULL,
+  `foreign_id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
   `group_id` int(11) NOT NULL,
   `task_id` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -276,7 +276,7 @@ DROP TABLE IF EXISTS `sections`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `sections` (
-  `id` char(6) CHARACTER SET latin1 NOT NULL,
+  `id` char(6) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `name` varchar(64) COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `name` (`name`)
@@ -296,7 +296,7 @@ CREATE TABLE `tasks` (
   `description` text COLLATE utf8mb4_unicode_ci,
   `created` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -307,9 +307,9 @@ DROP TABLE IF EXISTS `trackers`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `trackers` (
-  `id` binary(16) NOT NULL,
+  `id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `project_id` int(11) unsigned DEFAULT NULL,
-  `place_id` binary(16) NOT NULL,
+  `place_id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `group_id` int(11) unsigned NOT NULL,
   `created` datetime NOT NULL,
   `created_by` int(11) unsigned NOT NULL,
@@ -328,4 +328,4 @@ CREATE TABLE `trackers` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-01 10:23:39
+-- Dump completed on 2016-06-01 10:52:59
