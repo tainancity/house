@@ -194,6 +194,22 @@ CREATE TABLE `members` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
+-- Table structure for table `place_links`
+--
+
+DROP TABLE IF EXISTS `place_links`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `place_links` (
+  `id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `place_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `model` varchar(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `foreign_id` char(36) COLLATE utf8mb4_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
 -- Table structure for table `place_logs`
 --
 
@@ -226,7 +242,6 @@ DROP TABLE IF EXISTS `places`;
 CREATE TABLE `places` (
   `id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci NOT NULL,
   `model` varchar(32) CHARACTER SET latin1 NOT NULL,
-  `foreign_id` char(36) CHARACTER SET latin1 COLLATE latin1_general_ci DEFAULT NULL,
   `group_id` int(11) NOT NULL,
   `task_id` int(11) NOT NULL,
   `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -328,4 +343,4 @@ CREATE TABLE `trackers` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-01 10:52:59
+-- Dump completed on 2016-06-01 11:36:06

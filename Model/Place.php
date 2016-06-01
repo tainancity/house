@@ -6,20 +6,6 @@ class Place extends AppModel {
 
     var $name = 'Place';
     var $belongsTo = array(
-        'Door' => array(
-            'foreignKey' => 'foreign_id',
-            'className' => 'Door',
-            'conditions' => array(
-                'Place.model' => 'Door',
-            ),
-        ),
-        'Land' => array(
-            'foreignKey' => 'foreign_id',
-            'className' => 'Land',
-            'conditions' => array(
-                'Place.model' => 'Land',
-            ),
-        ),
         'Group' => array(
             'foreignKey' => 'group_id',
             'className' => 'Group',
@@ -37,11 +23,36 @@ class Place extends AppModel {
             'className' => 'Member',
         ),
     );
+    var $hasAndBelongsToMany = array(
+        'Door' => array(
+            'joinTable' => 'place_links',
+            'foreignKey' => 'place_id',
+            'associationForeignKey' => 'foreign_id',
+            'className' => 'Door',
+            'conditions' => array(
+                'PlaceLink.model' => 'Door',
+            ),
+        ),
+        'Land' => array(
+            'joinTable' => 'place_links',
+            'foreignKey' => 'place_id',
+            'associationForeignKey' => 'foreign_id',
+            'className' => 'Land',
+            'conditions' => array(
+                'PlaceLink.model' => 'Land',
+            ),
+        ),
+    );
     var $hasMany = array(
         'PlaceLog' => array(
             'foreignKey' => 'place_id',
             'dependent' => false,
             'className' => 'PlaceLog',
+        ),
+        'PlaceLink' => array(
+            'foreignKey' => 'place_id',
+            'dependent' => false,
+            'className' => 'PlaceLink',
         ),
         'Tracker' => array(
             'foreignKey' => 'place_id',
