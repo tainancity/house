@@ -221,13 +221,18 @@ class PlacesController extends AppController {
 
     function admin_edit($id = null) {
         if (!empty($id)) {
-            $item = $this->Place->read(null, $id);
+            $item = $this->Place->find('first', array(
+                'conditions' => array('Place.id' => $id),
+                'contain' => array('PlaceLink'),
+            ));
         }
         if (!empty($item)) {
             if ($item['Place']['model'] === 'Land') {
-                $land = $this->Place->Land->read(null, $item['Place']['foreign_id']);
-                if (isset($land['Land'])) {
-                    $item['Land'] = $land['Land'];
+                foreach ($item['PlaceLink'] AS $k => $v) {
+                    $item['PlaceLink'][$k] = $this->Place->Land->find('first', array(
+                        'conditions' => array('Land.id' => $v['foreign_id']),
+                        'contain' => array('Section'),
+                    ));
                 }
             }
         } else {
@@ -248,11 +253,30 @@ class PlacesController extends AppController {
             $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
             $dataToSave['Place']['modified'] = date('Y-m-d H:i:s');
             if ($this->Place->save($dataToSave)) {
+                $this->Place->PlaceLink->deleteAll(array('place_id' => $dataToSave['Place']['id']));
                 $dataToSave['PlaceLog']['place_id'] = $dataToSave['Place']['id'];
                 $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
                 $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save($dataToSave);
+
+                if (!empty($dataToSave['PlaceLink'])) {
+                    foreach ($dataToSave['PlaceLink'] AS $itemId) {
+                        $this->Place->PlaceLink->create();
+                        $this->Place->PlaceLink->save(array('PlaceLink' => array(
+                                'place_id' => $dataToSave['PlaceLog']['place_id'],
+                                'model' => $item['Place']['model'],
+                                'foreign_id' => $itemId,
+                        )));
+                    }
+                } elseif (!empty($dataToSave['Place']['foreign_id'])) {
+                    $this->Place->PlaceLink->create();
+                    $this->Place->PlaceLink->save(array('PlaceLink' => array(
+                            'place_id' => $dataToSave['PlaceLog']['place_id'],
+                            'model' => $item['Place']['model'],
+                            'foreign_id' => $dataToSave['Place']['foreign_id'],
+                    )));
+                }
 
                 /*
                  * close related tracker

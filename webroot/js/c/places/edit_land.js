@@ -1,5 +1,5 @@
-var map, marker;
-var loadedJson = {}, loadingFile = '', currentObj = false;
+var map, marker, theBounds;
+var loadedJson = {}, loadingFile = '', currentObj = {}, currentItem = {};
 $(function () {
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
         zoom: 14,
@@ -10,7 +10,7 @@ $(function () {
     if (!pointLatLng) {
         pointLatLng = new google.maps.LatLng(22.989992, 120.184843);
     }
-
+    theBounds = new google.maps.LatLngBounds;
     marker = new google.maps.Marker({
         position: pointLatLng,
         draggable: true,
@@ -18,8 +18,8 @@ $(function () {
         title: '土地'
     });
     marker.addListener('dragend', markerDrag);
+    map.data.addListener('click', mapObjClick);
     map.setCenter(pointLatLng);
-
     if (place.Land) {
         $.getJSON(jsonBaseUrl + place.Land.file, {}, function (r) {
             loadedJson[loadingFile] = r;
@@ -33,6 +33,44 @@ $(function () {
                 }
             }
         });
+    }
+    if (place.PlaceLink) {
+        $.ajaxSetup({
+            async: false
+        });
+        for (k in place.PlaceLink) {
+            currentItem = {
+                id: place.PlaceLink[k].Land.id,
+                label: place.PlaceLink[k].Section.name + place.PlaceLink[k].Land.code
+            };
+            if (!loadedJson[place.PlaceLink[k].Land.file]) {
+                loadingFile = place.PlaceLink[k].Land.file;
+                $.getJSON(jsonBaseUrl + place.PlaceLink[k].Land.file, {}, function (r) {
+                    loadedJson[loadingFile] = r;
+                    for (i in r.features) {
+                        if (place.PlaceLink[k].Land.code == r.features[i].properties.AA49) {
+                            showJson(r.features[i]);
+                        }
+                    }
+                });
+            } else {
+                for (i in loadedJson[place.PlaceLink[k].Land.file].features) {
+                    if (place.PlaceLink[k].Land.code == loadedJson[place.PlaceLink[k].Land.file].features[i].properties.AA49) {
+                        showJson(loadedJson[place.PlaceLink[k].Land.file].features[i]);
+                    }
+                }
+            }
+        }
+        map.fitBounds(theBounds);
+        if (!pointLatLng) {
+            pointLatLng = theBounds.getCenter();
+        }
+        marker = new google.maps.Marker({
+            position: pointLatLng,
+            map: map,
+            title: '土地'
+        });
+        map.setCenter(pointLatLng);
     }
 
     $('input#mapHelper').autocomplete({
@@ -48,6 +86,7 @@ $(function () {
             });
         },
         select: function (event, ui) {
+            currentItem = ui.item;
             if (ui.item.file) {
                 if (!loadedJson[ui.item.file]) {
                     loadingFile = ui.item.file;
@@ -76,31 +115,51 @@ $(function () {
         dateFormat: 'yy-mm-dd'
     });
 });
-
 function markerDrag(e) {
     $('#PlaceLatitude').val(e.latLng.lat());
     $('#PlaceLongitude').val(e.latLng.lng());
 }
 
 function showJson(obj, fillForm) {
-    if (currentObj) {
-        for (k in currentObj) {
-            map.data.remove(currentObj[k]);
+    var objKey = obj.properties.UNIT + obj.properties.AA48 + obj.properties.AA49;
+    if (!currentObj[objKey] || currentObj[objKey] === false) {
+        currentObj[objKey] = map.data.addGeoJson(obj);
+        for (k in obj.geometry.coordinates) {
+            for (j in obj.geometry.coordinates[k]) {
+                theBounds.extend(new google.maps.LatLng(obj.geometry.coordinates[k][j][1], obj.geometry.coordinates[k][j][0]));
+            }
         }
-    }
-    var newBounds = new google.maps.LatLngBounds;
-    currentObj = map.data.addGeoJson(obj);
-    for (k in obj.geometry.coordinates) {
-        for (j in obj.geometry.coordinates[k]) {
-            newBounds.extend(new google.maps.LatLng(obj.geometry.coordinates[k][j][1], obj.geometry.coordinates[k][j][0]));
-        }
-    }
-    map.fitBounds(newBounds);
-    if (false !== fillForm) {
-        var centerPoint = newBounds.getCenter();
+        map.fitBounds(theBounds);
+        var centerPoint = theBounds.getCenter();
         marker.setPosition(centerPoint);
-        $('#PlaceLatitude').val(centerPoint.lat());
-        $('#PlaceLongitude').val(centerPoint.lng());
+        if (false !== fillForm) {
+            $('#PlaceLatitude').val(centerPoint.lat());
+            $('#PlaceLongitude').val(centerPoint.lng());
+            if ($('#PlaceTitle').val() === '' && currentItem.label) {
+                $('#PlaceTitle').val(currentItem.label);
+            }
+        }
+        var objItem = $('<a class="btnMapItem btn btn-default" id="btn' + objKey + '" data-id="' + objKey + '">' + currentItem.label + '</a>');
+        objItem.click(btnObjClick);
+        objItem.append('<input type="hidden" name="data[PlaceLink][]" value="' + currentItem.id + '" />');
+        $('#mapItems').append(objItem);
     }
+}
 
+function mapObjClick(e) {
+    var objKey = e.feature.getProperty('UNIT') + e.feature.getProperty('AA48') + e.feature.getProperty('AA49');
+    for (k in currentObj[objKey]) {
+        map.data.remove(currentObj[objKey][k]);
+    }
+    currentObj[objKey] = false;
+    $('#btn' + objKey).remove();
+}
+
+function btnObjClick() {
+    var objKey = $(this).attr('data-id');
+    for (k in currentObj[objKey]) {
+        map.data.remove(currentObj[objKey][k]);
+    }
+    currentObj[objKey] = false;
+    $(this).remove();
 }

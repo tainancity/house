@@ -25,6 +25,8 @@
             <input type="text" class="col-md-12" id="mapHelper" />
             <div class="clearfix"></div>
             <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
+            <br />&nbsp;<br />&nbsp;
+            <div id="mapItems"></div>
         </div>
         <div class="col-md-6">
             <?php
