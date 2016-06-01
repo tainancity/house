@@ -114,8 +114,11 @@ class PlacesController extends AppController {
                 ),
             ));
             if ($item['Place']['model'] === 'Land') {
-                foreach($item['PlaceLink'] AS $k => $v) {
-                    $item['PlaceLink'][$k] = $this->Place->Land->read(null, $v['foreign_id']);
+                foreach ($item['PlaceLink'] AS $k => $v) {
+                    $item['PlaceLink'][$k] = $this->Place->Land->find('first', array(
+                        'conditions' => array('Land.id' => $v['foreign_id']),
+                        'contain' => array('Section'),
+                    ));
                 }
             }
         }
