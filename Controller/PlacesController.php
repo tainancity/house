@@ -110,12 +110,12 @@ class PlacesController extends AppController {
                             'fields' => array('username'),
                         ),
                     ),
+                    'PlaceLink',
                 ),
             ));
             if ($item['Place']['model'] === 'Land') {
-                $land = $this->Place->Land->read(null, $item['Place']['foreign_id']);
-                if (isset($land['Land'])) {
-                    $item['Land'] = $land['Land'];
+                foreach($item['PlaceLink'] AS $k => $v) {
+                    $item['PlaceLink'][$k] = $this->Place->Land->read(null, $v['foreign_id']);
                 }
             }
         }
@@ -162,6 +162,25 @@ class PlacesController extends AppController {
                 $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save($dataToSave);
+
+                if (!empty($dataToSave['PlaceLink'])) {
+                    foreach ($dataToSave['PlaceLink'] AS $itemId) {
+                        $this->Place->PlaceLink->create();
+                        $this->Place->PlaceLink->save(array('PlaceLink' => array(
+                                'place_id' => $dataToSave['PlaceLog']['place_id'],
+                                'model' => $typeModel,
+                                'foreign_id' => $itemId,
+                        )));
+                    }
+                } elseif (!empty($dataToSave['Place']['foreign_id'])) {
+                    $this->Place->PlaceLink->create();
+                    $this->Place->PlaceLink->save(array('PlaceLink' => array(
+                            'place_id' => $dataToSave['PlaceLog']['place_id'],
+                            'model' => $typeModel,
+                            'foreign_id' => $dataToSave['Place']['foreign_id'],
+                    )));
+                }
+
                 $this->Session->setFlash('資料已經儲存');
                 if (!$this->request->isAjax()) {
                     $this->redirect(array('action' => 'view', $dataToSave['PlaceLog']['place_id']));

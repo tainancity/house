@@ -1,5 +1,5 @@
-var map, marker;
-var loadedJson = {}, loadingFile = '', currentObj = false;
+var map, marker, theBounds;
+var loadedJson = {}, loadingFile = '', currentObj = {}, currentItem = {};
 $(function () {
     var pointLatLng = new google.maps.LatLng(23.01, 120.22);
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
@@ -16,6 +16,8 @@ $(function () {
         title: '土地'
     });
     marker.addListener('dragend', markerDrag);
+    theBounds = new google.maps.LatLngBounds;
+    map.data.addListener('click', mapObjClick);
 
     $('input#mapHelper').autocomplete({
         source: function (request, response) {
@@ -30,6 +32,7 @@ $(function () {
             });
         },
         select: function (event, ui) {
+            currentItem = ui.item;
             if (ui.item.file) {
                 if (!loadedJson[ui.item.file]) {
                     loadingFile = ui.item.file;
@@ -48,8 +51,6 @@ $(function () {
                         }
                     }
                 }
-                $('#PlaceTitle').val(ui.item.label);
-                $('#PlaceForeignId').val(ui.item.id);
             }
         },
         minLength: 1
@@ -57,7 +58,7 @@ $(function () {
     $('#PlaceLogDateVisited').datepicker({
         dateFormat: 'yy-mm-dd'
     });
-    
+
     $('a#geoInput').click(function () {
         getLocation(placeLocation);
         return false;
@@ -87,23 +88,27 @@ function markerDrag(e) {
 }
 
 function showJson(obj) {
-    if (currentObj) {
-        for (k in currentObj) {
-            map.data.remove(currentObj[k]);
+    var objKey = obj.properties.UNIT + obj.properties.AA48 + obj.properties.AA49;
+    if (!currentObj[objKey] || currentObj[objKey] === false) {
+        currentObj[objKey] = map.data.addGeoJson(obj);
+        for (k in obj.geometry.coordinates) {
+            for (j in obj.geometry.coordinates[k]) {
+                theBounds.extend(new google.maps.LatLng(obj.geometry.coordinates[k][j][1], obj.geometry.coordinates[k][j][0]));
+            }
         }
-    }
-    var newBounds = new google.maps.LatLngBounds;
-    currentObj = map.data.addGeoJson(obj);
-    for (k in obj.geometry.coordinates) {
-        for (j in obj.geometry.coordinates[k]) {
-            newBounds.extend(new google.maps.LatLng(obj.geometry.coordinates[k][j][1], obj.geometry.coordinates[k][j][0]));
+        map.fitBounds(theBounds);
+        var centerPoint = theBounds.getCenter();
+        marker.setPosition(centerPoint);
+        $('#PlaceLatitude').val(centerPoint.lat());
+        $('#PlaceLongitude').val(centerPoint.lng());
+        if($('#PlaceTitle').val() === '') {
+            $('#PlaceTitle').val(currentItem.label);
         }
+        var objItem = $('<a class="btnMapItem btn btn-default" id="btn' + objKey + '" data-id="' + objKey + '">' + currentItem.label + '</a>');
+        objItem.click(btnObjClick);
+        objItem.append('<input type="hidden" name="data[PlaceLink][]" value="' + currentItem.id + '" />');
+        $('#mapItems').append(objItem);
     }
-    map.fitBounds(newBounds);
-    var centerPoint = newBounds.getCenter();
-    marker.setPosition(centerPoint);
-    $('#PlaceLatitude').val(centerPoint.lat());
-    $('#PlaceLongitude').val(centerPoint.lng());
 }
 
 function placeLocation(pos) {
@@ -120,4 +125,22 @@ function placeLocation(pos) {
             alert("輸入住址找不到座標");
         }
     });
+}
+
+function mapObjClick(e) {
+    var objKey = e.feature.getProperty('UNIT') + e.feature.getProperty('AA48') + e.feature.getProperty('AA49');
+    for (k in currentObj[objKey]) {
+        map.data.remove(currentObj[objKey][k]);
+    }
+    currentObj[objKey] = false;
+    $('#btn' + objKey).remove();
+}
+
+function btnObjClick() {
+    var objKey = $(this).attr('data-id');
+    for (k in currentObj[objKey]) {
+        map.data.remove(currentObj[objKey][k]);
+    }
+    currentObj[objKey] = false;
+    $(this).remove();
 }
