@@ -10,8 +10,7 @@ class OlcHelper extends AppHelper {
     public $issue = array(
         '' => '--',
         '雜草過高' => '雜草過高',
-        '廢棄物' => '廢棄物',
-        '積水容器' => '積水容器',
+        '環境髒亂' => '環境髒亂',
     );
 
 }
