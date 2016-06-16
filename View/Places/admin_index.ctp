@@ -41,7 +41,8 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                     <th><?php echo $this->Paginator->sort('Place.task_id', '任務', array('url' => $url)); ?></th>
                 <?php } ?>
                 <th>名稱</th>
-                <th><?php echo $this->Paginator->sort('Place.status', '狀態', array('url' => $url)); ?></th>
+                <th>狀態</th>
+                <th>待改善情形</th>
                 <th><?php echo $this->Paginator->sort('Place.modified', '更新時間', array('url' => $url)); ?></th>
                 <th><?php echo $this->Paginator->sort('Place.modified_by', '更新人', array('url' => $url)); ?></th>
                 <th class="actions">操作</th>
