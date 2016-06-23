@@ -18,13 +18,13 @@ $(function () {
                                 newBounds.extend(new google.maps.LatLng(r.features[b].geometry.coordinates[k][j][1], r.features[b].geometry.coordinates[k][j][0]));
                             }
                         }
-
                         map.data.addGeoJson(r.features[b]);
+                        map.fitBounds(newBounds);
                     }
                 }
             });
         }
-        map.fitBounds(newBounds);
+        
         if (!pointLatLng) {
             pointLatLng = newBounds.getCenter();
         }
