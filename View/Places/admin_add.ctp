@@ -63,11 +63,24 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+            echo $this->Form->input('Place.area', array(
+                'type' => 'text',
+                'label' => '面積(平方公尺)',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
             echo $this->Form->input('Place.is_adopt', array(
                 'type' => 'checkbox',
                 'label' => '是否為認養地？',
                 'div' => 'form-group',
                 'class' => false,
+            ));
+            echo $this->Form->input('Place.adopt_type', array(
+                'label' => '認養類型',
+                'type' => 'select',
+                'options' => $this->Olc->adopt_types,
+                'div' => 'form-group',
+                'class' => 'form-control',
             ));
             echo $this->Form->input('Place.status', array(
                 'label' => '狀態',

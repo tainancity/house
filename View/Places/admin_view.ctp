@@ -48,9 +48,19 @@
             echo $item['Place']['latitude'] . ',' . $item['Place']['longitude'];
             ?>&nbsp;
         </div>
+        <div class="col-md-3">面積</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['area'];
+            ?>&nbsp;(平方公尺)
+        </div>
         <div class="col-md-3">是否為認養地？</div>
         <div class="col-md-9">&nbsp;<?php
             echo ($item['Place']['is_adopt'] == 1) ? '是' : '否';
+            ?>&nbsp;
+        </div>
+        <div class="col-md-3">認養地類型</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $this->Olc->adopt_types[$item['Place']['adopt_type']];
             ?>&nbsp;
         </div>
         <div class="col-md-3">狀態</div>
