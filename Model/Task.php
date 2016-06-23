@@ -22,10 +22,10 @@ class Task extends AppModel {
         ),
     );
     var $hasMany = array(
-        'House' => array(
+        'Place' => array(
             'foreignKey' => 'task_id',
             'dependent' => false,
-            'className' => 'House',
+            'className' => 'Place',
         ),
     );
 

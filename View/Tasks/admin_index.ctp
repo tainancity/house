@@ -59,6 +59,7 @@ if (!isset($url)) {
                             <?php
                             if ($loginMember['group_id'] == 1) {
                                 echo $this->Html->link('設定群組', array('controller' => 'groups', 'action' => 'tasks', 'Task', $item['Task']['id'], 'set'), array('class' => 'dialogControl btn btn-default'));
+                                echo $this->Html->link('報表', array('action' => 'report', $item['Task']['id']), array('class' => 'btn btn-default', 'target' => '_blank'));
                                 echo $this->Html->link('編輯', array('action' => 'edit', $item['Task']['id']), array('class' => 'dialogControl btn btn-default'));
                                 echo $this->Html->link('刪除', array('action' => 'delete', $item['Task']['id']), array('class' => 'btn btn-default'), '確定要刪除？');
                             }

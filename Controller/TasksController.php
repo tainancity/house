@@ -118,4 +118,73 @@ class TasksController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
+    function admin_report($id = null) {
+        if (!empty($id)) {
+            $task = $this->Task->read(null, $id);
+        }
+        $this->layout = 'print';
+        if (!empty($task)) {
+            $groups = $this->Task->Group->find('list');
+            $places = $this->Task->Place->find('all', array(
+                'conditions' => array(
+                    'Place.task_id' => $id,
+                ),
+                'fields' => array('group_id', 'status', 'is_adopt', 'adopt_type', 'area'),
+                'order' => array('Place.group_id' => 'ASC'),
+            ));
+            $report = array();
+            foreach ($places AS $place) {
+                if (!isset($report[$place['Place']['group_id']])) {
+                    $report[$place['Place']['group_id']] = array(
+                        '區別' => $groups[$place['Place']['group_id']],
+                        '空地總數' => 0,
+                        '總面積' => 0,
+                        '現況良好數量' => 0,
+                        '待改善數量' => 0,
+                        '認養地數量' => 0,
+                        '認養地面積' => 0,
+                        '綠美化數量' => 0,
+                        '綠美化面積' => 0,
+                        '停車場數量' => 0,
+                        '停車場面積' => 0,
+                        '運動場數量' => 0,
+                        '運動場面積' => 0,
+                        '其他公益場地數量' => 0,
+                        '其他公益場地面積' => 0,
+                    );
+                }
+                $report[$place['Place']['group_id']]['空地總數'] += 1;
+                $report[$place['Place']['group_id']]['總面積'] += $place['Place']['area'];
+                if ($place['Place']['status'] == 1) {
+                    $report[$place['Place']['group_id']]['現況良好數量'] += 1;
+                } else {
+                    $report[$place['Place']['group_id']]['待改善數量'] += 1;
+                }
+                if ($place['Place']['is_adopt'] == 1) {
+                    $report[$place['Place']['group_id']]['認養地數量'] += 1;
+                    $report[$place['Place']['group_id']]['認養地面積'] += $place['Place']['area'];
+                    switch ($place['Place']['adopt_type']) {
+                        case '綠美化':
+                            $report[$place['Place']['group_id']]['綠美化數量'] += 1;
+                            $report[$place['Place']['group_id']]['綠美化面積'] += $place['Place']['area'];
+                            break;
+                        case '停車場':
+                            $report[$place['Place']['group_id']]['停車場數量'] += 1;
+                            $report[$place['Place']['group_id']]['停車場面積'] += $place['Place']['area'];
+                            break;
+                        case '運動場':
+                            $report[$place['Place']['group_id']]['運動場數量'] += 1;
+                            $report[$place['Place']['group_id']]['運動場面積'] += $place['Place']['area'];
+                            break;
+                        case '其他公益場地':
+                            $report[$place['Place']['group_id']]['其他公益場地數量'] += 1;
+                            $report[$place['Place']['group_id']]['其他公益場地面積'] += $place['Place']['area'];
+                            break;
+                    }
+                }
+            }
+            $this->set('report', $report);
+        }
+    }
+
 }
