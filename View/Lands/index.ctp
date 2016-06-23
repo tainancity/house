@@ -9,5 +9,5 @@
     </script>
 </div>
 <?php
-$this->Html->script('https://maps.google.com/maps/api/js?language=zh-tw', array('inline' => false));
+$this->Html->script('https://maps.google.com/maps/api/js?key=AIzaSyCWiufrXVQT6To9D8ZrE2dC1yuVPOaTG4I&language=zh-tw', array('inline' => false));
 $this->Html->script('c/lands/index', array('inline' => false));
