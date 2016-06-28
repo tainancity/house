@@ -123,7 +123,7 @@ class TasksController extends AppController {
             $task = $this->Task->read(null, $id);
         }
         if($model !== 'Land') {
-            $model = 'House';
+            $model = 'Door';
             $label = '空屋總數';
         } else {
             $label = '空地總數';
