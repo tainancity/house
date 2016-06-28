@@ -118,9 +118,15 @@ class TasksController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
-    function admin_report($id = null) {
+    function admin_report($id = null, $model = 'Land') {
         if (!empty($id)) {
             $task = $this->Task->read(null, $id);
+        }
+        if($model !== 'Land') {
+            $model = 'House';
+            $label = '空屋總數';
+        } else {
+            $label = '空地總數';
         }
         $this->layout = 'print';
         if (!empty($task)) {
@@ -128,6 +134,7 @@ class TasksController extends AppController {
             $places = $this->Task->Place->find('all', array(
                 'conditions' => array(
                     'Place.task_id' => $id,
+                    'Place.model' => $model,
                 ),
                 'fields' => array('group_id', 'status', 'is_adopt', 'adopt_type', 'area'),
                 'order' => array('Place.group_id' => 'ASC'),
@@ -137,7 +144,7 @@ class TasksController extends AppController {
                 if (!isset($report[$place['Place']['group_id']])) {
                     $report[$place['Place']['group_id']] = array(
                         '區別' => $groups[$place['Place']['group_id']],
-                        '空地總數' => 0,
+                        $label => 0,
                         '總面積' => 0,
                         '現況良好數量' => 0,
                         '待改善數量' => 0,
@@ -153,7 +160,7 @@ class TasksController extends AppController {
                         '其他公益場地面積' => 0,
                     );
                 }
-                $report[$place['Place']['group_id']]['空地總數'] += 1;
+                $report[$place['Place']['group_id']][$label] += 1;
                 $report[$place['Place']['group_id']]['總面積'] += $place['Place']['area'];
                 if ($place['Place']['status'] == 1) {
                     $report[$place['Place']['group_id']]['現況良好數量'] += 1;
