@@ -60,7 +60,7 @@
         </div>
         <div class="col-md-3">認養地類型</div>
         <div class="col-md-9">&nbsp;<?php
-            echo $this->Olc->adopt_types[$item['Place']['adopt_type']];
+            echo isset($this->Olc->adopt_types[$item['Place']['adopt_type']]) ? $this->Olc->adopt_types[$item['Place']['adopt_type']] : $item['Place']['adopt_type'];
             ?>&nbsp;
         </div>
         <div class="col-md-3">狀態</div>
@@ -113,7 +113,7 @@
                             echo $this->Media->embed("m/{$log['dirname']}/{$log['basename']}") . '</a>';
                         }
                         ?></td>
-                    <td><?php echo $log['note']; ?></td>
+                    <td><?php echo nl2br($log['note']); ?></td>
                 </tr>
                 <?php
             }

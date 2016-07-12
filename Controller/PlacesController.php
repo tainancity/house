@@ -315,4 +315,100 @@ class PlacesController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
+    public function admin_import_land($taskId = '') {
+        if (empty($taskId)) {
+            $this->Session->setFlash('請依照網址指示操作');
+            $this->redirect('/');
+        }
+        if (!empty($this->data['Place']['file']['size'])) {
+            $lastLine = array();
+            $fh = fopen($this->data['Place']['file']['tmp_name'], 'r');
+            /*
+             * Array
+              (
+              [0] => 編號
+              [1] => 區別
+              [2] => 里別
+              [3] => 座落地點
+              [4] => 地段
+              [5] => 地號
+              [6] => 空地面積(m²)
+              [7] => 土地權屬(國有/市有/私有)
+              [8] => 土地管理機關土地所有權人
+              [9] => 開始列管日期
+              [10] => 解除列管日期
+              [11] => 是否位於空地空屋管理自治條例公告實施範圍
+              [12] => 是否認養
+              [13] => 設置類別
+              [14] => 認養契約簽訂起始日
+              [15] => 契約期限
+              [16] => 解除認養日期
+              [17] => 認養維護單位
+              [18] => 備註(如附現地照片)
+              )
+             */
+            $result = array();
+            while ($line = fgetcsv($fh, 2048)) {
+                if (count($line) === 19 && is_numeric($line[5])) {
+                    foreach ($line AS $k => $v) {
+                        $line[$k] = trim(str_replace("\n", ' ', $v));
+                        if (empty($line[$k]) && isset($lastLine[$k])) {
+                            $line[$k] = $lastLine[$k];
+                        }
+                    }
+                    if (!isset($result[$line[0]])) {
+                        $result[$line[0]] = array();
+                    }
+                    $result[$line[0]][] = $line;
+                    $lastLine = $line;
+                }
+            }
+            foreach ($result AS $lands) {
+                $dataToSave = array('Place' => array(
+                        'model' => 'Land',
+                        'task_id' => $taskId,
+                        'title' => $lands[0][3],
+                        'status' => '1',
+                        'is_adopt' => ($lands[0][12] === '是') ? '1' : '0',
+                        'adopt_type' => $lands[0][13],
+                        'area' => $lands[0][6],
+                        'created_by' => $this->loginMember['id'],
+                        'modified_by' => $this->loginMember['id'],
+                ));
+                if (!empty($this->data['Place']['group_id']) && $this->loginMember['group_id'] == 1) {
+                    $dataToSave['Place']['group_id'] = $this->data['Place']['group_id'];
+                } else {
+                    $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
+                }
+                $this->Place->create();
+                if ($this->Place->save($dataToSave)) {
+                    $dataToSave['PlaceLog']['place_id'] = $this->Place->getInsertID();
+                    $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
+                    $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
+                    $dataToSave['PlaceLog']['note'] = "土地權屬: {$lands[0][7]}\n土地管理機關土地所有權人: {$lands[0][8]}\n開始列管日期: {$lands[0][9]}\n"
+                            . "是否位於空地空屋管理自治條例公告實施範圍: {$lands[0][11]}\n認養契約簽訂起始日: {$lands[0][14]}\n契約期限: {$lands[0][15]}\n"
+                            . "解除認養日期: {$lands[0][16]}\n認養維護單位: {$lands[0][17]}\n備註: {$lands[0][18]}\n";
+                    $this->Place->PlaceLog->create();
+                    $this->Place->PlaceLog->save($dataToSave);
+
+                    foreach ($lands AS $land) {
+                        $lands = $this->Place->Land->queryKeyword("{$land[4]}段{$land[5]}");
+                        if (count($lands['result']) === 1) {
+                            $this->Place->PlaceLink->create();
+                            $this->Place->PlaceLink->save(array('PlaceLink' => array(
+                                    'place_id' => $dataToSave['PlaceLog']['place_id'],
+                                    'model' => 'Land',
+                                    'foreign_id' => $lands['result'][0]['id'],
+                            )));
+                        }
+                    }
+                }
+            }
+        }
+        if ($this->loginMember['group_id'] == 1) {
+            $this->set('groups', $this->Place->Group->find('list'));
+        }
+        $this->set('taskId', $taskId);
+    }
+
 }
