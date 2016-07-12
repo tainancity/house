@@ -348,6 +348,7 @@ class PlacesController extends AppController {
               )
              */
             $result = array();
+            $placeCounter = 0;
             while ($line = fgetcsv($fh, 2048)) {
                 if (count($line) === 19 && is_numeric($line[5])) {
                     foreach ($line AS $k => $v) {
@@ -382,6 +383,7 @@ class PlacesController extends AppController {
                 }
                 $this->Place->create();
                 if ($this->Place->save($dataToSave)) {
+                    ++$placeCounter;
                     $dataToSave['PlaceLog']['place_id'] = $this->Place->getInsertID();
                     $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
                     $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
@@ -404,6 +406,8 @@ class PlacesController extends AppController {
                     }
                 }
             }
+            $this->Session->setFlash("匯入了 {$placeCounter} 筆資料");
+            $this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));
         }
         if ($this->loginMember['group_id'] == 1) {
             $this->set('groups', $this->Place->Group->find('list'));
