@@ -413,6 +413,7 @@ class PlacesController extends AppController {
             $this->set('groups', $this->Place->Group->find('list'));
         }
         $this->set('taskId', $taskId);
+        $this->set('task', $this->Place->Task->read(null, $taskId));
     }
 
 }
