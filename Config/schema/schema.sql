@@ -31,7 +31,7 @@ CREATE TABLE `acos` (
   `lft` int(11) DEFAULT NULL,
   `rght` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,6 +254,15 @@ CREATE TABLE `places` (
   `inspect` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `issue` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `ownership` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `owner` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `date_begin` date DEFAULT NULL,
+  `is_rule_area` tinyint(1) DEFAULT NULL,
+  `adopt_begin` date DEFAULT NULL,
+  `adopt_end` date DEFAULT NULL,
+  `adopt_closed` date DEFAULT NULL,
+  `adopt_by` varchar(64) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` text COLLATE utf8mb4_unicode_ci,
   `created` datetime NOT NULL,
   `created_by` int(11) NOT NULL,
   `modified` datetime NOT NULL,
@@ -345,4 +354,4 @@ CREATE TABLE `trackers` (
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-06-23  9:00:54
+-- Dump completed on 2016-07-28 17:17:30

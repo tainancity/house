@@ -102,6 +102,60 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+            echo $this->Form->input('Place.ownership', array(
+                'type' => 'text',
+                'label' => '土地/房屋權屬',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.owner', array(
+                'type' => 'text',
+                'label' => '土地/房屋所有權人',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.date_begin', array(
+                'type' => 'text',
+                'label' => '開始列管日期',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.is_rule_area', array(
+                'type' => 'text',
+                'label' => '是否位於空地空屋管理自治條例公告實施範圍',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.adopt_begin', array(
+                'type' => 'text',
+                'label' => '認養契約簽訂起始日',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.adopt_end', array(
+                'type' => 'text',
+                'label' => '契約期限',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.adopt_closed', array(
+                'type' => 'text',
+                'label' => '解除認養日期',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.adopt_by', array(
+                'type' => 'text',
+                'label' => '認養維護單位',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
+            echo $this->Form->input('Place.note', array(
+                'type' => 'textarea',
+                'label' => '備註',
+                'div' => 'form-group',
+                'class' => 'form-control',
+            ));
             echo $this->Form->input('PlaceLog.file', array(
                 'label' => '照片',
                 'type' => 'file',
@@ -116,7 +170,7 @@
                 'class' => 'form-control',
             ));
             echo $this->Form->input('PlaceLog.note', array(
-                'label' => '備註',
+                'label' => '訪視記錄',
                 'type' => 'textarea',
                 'rows' => 5,
                 'div' => 'form-group',

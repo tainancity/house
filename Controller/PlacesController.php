@@ -373,6 +373,15 @@ class PlacesController extends AppController {
                         'is_adopt' => ($lands[0][12] === '是') ? '1' : '0',
                         'adopt_type' => $lands[0][13],
                         'area' => $lands[0][6],
+                        'ownership' => $lands[0][7],
+                        'owner' => $lands[0][8],
+                        'date_begin' => $lands[0][9],
+                        'is_rule_area' => ($lands[0][11] === '是') ? true : false,
+                        'adopt_begin' => $lands[0][14],
+                        'adopt_end' => $lands[0][15],
+                        'adopt_closed' => $lands[0][16],
+                        'adopt_by' => $lands[0][17],
+                        'note' => $lands[0][18],
                         'created_by' => $this->loginMember['id'],
                         'modified_by' => $this->loginMember['id'],
                 ));
@@ -387,9 +396,6 @@ class PlacesController extends AppController {
                     $dataToSave['PlaceLog']['place_id'] = $this->Place->getInsertID();
                     $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
                     $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
-                    $dataToSave['PlaceLog']['note'] = "土地權屬: {$lands[0][7]}\n土地管理機關土地所有權人: {$lands[0][8]}\n開始列管日期: {$lands[0][9]}\n"
-                            . "是否位於空地空屋管理自治條例公告實施範圍: {$lands[0][11]}\n認養契約簽訂起始日: {$lands[0][14]}\n契約期限: {$lands[0][15]}\n"
-                            . "解除認養日期: {$lands[0][16]}\n認養維護單位: {$lands[0][17]}\n備註: {$lands[0][18]}\n";
                     $this->Place->PlaceLog->create();
                     $this->Place->PlaceLog->save($dataToSave);
 

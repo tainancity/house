@@ -41,6 +41,16 @@ $(function () {
     $('#PlaceLogDateVisited').datepicker({
         dateFormat: 'yy-mm-dd'
     });
+    $('#PlaceAdoptBegin').datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+    $('#PlaceAdoptEnd').datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+    $('#PlaceAdoptClosed').datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
+    
 });
 
 function markerDrag(e) {

@@ -1,3 +1,9 @@
+<style>
+    div.viewDetail > div.col-md-3, div.viewDetail > div.col-md-9 {
+        margin-top: 5px;
+        border-top: 1px solid grey;
+    }
+</style>
 <div id="PlacesAdminView">
     <h2><?php
         echo implode(' > ', array(
@@ -17,22 +23,25 @@
     <div class="col-md-6">
         <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 viewDetail">
         <div class="col-md-3">群組</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Group']['name'];
             ?></div>
+        <div class="clearfix"></div>
         <div class="col-md-3">名稱</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['title'];
             ?>&nbsp;
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-3">位址描述</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['description'];
             ?>&nbsp;
         </div>
         <?php if ($item['Place']['model'] === 'Land') { ?>
+            <div class="clearfix"></div>
             <div class="col-md-3">地號</div>
             <div class="col-md-9"><ul>&nbsp;<?php
                     if (!empty($item['PlaceLink'])) {
@@ -43,41 +52,103 @@
                     ?></ul>&nbsp;
             </div>
         <?php } ?>
+        <div class="clearfix"></div>
         <div class="col-md-3">緯度,經度</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['latitude'] . ',' . $item['Place']['longitude'];
             ?>&nbsp;
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-3">面積</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['area'];
             ?>&nbsp;(平方公尺)
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-3">是否為認養地？</div>
         <div class="col-md-9">&nbsp;<?php
             echo ($item['Place']['is_adopt'] == 1) ? '是' : '否';
             ?>&nbsp;
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-3">認養地類型</div>
         <div class="col-md-9">&nbsp;<?php
             echo isset($this->Olc->adopt_types[$item['Place']['adopt_type']]) ? $this->Olc->adopt_types[$item['Place']['adopt_type']] : $item['Place']['adopt_type'];
             ?>&nbsp;
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-3">狀態</div>
         <div class="col-md-9">&nbsp;<?php
             echo $this->Olc->status[$item['Place']['status']];
             ?>&nbsp;
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-3">待改善情形</div>
         <div class="col-md-9">&nbsp;<?php
             echo $this->Olc->issue[$item['Place']['issue']];
             ?>&nbsp;
         </div>
+        <div class="clearfix"></div>
         <div class="col-md-3">稽查單位</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['inspect'];
             ?>&nbsp;
         </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">權屬</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['ownership'];
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">所有權人</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['owner'];
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">開始列管日期</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['date_begin'];
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">是否位於空地空屋管理自治條例公告實施範圍</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo!empty($item['Place']['is_rule_area']) ? '是' : '否';
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">認養契約簽訂起始日</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['adopt_begin'];
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">契約期限</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['adopt_end'];
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">解除認養日期</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['adopt_closed'];
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">認養維護單位</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['adopt_by'];
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
+        <div class="col-md-3">備註</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo nl2br($item['Place']['note']);
+            ?>&nbsp;
+        </div>
+        <div class="clearfix"></div>
         <div class="col-md-3">建立人/建立時間</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Creator']['username'] . ' / ' . $item['Place']['created'];
@@ -98,7 +169,7 @@
                 <th>狀態</th>
                 <th>操作人</th>
                 <th>照片</th>
-                <th>備註</th>
+                <th>記錄</th>
             </tr>
             <?php
             foreach ($item['PlaceLog'] AS $log) {
