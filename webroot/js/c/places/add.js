@@ -42,6 +42,9 @@ $(function () {
     $('#PlaceLogDateVisited').datepicker({
         dateFormat: 'yy-mm-dd'
     });
+    $('#PlaceDateBegin').datepicker({
+        dateFormat: 'yy-mm-dd'
+    });
     $('#PlaceAdoptBegin').datepicker({
         dateFormat: 'yy-mm-dd'
     });

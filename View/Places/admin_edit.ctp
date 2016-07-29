@@ -109,13 +109,10 @@
                 'class' => 'form-control',
             ));
             echo $this->Form->input('Place.is_rule_area', array(
-                'type' => 'radio',
-                'options' => array(
-                    '1' => '是',
-                    '0' => '否',
-                ),
-                'legend' => '是否位於空地空屋管理自治條例公告實施範圍',
+                'type' => 'checkbox',
+                'label' => '是否位於空地空屋管理自治條例公告實施範圍',
                 'div' => 'form-group',
+                'class' => false,
             ));
             echo $this->Form->input('Place.adopt_begin', array(
                 'type' => 'text',

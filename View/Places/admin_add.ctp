@@ -121,10 +121,10 @@
                 'class' => 'form-control',
             ));
             echo $this->Form->input('Place.is_rule_area', array(
-                'type' => 'text',
+                'type' => 'checkbox',
                 'label' => '是否位於空地空屋管理自治條例公告實施範圍',
                 'div' => 'form-group',
-                'class' => 'form-control',
+                'class' => false,
             ));
             echo $this->Form->input('Place.adopt_begin', array(
                 'type' => 'text',

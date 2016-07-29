@@ -375,11 +375,11 @@ class PlacesController extends AppController {
                         'area' => $lands[0][6],
                         'ownership' => $lands[0][7],
                         'owner' => $lands[0][8],
-                        'date_begin' => $lands[0][9],
+                        'date_begin' => $this->parseDate($lands[0][9]),
                         'is_rule_area' => ($lands[0][11] === '是') ? true : false,
-                        'adopt_begin' => $lands[0][14],
-                        'adopt_end' => $lands[0][15],
-                        'adopt_closed' => $lands[0][16],
+                        'adopt_begin' => $this->parseDate($lands[0][14]),
+                        'adopt_end' => $this->parseDate($lands[0][15]),
+                        'adopt_closed' => $this->parseDate($lands[0][16]),
                         'adopt_by' => $lands[0][17],
                         'note' => $lands[0][18],
                         'created_by' => $this->loginMember['id'],
@@ -420,6 +420,35 @@ class PlacesController extends AppController {
         }
         $this->set('taskId', $taskId);
         $this->set('task', $this->Place->Task->read(null, $taskId));
+    }
+
+    private function parseDate($s) {
+        $s = trim($s);
+        if (empty($s)) {
+            return '';
+        }
+        $parts = preg_split('/[^0-9]+/', $s);
+        if ($parts[0] != 0 && $parts[0] < 1911) {
+            $parts[0] += 1911;
+        }
+        switch (count($parts)) {
+            case 3:
+                return implode('-', array(
+                    $parts[0],
+                    str_pad($parts[1], 2, '0', STR_PAD_LEFT),
+                    str_pad($parts[2], 2, '0', STR_PAD_LEFT),
+                ));
+                break;
+            case 2:
+                return implode('-', array(
+                    $parts[0],
+                    str_pad($parts[1], 2, '0', STR_PAD_LEFT),
+                    '01',
+                ));
+                break;
+            default:
+                return '';
+        }
     }
 
 }
