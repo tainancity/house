@@ -1,3 +1,9 @@
+<?php
+if(empty($report)) {
+    echo '沒有資料';
+    exit();
+}
+?>
 <table class="table table-bordered">
 <?php
 $headers = array_keys($report[key($report)]);
