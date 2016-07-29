@@ -15,6 +15,23 @@ class Door extends AppModel {
         ),
     );
 
+    public function queryKeyword($address) {
+        $result = array(
+            'queryString' => $address,
+            'result' => array(),
+        );
+        $doors = $this->find('all', array(
+            'conditions' => $this->extractAddress($address),
+            'limit' => 10,
+        ));
+        foreach ($doors AS $k => $item) {
+            $item['Door']['lin'] = intval($item['Door']['lin']);
+            $item['Door']['label'] = $item['Door']['value'] = "{$item['Door']['area']}{$item['Door']['cunli']}{$item['Door']['lin']}鄰{$item['Door']['road']}{$item['Door']['place']}{$item['Door']['lane']}{$item['Door']['alley']}{$item['Door']['number']}";
+            $result['result'][] = $item['Door'];
+        }
+        return $result;
+    }
+
     public function extractAddress($address = '', $asCondition = true) {
         $address = preg_replace('/\s+/', '', $address);
         $address = str_replace(array('．'), '', $address);

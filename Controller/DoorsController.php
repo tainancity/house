@@ -18,20 +18,8 @@ class DoorsController extends AppController {
     public function q($address = '') {
         $this->autoRender = false;
         $this->response->type('json');
-        $result = array(
-            'queryString' => $address,
-            'result' => array(),
-        );
         if (!empty($address)) {
-            $doors = $this->Door->find('all', array(
-                'conditions' => $this->Door->extractAddress($address),
-                'limit' => 10,
-            ));
-            foreach ($doors AS $k => $item) {
-                $item['Door']['lin'] = intval($item['Door']['lin']);
-                $item['Door']['label'] = $item['Door']['value'] = "{$item['Door']['area']}{$item['Door']['cunli']}{$item['Door']['lin']}鄰{$item['Door']['road']}{$item['Door']['place']}{$item['Door']['lane']}{$item['Door']['alley']}{$item['Door']['number']}";
-                $result['result'][] = $item['Door'];
-            }
+            $result = $this->Door->queryKeyword($address);
         }
         if (!isset($_GET['pretty'])) {
             $this->response->body(json_encode($result));

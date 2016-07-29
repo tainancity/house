@@ -30,7 +30,9 @@ if (!empty($foreignId) && !empty($foreignModel)) {
         <?php echo $this->Html->link('新增', array_merge($url, array('action' => 'add')), array('class' => 'btn btn-default')); ?>
         <?php echo $this->Html->link('匯入', array('action' => 'import', $typeModel, $foreignId), array('class' => 'btn btn-default'));
         if($typeModel === 'Land') {
-            echo $this->Html->link('匯入土地', array('action' => 'import_land', $foreignId), array('class' => 'btn btn-default'));
+            echo $this->Html->link('匯入空地', array('action' => 'import_land', $foreignId), array('class' => 'btn btn-default'));
+        } else {
+            echo $this->Html->link('匯入空屋', array('action' => 'import_door', $foreignId), array('class' => 'btn btn-default'));
         }
         ?>
     </div>

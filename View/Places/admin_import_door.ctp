@@ -2,8 +2,8 @@
     <h2><?php
         echo implode(' > ', array(
             $this->Html->link('任務', array('controller' => 'tasks')),
-            $this->Html->link($task['Task']['title'], array('action' => 'index', 'Land', 'Task', $task['Task']['id'])),
-            '匯入空地',
+            $this->Html->link($task['Task']['title'], array('action' => 'index', 'Door', 'Task', $task['Task']['id'])),
+            '匯入空屋',
         ));
         ?></h2>
     <br />
@@ -19,7 +19,7 @@
         ));
     }
     echo $this->Form->input('Place.file', array(
-        'label' => '檔案 (' . $this->Html->link('匯入範例', '/pub/sample_land.csv', array('target' => '_blank')) . ')',
+        'label' => '檔案 (' . $this->Html->link('匯入範例', '/pub/sample_door.csv', array('target' => '_blank')) . ')',
         'type' => 'file',
         'div' => 'form-group',
         'class' => 'form-control',

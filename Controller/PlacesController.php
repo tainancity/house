@@ -315,6 +315,115 @@ class PlacesController extends AppController {
         $this->redirect(array('action' => 'index'));
     }
 
+    public function admin_import_door($taskId = '') {
+        if (empty($taskId)) {
+            $this->Session->setFlash('請依照網址指示操作');
+            $this->redirect('/');
+        }
+        if (!empty($this->data['Place']['file']['size'])) {
+            $lastLine = array();
+            $fh = fopen($this->data['Place']['file']['tmp_name'], 'r');
+            /*
+             * Array
+              (
+              [0] => 編號
+              [1] => 區別
+              [2] => 里別
+              [3] => 座落地點
+              [4] => 地段
+              [5] => 地號
+              [6] => 空地面積(m²)
+              [7] => 土地權屬(國有/市有/私有)
+              [8] => 土地管理機關土地所有權人
+              [9] => 開始列管日期
+              [10] => 解除列管日期
+              [11] => 是否位於空地空屋管理自治條例公告實施範圍
+              [12] => 是否認養
+              [13] => 設置類別
+              [14] => 認養契約簽訂起始日
+              [15] => 契約期限
+              [16] => 解除認養日期
+              [17] => 認養維護單位
+              [18] => 備註(如附現地照片)
+              )
+             */
+            $result = array();
+            $placeCounter = 0;
+            while ($line = fgetcsv($fh, 2048)) {
+                if (count($line) === 14 && is_numeric($line[5])) {
+                    foreach ($line AS $k => $v) {
+                        $line[$k] = trim(str_replace("\n", ' ', $v));
+                        if (empty($line[$k]) && isset($lastLine[$k])) {
+                            $line[$k] = $lastLine[$k];
+                        }
+                    }
+                    if (!isset($result[$line[0]])) {
+                        $result[$line[0]] = array();
+                    }
+                    $result[$line[0]][] = $line;
+                    $lastLine = $line;
+                }
+            }
+            foreach ($result AS $lands) {
+                $dataToSave = array('Place' => array(
+                        'model' => 'Door',
+                        'task_id' => $taskId,
+                        'title' => $lands[0][3],
+                        'status' => '1',
+                        'area' => $lands[0][6],
+                        'ownership' => $lands[0][7],
+                        'owner' => $lands[0][8],
+                        'date_begin' => $this->parseDate($lands[0][9]),
+                        'is_rule_area' => ($lands[0][11] === '是') ? true : false,
+                        'note' => $lands[0][12],
+                        'created_by' => $this->loginMember['id'],
+                        'modified_by' => $this->loginMember['id'],
+                ));
+                foreach ($lands AS $land) {
+                    $dataToSave['Place']['note'] .= "\n地號： {$land[4]}{$land[5]}";
+                }
+                if (!empty($this->data['Place']['group_id']) && $this->loginMember['group_id'] == 1) {
+                    $dataToSave['Place']['group_id'] = $this->data['Place']['group_id'];
+                } else {
+                    $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
+                }
+                $doors = $this->Place->Door->queryKeyword("{$lands[0][1]}區{$lands[0][2]}里{$lands[0][3]}號");
+                if (count($doors['result']) === 1) {
+                    $dataToSave['Place']['longitude'] = $doors['result'][0]['longitude'];
+                    $dataToSave['Place']['latitude'] = $doors['result'][0]['latitude'];
+                }
+
+                $this->Place->create();
+                if ($this->Place->save($dataToSave)) {
+                    ++$placeCounter;
+                    $dataToSave['PlaceLog']['place_id'] = $this->Place->getInsertID();
+                    $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
+                    $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
+                    $this->Place->PlaceLog->create();
+                    $this->Place->PlaceLog->save($dataToSave);
+
+                    $lands[0][3] = substr($lands[0][3], 0, strpos($lands[0][3], '號'));
+                    
+                    if (count($doors['result']) === 1) {
+                        $this->Place->PlaceLink->create();
+                        $this->Place->PlaceLink->save(array('PlaceLink' => array(
+                                'place_id' => $dataToSave['PlaceLog']['place_id'],
+                                'model' => 'Land',
+                                'foreign_id' => $doors['result'][0]['id'],
+                        )));
+                    }
+                }
+            }
+            $this->Session->setFlash("匯入了 {$placeCounter} 筆資料");
+            $this->redirect(array('action' => 'index', 'Door', 'Task', $taskId));
+        }
+        if ($this->loginMember['group_id'] == 1) {
+            $this->set('groups', $this->Place->Group->find('list'));
+        }
+        $this->set('taskId', $taskId);
+        $this->set('task', $this->Place->Task->read(null, $taskId));
+    }
+
     public function admin_import_land($taskId = '') {
         if (empty($taskId)) {
             $this->Session->setFlash('請依照網址指示操作');
@@ -427,10 +536,19 @@ class PlacesController extends AppController {
         if (empty($s)) {
             return '';
         }
-        $parts = preg_split('/[^0-9]+/', $s);
+        if (strlen($s) === 7) {
+            $parts = array(
+                substr($s, 0, 3),
+                substr($s, 3, 2),
+                substr($s, 5, 2),
+            );
+        } else {
+            $parts = preg_split('/[^0-9]+/', $s);
+        }
         if ($parts[0] != 0 && $parts[0] < 1911) {
             $parts[0] += 1911;
         }
+
         switch (count($parts)) {
             case 3:
                 return implode('-', array(
