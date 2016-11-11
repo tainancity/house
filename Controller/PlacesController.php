@@ -318,7 +318,8 @@ class PlacesController extends AppController {
         } else {
             $this->Session->setFlash('請依照網址指示操作');
         }
-        $this->redirect(array('action' => 'index'));
+        //$this->redirect(array('action' => 'index'));
+		$this->redirect(array('action' => 'index', 'Land', 'Task', $this->request->query('taskId')));
     }
 
     public function admin_import_door($taskId = '') {
@@ -431,6 +432,7 @@ class PlacesController extends AppController {
     }
 
     public function admin_import_land($taskId = '') {
+		$import_msg="";
         if (empty($taskId)) {
             $this->Session->setFlash('請依照網址指示操作');
             $this->redirect('/');
@@ -513,9 +515,10 @@ class PlacesController extends AppController {
                     $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                     $this->Place->PlaceLog->create();
                     $this->Place->PlaceLog->save($dataToSave);
+					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ".$lands[0][3]." -匯入成功</span><br>";
 
                     foreach ($lands AS $land) {
-                        $lands = $this->Place->Land->queryKeyword("{$land[4]}段{$land[5]}");
+                        $lands = $this->Place->Land->queryKeyword("{$lands[0][4]}段{$lands[0][5]}");
                         if (count($lands['result']) === 1) {
                             $this->Place->PlaceLink->create();
                             $this->Place->PlaceLink->save(array('PlaceLink' => array(
@@ -526,8 +529,11 @@ class PlacesController extends AppController {
                         }
                     }
                 }
+				else{
+					$import_msg.="<span style='color:#ff0000;'>第".$placeCounter."筆 ".$lands[0][3]." -匯入失敗</span><br>";
+				}
             }
-            $this->Session->setFlash("匯入了 {$placeCounter} 筆資料");
+            $this->Session->setFlash("共".count($result)."筆資料 匯入了 {$placeCounter} 筆資料<br>".$import_msg);
             $this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));
         }
         if ($this->loginMember['group_id'] == 1) {
