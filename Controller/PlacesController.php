@@ -69,6 +69,10 @@ class PlacesController extends AppController {
                     break;
             }
         }
+		//搜尋條件
+		$conditions['title  LIKE'] = "%".$this->request->query('data.srch_title')."%";
+		$this->paginate['Place']['conditions'] = $conditions;
+		
         $this->set('scope', $scope);
         $this->paginate['Place']['limit'] = 20;
         $this->paginate['Place']['contain'] = array(
@@ -76,6 +80,7 @@ class PlacesController extends AppController {
                 'fields' => array('username'),
             ),
         );
+		
         $items = $this->paginate($this->Place, $scope);
         $this->set('items', $items);
         $this->set('foreignId', $foreignId);
@@ -85,6 +90,7 @@ class PlacesController extends AppController {
         $this->set('groups', $this->Place->Group->find('list'));
         $this->set('tasks', $this->Place->Task->find('list'));
         $this->set('url', array($typeModel, $foreignModel, $foreignId));
+		$this->set('GET_title',$this->request->query('data.srch_title'));
     }
 
     function admin_view($id = null) {

@@ -40,7 +40,6 @@ class Land extends AppModel {
 				$landPart = substr($address, $pos);
                 $numbersMap = array('０' => 0, '１' => 1, '２' => 2, '３' => 3, '４' => 4, '５' => 5, '６' => 6, '７' => 7, '８' => 8, '９' => 9,);
                 $landPart = strtr($landPart, $numbersMap);
-                //$landPart = preg_replace('/[^0-9\\-]/', '', $landPart);//jay edit 20161107
                 if (count($sections) === 1 && !empty($landPart)) {
                     $conditions = array(
                         'Land.section_id' => $sections[0]['Section']['id'],
@@ -68,8 +67,8 @@ class Land extends AppModel {
 					*/
 					//用段,地號後面的去搜尋
 					$pos = strrpos($address, '段');
-					$landPart =intval(substr($address,$pos+3,strlen($address)));//POS+3代表(中文UTF-8佔3 bytes)
-					if($landPart!="")
+					$landPart =substr($address,$pos+3,strlen($address));//POS+3代表(中文UTF-8佔3 bytes)
+					if($landPart!=="")
 					{
 						$conditions['substr(Land.code,1,'.strlen($landPart).')'] = $landPart;
 					}

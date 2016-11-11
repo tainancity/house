@@ -7,6 +7,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
     $url = array($typeModel, $foreignModel, $foreignId);
 }
 ?>
+
 <div id="PlacesAdminIndex">
     <h2><?php
         if (!empty($foreignInfo['title'])) {
@@ -27,6 +28,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
         }
         ?></h2>
     <div class="btn-group">
+		<form action="" method="get" class="form-inline">	
         <?php echo $this->Html->link('新增', array_merge($url, array('action' => 'add')), array('class' => 'btn btn-default')); ?>
         <?php echo $this->Html->link('匯入', array('action' => 'import', $typeModel, $foreignId), array('class' => 'btn btn-default'));
         if($typeModel === 'Land') {
@@ -35,6 +37,14 @@ if (!empty($foreignId) && !empty($foreignModel)) {
             echo $this->Html->link('匯入空屋', array('action' => 'import_door', $foreignId), array('class' => 'btn btn-default'));
         }
         ?>
+		
+		<div class="form-group"> 
+			<label for="srch_title">搜尋路段名稱</label> 
+			<?php echo $this->Form->text('srch_title', ['class' => 'form-control','value' => $GET_title]); ?>
+		
+		</div>
+		<input type="submit" name="btn" id="btn" value="搜尋" class="btn btn-default" />
+		</form>
     </div>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <table class="table table-bordered" id="PlacesAdminIndexTable">
