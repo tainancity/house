@@ -515,22 +515,40 @@ class PlacesController extends AppController {
                     $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                     $this->Place->PlaceLog->create();
                     $this->Place->PlaceLog->save($dataToSave);
-					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ".$lands[0][3]." -匯入成功</span><br>";
-
-                    foreach ($lands AS $land) {
-                        $lands = $this->Place->Land->queryKeyword("{$lands[0][4]}段{$lands[0][5]}");
-                        if (count($lands['result']) === 1) {
+					$import_msg_code="";
+					for($i=0;$i<count($lands);$i++) {
+						$land_key=$i;
+						$land_keyword="";//格式：[中西]保安段00140000 ([區名]地段地號)		
+						if(@$lands[$land_key][1]!="")
+						{
+							@$land_keyword_section=str_replace("區",'',$lands[$land_key][1]);
+							if($land_keyword_section=="東區"||$land_keyword_section=="北區"||$land_keyword_section=="中西"||$land_keyword_section=="南區")
+							{
+								$land_keyword_section="台南";
+							}
+							$land_keyword.="[".$land_keyword_section."]";
+						}
+						//因excel吃前0關係,所以幫地號補0至8位數,以免無法對照：380000->00380000
+						for($j=strlen($lands[$land_key][5]);$j<8;$j++)
+						{
+							$lands[$land_key][5]="0".$lands[$land_key][5];
+						}
+						@$land_keyword.=str_replace("段",'',$lands[$land_key][4])."段".$lands[$land_key][5];
+						@$import_msg_code.=$lands[$land_key][5].",";
+                        $lands_srch = $this->Place->Land->queryKeyword($land_keyword);
+                        if (count($lands_srch['result']) === 1) {
                             $this->Place->PlaceLink->create();
                             $this->Place->PlaceLink->save(array('PlaceLink' => array(
                                     'place_id' => $dataToSave['PlaceLog']['place_id'],
                                     'model' => 'Land',
-                                    'foreign_id' => $lands['result'][0]['id'],
+                                    'foreign_id' => $lands_srch['result'][0]['id'],
                             )));
                         }
                     }
+					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ".$lands[$land_key][3]."含 地號：".$import_msg_code." -匯入成功</span><br>";
                 }
 				else{
-					$import_msg.="<span style='color:#ff0000;'>第".$placeCounter."筆 ".$lands[0][3]." -匯入失敗</span><br>";
+					$import_msg.="<span style='color:#ff0000;'>第".$placeCounter."筆 ".$lands[$land_key][3]." -匯入失敗</span><br>";
 				}
             }
             $this->Session->setFlash("共".count($result)."筆資料 匯入了 {$placeCounter} 筆資料<br>".$import_msg);
