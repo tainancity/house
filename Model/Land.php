@@ -15,7 +15,7 @@ class Land extends AppModel {
             'queryString' => $address,
             'result' => array(),
         );
-        $address = preg_replace('/\s+/', '', $address);//address輸入格式為石門段1212000或DA0147
+        $address = preg_replace('/\s+/', '', $address);//address標準輸入格式為[中西]保安段00140000
         if (!empty($address)) {
             $pos = strrpos($address, '段');
             if (false === $pos) {

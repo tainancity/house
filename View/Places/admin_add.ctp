@@ -34,7 +34,7 @@
                 <a href="#" id="geoInput" class="btn btn-default">衛星定位</a>
                 <a href="#" id="geoGoogle" class="btn btn-default">Google搜尋</a>
             </div>
-            <input type="text" class="col-md-12" id="mapHelper" />
+            <input type="text" class="col-md-12" id="mapHelper" placeholder="搜尋格式：[中西]保安段00140000" />
             <div class="clearfix"></div>
             <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
             <br />&nbsp;<br />&nbsp;

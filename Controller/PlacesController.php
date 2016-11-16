@@ -521,11 +521,11 @@ class PlacesController extends AppController {
 						$land_keyword="";//格式：[中西]保安段00140000 ([區名]地段地號)		
 						if(@$lands[$land_key][1]!="")
 						{
-							@$land_keyword_section=str_replace("區",'',$lands[$land_key][1]);
-							if($land_keyword_section=="東區"||$land_keyword_section=="北區"||$land_keyword_section=="中西"||$land_keyword_section=="南區")
-							{
-								$land_keyword_section="台南";
+							if(strlen($lands[$land_key][1])==9)
+							{//中西區->中西 , 北區->北區(不變)
+								@$land_keyword_section=str_replace("區",'',$lands[$land_key][1]);
 							}
+							
 							$land_keyword.="[".$land_keyword_section."]";
 						}
 						//因excel吃前0關係,所以幫地號補0至8位數,以免無法對照：380000->00380000
