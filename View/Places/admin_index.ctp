@@ -47,9 +47,13 @@ if (!empty($foreignId) && !empty($foreignModel)) {
 		</form>
     </div>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
+	
+	<?php echo $this->Form->create(null, array('url' => array('controller' => 'Places', 'action' => 'delete_place_batch', $foreignId))); ?>
+	<input type="submit" name="btn_del" id="btn_del" value="批次刪除" class="btn btn-default" />
     <table class="table table-bordered" id="PlacesAdminIndexTable">
         <thead>
             <tr>
+				<th><input type="checkbox" name="all" onclick="check_all(this,'check_place_id[]')" /></th>
                 <?php if ($foreignModel !== 'Group') { ?>
                     <th><?php echo $this->Paginator->sort('Place.group_id', '群組', array('url' => $url)); ?></th>
                 <?php } ?>
@@ -74,6 +78,9 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 }
                 ?>
                 <tr<?php echo $class; ?>>
+					<td>
+					<input type="checkbox" name ="check_place_id[]" value="<?php echo  $item['Place']['id'];  ?>">
+					</td>
                     <?php if ($foreignModel !== 'Group') { ?>
                         <td><?php
                             echo $groups[$item['Place']['group_id']];
@@ -110,6 +117,8 @@ if (!empty($foreignId) && !empty($foreignModel)) {
             <?php } // End of foreach ($items as $item) {   ?>
         </tbody>
     </table>
+	<?php   echo $this->Form->end(); ?>
+	
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
     <div id="PlacesAdminIndexPanel"></div>
 </div>

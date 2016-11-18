@@ -560,7 +560,23 @@ class PlacesController extends AppController {
         $this->set('taskId', $taskId);
         $this->set('task', $this->Place->Task->read(null, $taskId));
     }
+	
+	public function admin_delete_place_batch($taskId = '') {
+		$this->autoRender = false;
+        $this->response->body(print_r($this->request->data['check_place_id']));
+		if (is_array($this->request->data['check_place_id'])) {
+			foreach($this->request->data['check_place_id'] as $place_id)
+			{
+				$this->Place->delete($place_id);
+			}
+        } else {
+            $this->Session->setFlash('請依照網址指示操作');
+        }
 
+		$this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));
+        
+    }
+	
     private function parseDate($s) {
         $s = trim($s);
         if (empty($s)) {

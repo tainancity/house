@@ -12,6 +12,7 @@
         echo $this->Html->script('jquery-ui');
         echo $this->Html->script('bootstrap.min');
         echo $this->Html->script('olc');
+		echo $this->Html->script('scripts');
         echo $scripts_for_layout;
         ?>
     </head>
