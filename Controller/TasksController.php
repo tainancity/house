@@ -193,5 +193,123 @@ class TasksController extends AppController {
             $this->set('report', $report);
         }
     }
+	
+	
+	function admin_report_list($id = null) {
+        if (!empty($id)) {
+            $task = $this->Task->read(null, $id);
+        }
+        $this->layout = 'print';
+        if (!empty($task)) {
+            $groups = $this->Task->Group->find('list');
+            $places = $this->Task->Place->find('all', array(
+                'conditions' => array(
+                    'Place.task_id' => $id,
+                ),
+                'contain' => array('PlaceLink'),
+                'order' => array('Place.group_id' => 'ASC'),
+            ));
+            $report = array();
+			$i=0;
+            foreach ($places AS $place) {
+				$i++;
+				if($place['Place']['model'] !== 'Land') {
+					$type = '空屋';
+				} else {
+					$type = '空地';
+				}
+				$is_adopt=$place['Place']['is_adopt']==1?"是":"否";
+				$is_rule_area=$place['Place']['is_rule_area']==1?"是":"否";
+				
+				if ($place['Place']['model'] === 'Land') {
+					if(!empty($place['PlaceLink']))
+					{
+						foreach ($place['PlaceLink'] AS $k => $v) {
+							$item['PlaceLink'][$k] = $this->Task->Place->Land->find('first', array(
+								'conditions' => array('Land.id' => $v['foreign_id']),
+								'contain' => array('Section'),
+							));
+							
+							if (!isset($report[$place['Place']['id']])) {
+								$report[$place['Place']['id']] = array(
+									'編號' => $i,
+									'區別' => $place['Place']['group_id'],
+									'類別' => $type,
+									'座落地點' => $place['Place']['title'],
+									'待改善數量' => $place['Place']['issue'],
+									'狀態' => $place['Place']['status'],
+									'待改善情形' => $place['Place']['issue'],
+									'地段' => $item['PlaceLink'][$k]['Land']['section_id'].$item['PlaceLink'][$k]['Section']['name'],
+									'地號' => $item['PlaceLink'][$k]['Land']['code'],
+									'空地面積(m²)' => '',
+									'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
+									'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
+									'開始列管日期' => $place['Place']['owner'],
+									'是否位於空地空屋管理自治條例公告實施範圍' => $is_rule_area,
+									'是否認養' => $is_adopt,
+									'設置類別' => $place['Place']['issue'],
+									'契約期限' => $place['Place']['adopt_end'],
+									'解除認養日期' => $place['Place']['adopt_closed'],
+									'認養維護單位' => $place['Place']['adopt_by'],
+									'備註' => $place['Place']['note'],
+								);
+							}
+						}
+					}
+					else{
+						$report[$place['Place']['id']] = array(
+							'編號' => $i,
+							'區別' => $place['Place']['group_id'],
+							'類別' => $type,
+							'座落地點' => $place['Place']['title'],
+							'待改善數量' => $place['Place']['issue'],
+							'狀態' => $place['Place']['status'],
+							'待改善情形' => $place['Place']['issue'],
+							'地段' => '',
+							'地號' => '',
+							'空地面積(m²)' => '',
+							'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
+							'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
+							'開始列管日期' => $place['Place']['owner'],
+							'是否位於空地空屋管理自治條例公告實施範圍' => $is_rule_area,
+							'是否認養' => $is_adopt,
+							'設置類別' => $place['Place']['issue'],
+							'契約期限' => $place['Place']['adopt_end'],
+							'解除認養日期' => $place['Place']['adopt_closed'],
+							'認養維護單位' => $place['Place']['adopt_by'],
+							'備註' => $place['Place']['note'],
+						);
+					}
+				}
+				else{
+					$report[$place['Place']['id']] = array(
+						'編號' => $i,
+						'區別' => $place['Place']['group_id'],
+						'類別' => $type,
+						'座落地點' => $place['Place']['title'],
+						'待改善數量' => $place['Place']['issue'],
+						'狀態' => $place['Place']['status'],
+						'待改善情形' => $place['Place']['issue'],
+						'地段' => '-',
+						'地號' => '-',
+						'空地面積(m²)' => '',
+						'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
+						'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
+						'開始列管日期' => $place['Place']['owner'],
+						'是否位於空地空屋管理自治條例公告實施範圍' => $is_rule_area,
+						'是否認養' => $is_adopt,
+						'設置類別' => $place['Place']['issue'],
+						'契約期限' => $place['Place']['adopt_end'],
+						'解除認養日期' => $place['Place']['adopt_closed'],
+						'認養維護單位' => $place['Place']['adopt_by'],
+						'備註' => $place['Place']['note'],
+					);
+				}
+				//print_r($item['PlaceLink']);   
+            }
+            $this->set('report', $report);
+        }
+		$this -> render('admin_report');
+    }
 
 }
