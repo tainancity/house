@@ -117,7 +117,21 @@ class TasksController extends AppController {
         }
         $this->redirect(array('action' => 'index'));
     }
+	
+	function admin_map($id = null) {
+        if (!empty($id)) {
+            $task = $this->Task->read(null, $id);
+			$places = $this->Task->Place->find('all', array(
+                'conditions' => array(
+                    'Place.task_id' => $id,
+                ),
+                'order' => array('Place.group_id' => 'ASC'),
+            ));
+			$this->set('places', $places);
+        }
+    }
 
+	
     function admin_report($id = null, $model = 'Land') {
         if (!empty($id)) {
             $task = $this->Task->read(null, $id);

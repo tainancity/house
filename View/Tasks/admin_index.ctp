@@ -56,7 +56,9 @@ if (!isset($url)) {
                         <div class="btn-group">
                             <?php echo $this->Html->link('空地', array('controller' => 'places', 'action' => 'index', 'Land', 'Task', $item['Task']['id']), array('class' => 'btn btn-default')); ?>
                             <?php echo $this->Html->link('空屋', array('controller' => 'places', 'action' => 'index', 'Door', 'Task', $item['Task']['id']), array('class' => 'btn btn-default')); ?>
-                            <?php
+                            <?php echo $this->Html->link('地圖', array('action' => 'map', $item['Task']['id']), array('class' => 'btn btn-default'));?>
+  
+							<?php
                             if ($loginMember['group_id'] == 1) {
                                 echo $this->Html->link('設定群組', array('controller' => 'groups', 'action' => 'tasks', 'Task', $item['Task']['id'], 'set'), array('class' => 'dialogControl btn btn-default'));
                                 echo $this->Html->link('空地報表', array('action' => 'report', $item['Task']['id'], 'Land'), array('class' => 'btn btn-default', 'target' => '_blank'));
