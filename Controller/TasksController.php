@@ -199,7 +199,7 @@ class TasksController extends AppController {
         if (!empty($id)) {
             $task = $this->Task->read(null, $id);
         }
-        $this->layout = 'print';
+        $this->layout = 'excel';
         if (!empty($task)) {
             $groups = $this->Task->Group->find('list');
             $places = $this->Task->Place->find('all', array(
