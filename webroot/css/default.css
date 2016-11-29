@@ -209,3 +209,4 @@ div.code-coverage-results span.result-good {
     border: 1px solid yellow;
     padding: 20px;
 }
+div#login{padding:20px;margin:50px auto;border:1px solid #ccc;text-align:center;width:40%;line-height:25px;}
