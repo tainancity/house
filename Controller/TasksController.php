@@ -215,7 +215,6 @@ class TasksController extends AppController {
         }
         $this->layout = 'excel';
         if (!empty($task)) {
-            $groups = $this->Task->Group->find('list');
             $places = $this->Task->Place->find('all', array(
                 'conditions' => array(
                     'Place.task_id' => $id,
@@ -223,6 +222,7 @@ class TasksController extends AppController {
                 'contain' => array('PlaceLink'),
                 'order' => array('Place.group_id' => 'ASC'),
             ));
+			$tasks = $this->Task->find('list');
             $report = array();
 			$i=0;
             foreach ($places AS $place) {
@@ -234,7 +234,13 @@ class TasksController extends AppController {
 				}
 				$is_adopt=$place['Place']['is_adopt']==1?"是":"否";
 				$is_rule_area=$place['Place']['is_rule_area']==1?"是":"否";
-				
+				if($place['Place']['latitude']!=""&&$place['Place']['longitude']!="")
+				{
+					$lat_lng=$place['Place']['latitude'].",".$place['Place']['longitude'];
+				}
+				else{
+					$lat_lng="";
+				}
 				if ($place['Place']['model'] === 'Land') {
 					if(!empty($place['PlaceLink']))
 					{
@@ -247,10 +253,12 @@ class TasksController extends AppController {
 							if (!isset($report[$place['Place']['id']])) {
 								$report[$place['Place']['id']] = array(
 									'編號' => $i,
-									'區別' => $place['Place']['group_id'],
+									'區別' => $tasks[$place['Place']['task_id']],
 									'類別' => $type,
 									'座落地點' => $place['Place']['title'],
-									'座標' => $place['Place']['latitude'].",".$place['Place']['longitude'],
+									'座標' => $lat_lng,
+									'緯度' => $place['Place']['latitude'],
+									'經度' => $place['Place']['longitude'],
 									'狀態' => $place['Place']['status'],
 									'待改善情形' => $place['Place']['issue'],
 									'地段' => $item['PlaceLink'][$k]['Section']['name'],
@@ -274,21 +282,24 @@ class TasksController extends AppController {
 					else{
 						$report[$place['Place']['id']] = array(
 							'編號' => $i,
-							'區別' => $place['Place']['group_id'],
+							'區別' => $tasks[$place['Place']['task_id']],
 							'類別' => $type,
 							'座落地點' => $place['Place']['title'],
-							'待改善數量' => $place['Place']['issue'],
+							'座標' => $lat_lng,
+							'緯度' => $place['Place']['latitude'],
+							'經度' => $place['Place']['longitude'],
 							'狀態' => $place['Place']['status'],
 							'待改善情形' => $place['Place']['issue'],
-							'地段' => '',
-							'地號' => '',
-							'空地面積(m²)' => '',
+							'地段' => '-',
+							'地號' => '-',
+							'空地面積(m²)' => $place['Place']['area'],
 							'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
 							'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
-							'開始列管日期' => $place['Place']['owner'],
+							'開始列管日期' => $place['Place']['date_begin'],
 							'是否位於空地空屋管理自治條例公告實施範圍' => $is_rule_area,
 							'是否認養' => $is_adopt,
-							'設置類別' => $place['Place']['issue'],
+							'設置類別' => $place['Place']['adopt_type'],
+							'認養契約簽訂起始日' => $place['Place']['adopt_begin'],
 							'契約期限' => $place['Place']['adopt_end'],
 							'解除認養日期' => $place['Place']['adopt_closed'],
 							'認養維護單位' => $place['Place']['adopt_by'],
@@ -298,26 +309,29 @@ class TasksController extends AppController {
 				}
 				else{
 					$report[$place['Place']['id']] = array(
-						'編號' => $i,
-						'區別' => $place['Place']['group_id'],
-						'類別' => $type,
-						'座落地點' => $place['Place']['title'],
-						'待改善數量' => $place['Place']['issue'],
-						'狀態' => $place['Place']['status'],
-						'待改善情形' => $place['Place']['issue'],
-						'地段' => '-',
-						'地號' => '-',
-						'空地面積(m²)' => '',
-						'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
-						'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
-						'開始列管日期' => $place['Place']['owner'],
-						'是否位於空地空屋管理自治條例公告實施範圍' => $is_rule_area,
-						'是否認養' => $is_adopt,
-						'設置類別' => $place['Place']['issue'],
-						'契約期限' => $place['Place']['adopt_end'],
-						'解除認養日期' => $place['Place']['adopt_closed'],
-						'認養維護單位' => $place['Place']['adopt_by'],
-						'備註' => $place['Place']['note'],
+							'編號' => $i,
+							'區別' => $tasks[$place['Place']['task_id']],
+							'類別' => $type,
+							'座落地點' => $place['Place']['title'],
+							'座標' => $lat_lng,
+							'緯度' => $place['Place']['latitude'],
+							'經度' => $place['Place']['longitude'],
+							'狀態' => $place['Place']['status'],
+							'待改善情形' => $place['Place']['issue'],
+							'地段' => '-',
+							'地號' => '-',
+							'空地面積(m²)' => $place['Place']['area'],
+							'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
+							'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
+							'開始列管日期' => $place['Place']['date_begin'],
+							'是否位於空地空屋管理自治條例公告實施範圍' => $is_rule_area,
+							'是否認養' => $is_adopt,
+							'設置類別' => $place['Place']['adopt_type'],
+							'認養契約簽訂起始日' => $place['Place']['adopt_begin'],
+							'契約期限' => $place['Place']['adopt_end'],
+							'解除認養日期' => $place['Place']['adopt_closed'],
+							'認養維護單位' => $place['Place']['adopt_by'],
+							'備註' => $place['Place']['note'],
 					);
 				}
 				//print_r($item['PlaceLink']);   

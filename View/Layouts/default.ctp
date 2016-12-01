@@ -34,9 +34,9 @@
                         case 1:
                             echo $this->Html->link('空地空屋列管資料', '/admin/tasks', array('class' => 'btn btn-default'));
                             echo $this->Html->link('專案', '/admin/projects', array('class' => 'btn btn-default'));
-                            echo $this->Html->link('Members', '/admin/members', array('class' => 'btn btn-default'));
-                            echo $this->Html->link('Groups', '/admin/groups', array('class' => 'btn btn-default'));
-                            echo $this->Html->link('Logout', '/members/logout', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('帳號管理', '/admin/members', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('群組', '/admin/groups', array('class' => 'btn btn-default'));
+                            echo $this->Html->link('登出', '/members/logout', array('class' => 'btn btn-default'));
                             break;
                         case 0:
                             echo $this->Html->link('登入', '/members/login', array('class' => 'btn btn-default'));
