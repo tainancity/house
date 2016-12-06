@@ -518,12 +518,13 @@ class PlacesController extends AppController {
 					$import_msg_code="";
 					for($i=0;$i<count($lands);$i++) {
 						$land_key=$i;
-						$land_keyword="";//格式：[中西]保安段00140000 ([區名]地段地號)		
-						if(@$lands[$land_key][1]!="")
+						$land_keyword="";//格式：[中西]保安段00140000 ([區名]地段地號)
+						$land_keyword_section="";						
+						if($lands[$land_key][1]!="")
 						{
 							if(strlen($lands[$land_key][1])==9)
-							{//中西區->中西 , 北區->北區(不變)
-								@$land_keyword_section=str_replace("區",'',$lands[$land_key][1]);
+							{//字串調整 EX:中西區->中西 , 北區->北區(不變)
+								$land_keyword_section=str_replace("區",'',$lands[$land_key][1]);
 							}
 							
 							$land_keyword.="[".$land_keyword_section."]";
@@ -533,8 +534,8 @@ class PlacesController extends AppController {
 						{
 							$lands[$land_key][5]="0".$lands[$land_key][5];
 						}
-						@$land_keyword.=str_replace("段",'',$lands[$land_key][4])."段".$lands[$land_key][5];
-						@$import_msg_code.=$lands[$land_key][5].",";
+						$land_keyword.=str_replace("段",'',$lands[$land_key][4])."段".$lands[$land_key][5];
+						$import_msg_code.=$lands[$land_key][5].",";
                         $lands_srch = $this->Place->Land->queryKeyword($land_keyword);
                         if (count($lands_srch['result']) === 1) {
                             $this->Place->PlaceLink->create();
