@@ -2,6 +2,10 @@
 
 App::uses('AppController', 'Controller');
 
+//http://stackoverflow.com/questions/28518238/how-can-i-use-my-own-external-class-in-cakephp-3-0
+//use geometry\geometry;
+require_once(ROOT .DS. 'house'.DS. 'Vendor' . DS . 'geometry' . DS . 'geometry.php');
+
 class PlacesController extends AppController {
 
     public $name = 'Places';
@@ -75,6 +79,7 @@ class PlacesController extends AppController {
 		
         $this->set('scope', $scope);
         $this->paginate['Place']['limit'] = 20;
+		$this->paginate['Place']['order'] = array('s_order' => 'ASC');
         $this->paginate['Place']['contain'] = array(
             'Modifier' => array(
                 'fields' => array('username'),
@@ -482,6 +487,7 @@ class PlacesController extends AppController {
                 }
             }
             foreach ($result AS $lands) {
+
                 $dataToSave = array('Place' => array(
                         'model' => 'Land',
                         'task_id' => $taskId,
@@ -501,6 +507,7 @@ class PlacesController extends AppController {
                         'note' => $lands[0][18],
                         'created_by' => $this->loginMember['id'],
                         'modified_by' => $this->loginMember['id'],
+						's_order' => $lands[0][0],
                 ));
                 if (!empty($this->data['Place']['group_id']) && $this->loginMember['group_id'] == 1) {
                     $dataToSave['Place']['group_id'] = $this->data['Place']['group_id'];
@@ -526,6 +533,10 @@ class PlacesController extends AppController {
 							{//字串調整 EX:中西區->中西 , 北區->北區(不變)
 								$land_keyword_section=str_replace("區",'',$lands[$land_key][1]);
 							}
+							else
+							{
+								$land_keyword_section=$lands[$land_key][1];
+							}
 							
 							$land_keyword.="[".$land_keyword_section."]";
 						}
@@ -546,7 +557,7 @@ class PlacesController extends AppController {
                             )));
                         }
                     }
-					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ".$lands[$land_key][3]."含 地號：".$import_msg_code." -匯入成功</span><br>";
+					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ".$lands[$land_key][3]." 含地號：".$import_msg_code." -匯入成功</span><br>";
                 }
 				else{
 					$import_msg.="<span style='color:#ff0000;'>第".$placeCounter."筆 ".$lands[$land_key][3]." -匯入失敗</span><br>";
@@ -577,6 +588,99 @@ class PlacesController extends AppController {
 		$this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));
         
     }
+	
+	public function admin_update_placegeo_batch($taskId = '') {
+		$this->autoRender = false;
+		
+		$limit=10;
+		$showmsg="自動轉換座標開始，一次轉換 ".$limit." 筆<hr>";
+		
+		if (!empty($taskId)) {
+            $items = $this->Place->find('all', array(
+				'conditions' => array('task_id' => $taskId,'latitude'=>NULL),
+                'contain' => array('PlaceLink'),
+				'limit' =>$limit,
+            ));
+        }
+		//$showmsg.=print_r($items);
+		if (!empty($items)) 
+		{
+			foreach ($items as  $item) 
+			{
+			
+				if (!empty($item)) 
+				{
+					
+					$bounds  = new LatLngBounds();			
+					if ($item['Place']['model'] === 'Land') {
+						foreach ($item['PlaceLink'] AS $k => $v) {
+							$item['PlaceLink'][$k] = $this->Place->Land->find('first', array(
+								'conditions' => array('Land.id' => $v['foreign_id']),
+							));
+						}
+					}
+					if (!empty($item['PlaceLink'])) 
+					{
+						$showmsg.=$item['Place']['title']." 轉換完成！<br>";
+						foreach($item['PlaceLink'] as $val)
+						{
+							//$showmsg.=$val['Land']['file'];
+							
+							$filename = ROOT .DS. 'house/webroot/json/'.$val['Land']['file'];
+							
+							//判斷是否有該檔案
+							if(file_exists($filename))
+							{
+								$filejson = "";
+								$file = fopen($filename, "r");
+								if($file != NULL){
+									//當檔案未執行到最後一筆，迴圈繼續執行(fgets一次抓一行)
+									while (!feof($file)) {
+										$filejson .= fgets($file);
+									}
+									fclose($file);
+								}
+								$filejson_a = json_decode($filejson,true);
+								if(!empty($filejson_a['features']))
+								{
+									foreach($filejson_a['features'] as $index => $json_val)
+									{
+										if ($val['Land']['code'] == $json_val['properties']['AA49']) {
+											foreach($json_val['geometry']['coordinates'] as $coordinates) {
+												foreach ($coordinates as $latlng) {
+													$bounds->extend(new LatLng($latlng[1],$latlng[0]));
+													
+												}
+											}			
+										}
+									}
+								}
+							}	
+						}
+						$dataToSave = $this->data;
+						$dataToSave['Place']['id'] = $item['Place']['id'];
+						$dataToSave['Place']['latitude'] = $bounds->getCenter()->getLat();
+						$dataToSave['Place']['longitude'] = $bounds->getCenter()->getLng();
+						$dataToSave['Place']['modified'] = date('Y-m-d H:i:s');
+						$this->Place->save($dataToSave);
+					}
+					else
+					{
+						$showmsg.=$item['Place']['title']." 轉換失敗，因為沒有對應地號！<br>";
+					}
+				} 
+
+			}//end foreach items
+		}//end empty items
+        else {
+			$this->Session->setFlash('請依照網址指示操作');
+			$this->redirect($this->referer());
+		}
+		
+		$this->response->body($showmsg);
+		
+    }
+	
 	
     private function parseDate($s) {
         $s = trim($s);

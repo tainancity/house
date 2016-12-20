@@ -64,6 +64,7 @@ if (!isset($url)) {
                                 echo $this->Html->link('空地報表', array('action' => 'report', $item['Task']['id'], 'Land'), array('class' => 'btn btn-default', 'target' => '_blank'));
                                 echo $this->Html->link('空屋報表', array('action' => 'report', $item['Task']['id'], 'Door'), array('class' => 'btn btn-default', 'target' => '_blank'));
 								echo $this->Html->link('列管明細表', array('action' => 'report_list', $item['Task']['id']), array('class' => 'btn btn-default', 'target' => '_blank'));
+								echo $this->Html->link('自動轉換座標', array('controller' => 'places', 'action' => 'update_placegeo_batch', $item['Task']['id']), array('class' => 'btn btn-default', 'target' => '_blank'));
                                 echo $this->Html->link('編輯', array('action' => 'edit', $item['Task']['id']), array('class' => 'dialogControl btn btn-default'));
                                 echo $this->Html->link('刪除', array('action' => 'delete', $item['Task']['id']), array('class' => 'btn btn-default'), '確定要刪除？');
                             }

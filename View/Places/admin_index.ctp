@@ -76,8 +76,16 @@ if (!empty($foreignId) && !empty($foreignModel)) {
                 if ($i++ % 2 == 0) {
                     $class = ' class="altrow"';
                 }
+				if($item['Place']['latitude']==null)
+				{
+					$no_lat_lng_alert='style="background:#FFCFCF"';
+				}
+				else
+				{
+					$no_lat_lng_alert='';
+				}
                 ?>
-                <tr<?php echo $class; ?>>
+                <tr<?php echo $class; ?> <?php echo $no_lat_lng_alert; ?>>
 					<td>
 					<input type="checkbox" name ="check_place_id[]" value="<?php echo  $item['Place']['id'];  ?>">
 					</td>
