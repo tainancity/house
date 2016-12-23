@@ -64,7 +64,7 @@ class Place extends AppModel {
     public function beforeFind($query) {
         $loginMember = Configure::read('loginMember');
         if ($loginMember['group_id'] != 0 && $loginMember['group_id'] != 1) {
-            $query['conditions']['Place.group_id'] = $loginMember['group_id'];
+            //$query['conditions']['Place.group_id'] = $loginMember['group_id'];//取消群組限制,讓admin上傳可以給區公所群組看到
         }
         return $query;
     }

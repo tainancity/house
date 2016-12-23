@@ -5,6 +5,7 @@ App::uses('AppController', 'Controller');
 //http://stackoverflow.com/questions/28518238/how-can-i-use-my-own-external-class-in-cakephp-3-0
 //use geometry\geometry;
 require_once(ROOT .DS. 'house'.DS. 'Vendor' . DS . 'geometry' . DS . 'geometry.php');
+ini_set('memory_limit', '256M');
 
 class PlacesController extends AppController {
 
@@ -619,9 +620,9 @@ class PlacesController extends AppController {
 							));
 						}
 					}
+					//$showmsg.=print_R($item['PlaceLink']);
 					if (!empty($item['PlaceLink'])) 
-					{
-						$showmsg.=$item['Place']['title']." 轉換完成！<br>";
+					{	
 						foreach($item['PlaceLink'] as $val)
 						{
 							//$showmsg.=$val['Land']['file'];
@@ -662,7 +663,15 @@ class PlacesController extends AppController {
 						$dataToSave['Place']['latitude'] = $bounds->getCenter()->getLat();
 						$dataToSave['Place']['longitude'] = $bounds->getCenter()->getLng();
 						$dataToSave['Place']['modified'] = date('Y-m-d H:i:s');
-						$this->Place->save($dataToSave);
+						if($bounds->getCenter()->getLat()!="0.00000000"&&$bounds->getCenter()->getLng()!="180.00000000")
+						{
+							$this->Place->save($dataToSave);
+							$showmsg.=$item['Place']['title']." 轉換完成！<br>";
+						}
+						else
+						{
+							$showmsg.=$item['Place']['title']." 轉換失敗，因為沒有對應地號！<br>";
+						}
 					}
 					else
 					{
