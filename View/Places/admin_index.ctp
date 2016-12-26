@@ -28,7 +28,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
         }
         ?></h2>
     <div class="btn-group">
-		<form action="" method="get" class="form-inline">	
+		<form action="" method="post" class="form-inline">	
         <?php echo $this->Html->link('新增', array_merge($url, array('action' => 'add')), array('class' => 'btn btn-default')); ?>
         <?php echo $this->Html->link('匯入', array('action' => 'import', $typeModel, $foreignId), array('class' => 'btn btn-default'));
         if($typeModel === 'Land') {

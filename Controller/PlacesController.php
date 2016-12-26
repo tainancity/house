@@ -75,7 +75,10 @@ class PlacesController extends AppController {
             }
         }
 		//搜尋條件
-		$conditions['title  LIKE'] = "%".$this->request->query('data.srch_title')."%";
+		$srch_title=@$this->request->data['srch_title']==""?"":$this->request->data['srch_title'];//POST
+		//$conditions['title  LIKE'] = "%".$this->request->query('data.srch_title')."%";//GET
+		$conditions['title  LIKE'] = "%".$srch_title."%";
+		
 		$this->paginate['Place']['conditions'] = $conditions;
 		
         $this->set('scope', $scope);
@@ -96,7 +99,7 @@ class PlacesController extends AppController {
         $this->set('groups', $this->Place->Group->find('list'));
         $this->set('tasks', $this->Place->Task->find('list'));
         $this->set('url', array($typeModel, $foreignModel, $foreignId));
-		$this->set('GET_title',$this->request->query('data.srch_title'));
+		$this->set('GET_title',$srch_title);
     }
 
     function admin_view($id = null) {
@@ -593,15 +596,18 @@ class PlacesController extends AppController {
 	public function admin_update_placegeo_batch($taskId = '') {
 		$this->autoRender = false;
 		
-		$limit=10;
-		$showmsg="自動轉換座標開始，一次轉換 ".$limit." 筆<hr>";
+		$count=0;
+		$limit=20;
+		$showmsg="自動轉換座標開始，一次至少轉換成功 ".$limit." 筆<hr>";
 		
 		if (!empty($taskId)) {
+			
             $items = $this->Place->find('all', array(
 				'conditions' => array('task_id' => $taskId,'latitude'=>NULL),
                 'contain' => array('PlaceLink'),
-				'limit' =>$limit,
+				//'limit' =>$limit,
             ));
+
         }
 		//$showmsg.=print_r($items);
 		if (!empty($items)) 
@@ -621,8 +627,9 @@ class PlacesController extends AppController {
 						}
 					}
 					//$showmsg.=print_R($item['PlaceLink']);
-					if (!empty($item['PlaceLink'])) 
+					if (!empty($item['PlaceLink'])&&$count<=$limit) 
 					{	
+						
 						foreach($item['PlaceLink'] as $val)
 						{
 							//$showmsg.=$val['Land']['file'];
@@ -667,6 +674,7 @@ class PlacesController extends AppController {
 						{
 							$this->Place->save($dataToSave);
 							$showmsg.=$item['Place']['title']." 轉換完成！<br>";
+							$count++;
 						}
 						else
 						{
@@ -685,7 +693,10 @@ class PlacesController extends AppController {
 			$this->Session->setFlash('請依照網址指示操作');
 			$this->redirect($this->referer());
 		}
-		
+		if($count==0)
+		{
+			$showmsg="全數轉換完成，剩下資料皆為沒有對應地號";
+		}
 		$this->response->body($showmsg);
 		
     }

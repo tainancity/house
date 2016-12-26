@@ -21,8 +21,10 @@ var places = [
 		<div class="place_title">開始列管日期: </div><div class="place_content">'.$place["Place"]['date_begin'].'</div><br>
 		<div class="place_title">備註: </div><div class="place_content">'.$place["Place"]['note'].'</div><br>
 		';
+		$place_title=$place["Place"]['title'];
 		$place_detail=preg_replace('/\s+/', '', $place_detail);
-		echo "['".$place["Place"]['title']."', ".$place["Place"]['latitude'].", ".$place["Place"]['longitude'].", '".$place_detail."','".$icon."'],";
+		$place_detail=str_replace("'", '', $place_detail);
+		echo "['".$place_title."', ".$place["Place"]['latitude'].", ".$place["Place"]['longitude'].", '".$place_detail."','".$icon."'],";
 	}
 	$i++;
   }
