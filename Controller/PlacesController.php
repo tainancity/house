@@ -678,12 +678,12 @@ class PlacesController extends AppController {
 						}
 						else
 						{
-							$showmsg.=$item['Place']['title']." 轉換失敗，因為沒有對應地號！<br>";
+							//$showmsg.=$item['Place']['title']." 轉換失敗，因為沒有對應地號！<br>";
 						}
 					}
 					else
 					{
-						$showmsg.=$item['Place']['title']." 轉換失敗，因為沒有對應地號！<br>";
+						//$showmsg.=$item['Place']['title']." 轉換失敗，因為沒有對應地號！<br>";
 					}
 				} 
 

@@ -7,7 +7,78 @@ class TasksController extends AppController {
     public $name = 'Tasks';
     public $paginate = array();
     public $helpers = array();
+	
+	function beforeFilter() {
+		$this->Auth->allow('index','map');//不需登入就能使用的頁面
+	}
+	
+	function index($foreignModel = null, $foreignId = 0, $op = null) {
+        $foreignId = intval($foreignId);
+        $foreignKeys = array();
 
+
+        $habtmKeys = array(
+            'Group' => 'group_id',
+        );
+        $foreignKeys = array_merge($habtmKeys, $foreignKeys);
+
+        $scope = array();
+        if (array_key_exists($foreignModel, $foreignKeys) && $foreignId > 0) {
+            $scope['Task.' . $foreignKeys[$foreignModel]] = $foreignId;
+
+            $joins = array(
+                'Group' => array(
+                    0 => array(
+                        'table' => 'groups_tasks',
+                        'alias' => 'GroupsTask',
+                        'type' => 'inner',
+                        'conditions' => array('GroupsTask.Task_id = Task.id'),
+                    ),
+                    1 => array(
+                        'table' => 'groups',
+                        'alias' => 'Group',
+                        'type' => 'inner',
+                        'conditions' => array('GroupsTask.Group_id = Group.id'),
+                    ),
+                ),
+            );
+            if (array_key_exists($foreignModel, $habtmKeys)) {
+                unset($scope['Task.' . $foreignKeys[$foreignModel]]);
+                if ($op != 'set') {
+                    $scope[$joins[$foreignModel][0]['alias'] . '.' . $foreignKeys[$foreignModel]] = $foreignId;
+                    $this->paginate['Task']['joins'] = $joins[$foreignModel];
+                }
+            }
+        } else {
+            $foreignModel = '';
+        }
+        $this->set('scope', $scope);
+        $this->paginate['Task']['limit'] = 99;
+        $items = $this->paginate($this->Task, $scope);
+
+        if ($op == 'set' && !empty($joins[$foreignModel]) && !empty($foreignModel) && !empty($foreignId) && !empty($items)) {
+            foreach ($items AS $key => $item) {
+                $items[$key]['option'] = $this->Task->find('count', array(
+                    'joins' => $joins[$foreignModel],
+                    'conditions' => array(
+                        'Task.id' => $item['Task']['id'],
+                        $foreignModel . '.id' => $foreignId,
+                    ),
+                ));
+                if ($items[$key]['option'] > 0) {
+                    $items[$key]['option'] = 1;
+                }
+            }
+            $this->set('op', $op);
+        }
+
+        $this->set('items', $items);
+		
+        $this->set('foreignId', $foreignId);
+        $this->set('foreignModel', $foreignModel);
+		$this -> render('index');
+    }
+	
     function admin_index($foreignModel = null, $foreignId = 0, $op = null) {
         $foreignId = intval($foreignId);
         $foreignKeys = array();
@@ -116,6 +187,27 @@ class TasksController extends AppController {
             $this->Session->setFlash('資料已經刪除');
         }
         $this->redirect(array('action' => 'index'));
+    }
+	
+	
+	function map($id = null) {
+        if (!empty($id)) {
+            $task = $this->Task->read(null, $id);
+			$places = $this->Task->Place->find('all', array(
+                'conditions' => array(
+                    'Place.task_id' => $id,
+                ),
+                'order' => array('Place.group_id' => 'ASC'),
+            ));
+			foreach ($places as $index=> $place) {
+				$places[$index]["Place"]['owner']="(不公開)";
+			}
+			$this->set('places', $places);
+			$this -> render('admin_map');
+        }
+		else {
+            $this->Session->setFlash('抱歉！找不到資料');
+        }
     }
 	
 	function admin_map($id = null) {
