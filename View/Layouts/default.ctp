@@ -20,7 +20,7 @@
         <div class="container">
             <div id="header">
                 <h1><?php
-                    if (@$loginMember['group_id'] == 0) {
+                    if ($loginMember['group_id'] == 0) {
                         echo $this->Html->link('空地空屋管理系統', '/');
                     } else {
                         echo $this->Html->link('空地空屋管理系統', '/admin/tasks');
@@ -30,7 +30,7 @@
             <div id="content">
                 <div class="btn-group pull-right">
                     <?php
-                    switch (@$loginMember['group_id']) {
+                    switch ($loginMember['group_id']) {
                         case 1:
                             echo $this->Html->link('空地空屋列管資料', '/admin/tasks', array('class' => 'btn btn-default'));
                             echo $this->Html->link('專案', '/admin/projects', array('class' => 'btn btn-default'));

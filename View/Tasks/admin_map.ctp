@@ -1,4 +1,11 @@
-<h2><?php echo $this->Html->link('任務', '/admin/tasks');?></h2>
+<h2>
+<?php
+if ($loginMember['group_id'] == 0) {
+} else {
+	echo $this->Html->link('任務', '/admin/tasks');
+}
+?>
+</h2>
 <style>#map {height: 700px;;width:100%;}</style>
 <img src='http://maps.google.com/mapfiles/ms/icons/green-dot.png'>空屋
 <img src='http://maps.google.com/mapfiles/ms/icons/red-dot.png'>空地

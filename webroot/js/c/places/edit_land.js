@@ -105,7 +105,10 @@ $(function () {
                         }
                     }
                 }
-                $('#PlaceTitle').val(ui.item.label);
+				if($('#PlaceTitle').val()=="")
+				{
+					$('#PlaceTitle').val(ui.item.label);
+				}
                 $('#PlaceForeignId').val(ui.item.id);
             }
         },

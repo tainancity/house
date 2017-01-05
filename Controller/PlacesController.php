@@ -82,7 +82,7 @@ class PlacesController extends AppController {
 		$this->paginate['Place']['conditions'] = $conditions;
 		
         $this->set('scope', $scope);
-        $this->paginate['Place']['limit'] = 20;
+        $this->paginate['Place']['limit'] = 40;
 		$this->paginate['Place']['order'] = array('s_order' => 'ASC');
         $this->paginate['Place']['contain'] = array(
             'Modifier' => array(
@@ -367,6 +367,10 @@ class PlacesController extends AppController {
             $placeCounter = 0;
             while ($line = fgetcsv($fh, 2048)) {
                 if (count($line) === 14 && is_numeric($line[5])) {
+					if($line[1]!=""&&$line[2]!=""&&$line[3]!="")
+					{//必須前幾列有填,才能作為後面列參考範例
+						$lastLine = $line;
+					}
                     foreach ($line AS $k => $v) {
                         $line[$k] = trim(str_replace("\n", ' ', $v));
                         if (empty($line[$k]) && isset($lastLine[$k])) {
@@ -377,7 +381,6 @@ class PlacesController extends AppController {
                         $result[$line[0]] = array();
                     }
                     $result[$line[0]][] = $line;
-                    $lastLine = $line;
                 }
             }
             foreach ($result AS $lands) {
@@ -477,6 +480,10 @@ class PlacesController extends AppController {
             $placeCounter = 0;
             while ($line = fgetcsv($fh, 2048)) {
                 if (count($line) === 19 && is_numeric($line[5])) {
+					if($line[1]!=""&&$line[2]!=""&&$line[3]!="")
+					{//必須前幾列有填,才能作為後面列參考範例
+						$lastLine = $line;
+					}
                     foreach ($line AS $k => $v) {
                         $line[$k] = trim(str_replace("\n", ' ', $v));
                         if (empty($line[$k]) && isset($lastLine[$k])) {
@@ -487,9 +494,10 @@ class PlacesController extends AppController {
                         $result[$line[0]] = array();
                     }
                     $result[$line[0]][] = $line;
-                    $lastLine = $line;
+					
                 }
             }
+			//$import_msg.=print_r($result);
             foreach ($result AS $lands) {
 
                 $dataToSave = array('Place' => array(
@@ -513,6 +521,8 @@ class PlacesController extends AppController {
                         'modified_by' => $this->loginMember['id'],
 						's_order' => $lands[0][0],
                 ));
+				
+				
                 if (!empty($this->data['Place']['group_id']) && $this->loginMember['group_id'] == 1) {
                     $dataToSave['Place']['group_id'] = $this->data['Place']['group_id'];
                 } else {
@@ -549,8 +559,16 @@ class PlacesController extends AppController {
 						{
 							$lands[$land_key][5]="0".$lands[$land_key][5];
 						}
-						$land_keyword.=str_replace("段",'',$lands[$land_key][4])."段".$lands[$land_key][5];
+						if(substr($lands[$land_key][4],-3,3)=="段")
+						{
+							$land_keyword.=$lands[$land_key][4].$lands[$land_key][5];
+						}
+						else
+						{
+							$land_keyword.=$lands[$land_key][4]."段".$lands[$land_key][5];
+						}
 						$import_msg_code.=$lands[$land_key][5].",";
+						//測試網址：.../house/lands/q/xxx
                         $lands_srch = $this->Place->Land->queryKeyword($land_keyword);
                         if (count($lands_srch['result']) === 1) {
                             $this->Place->PlaceLink->create();
@@ -566,6 +584,7 @@ class PlacesController extends AppController {
 				else{
 					$import_msg.="<span style='color:#ff0000;'>第".$placeCounter."筆 ".$lands[$land_key][3]." -匯入失敗</span><br>";
 				}
+				
             }
             $this->Session->setFlash("共".count($result)."筆資料 匯入了 {$placeCounter} 筆資料<br>".$import_msg);
             $this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));
@@ -579,14 +598,16 @@ class PlacesController extends AppController {
 	
 	public function admin_delete_place_batch($taskId = '') {
 		$this->autoRender = false;
-        $this->response->body(print_r($this->request->data['check_place_id']));
-		if (is_array($this->request->data['check_place_id'])) {
-			foreach($this->request->data['check_place_id'] as $place_id)
-			{
-				$this->Place->delete($place_id);
+        //$this->response->body(print_r($this->request->data['check_place_id']));
+		if (isset($this->request->data['check_place_id'])) {
+			if (is_array($this->request->data['check_place_id'])) {
+				foreach($this->request->data['check_place_id'] as $place_id)
+				{
+					$this->Place->delete($place_id);
+				}
 			}
         } else {
-            $this->Session->setFlash('請依照網址指示操作');
+            $this->Session->setFlash('請勾選刪除項目');
         }
 
 		$this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));

@@ -8,9 +8,12 @@ class TasksController extends AppController {
     public $paginate = array();
     public $helpers = array();
 	
-	function beforeFilter() {
-		$this->Auth->allow('index','map');//不需登入就能使用的頁面
-	}
+	public function beforeFilter() {
+        parent::beforeFilter();
+        if (isset($this->Auth)) {
+            $this->Auth->allow('index','map');//不需登入就能使用的頁面
+        }
+    }
 	
 	function index($foreignModel = null, $foreignId = 0, $op = null) {
         $foreignId = intval($foreignId);
