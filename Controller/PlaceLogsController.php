@@ -49,5 +49,28 @@ class PlaceLogsController extends AppController {
         }
         $this->set('belongsToModels', $belongsToModels);
     }
+	
+	function admin_delete($id = null) {
+        if (!empty($id)) {
+			
+			$item = $this->PlaceLog->find('first', array(
+					'conditions' => array('id' => $id),    
+				));	
+            if ($this->PlaceLog->delete($id)) {
+				//unlink(WWW_ROOT."media/transfer/".$item['PlaceLog']['dirname']."/".$item['PlaceLog']['basename']);//此檔案,系統會自動耦合刪除(有關連)
+				unlink(WWW_ROOT."media/filter/original/".$item['PlaceLog']['dirname']."/".$item['PlaceLog']['basename']);
+				unlink(WWW_ROOT."media/filter/l/".$item['PlaceLog']['dirname']."/".$item['PlaceLog']['basename']);
+				unlink(WWW_ROOT."media/filter/m/".$item['PlaceLog']['dirname']."/".$item['PlaceLog']['basename']);
+				//unlink(WWW_ROOT."media/filter/s/".$item['PlaceLog']['dirname']."/".$item['PlaceLog']['basename']);
+				
+                $this->Session->setFlash('資料已經刪除');
+            } else {
+                $this->Session->setFlash('請依照網址指示操作');
+            }
+        } else {
+            $this->Session->setFlash('請依照網址指示操作');
+        }
+		$this->redirect(array('controller' => 'Places','action' => 'view', $this->request->query('place_id')));
+    }
 
 }

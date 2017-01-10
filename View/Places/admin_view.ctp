@@ -170,6 +170,9 @@
                 <th>操作人</th>
                 <th>照片</th>
                 <th>記錄</th>
+				<?php if ($loginMember['group_id'] == 1) {?>
+				<th>操作</th>
+				<?php } ?>
             </tr>
             <?php
             foreach ($item['PlaceLog'] AS $log) {
@@ -185,6 +188,16 @@
                         }
                         ?></td>
                     <td><?php echo nl2br($log['note']); ?></td>
+					<?php if ($loginMember['group_id'] == 1) {?>
+					<td>
+					<?php
+					if ($loginMember['group_id'] == 1) {
+						echo $this->Html->link('刪除記錄(含照片)', array('controller' => 'PlaceLogs','action' => 'delete', $log['id'],'?' => array('place_id' => $item['Place']['id'])), array('class' => 'btn btn-default'), '確定要刪除？');
+					}
+					?>					
+					</td>
+					<?php } ?>
+					
                 </tr>
                 <?php
             }

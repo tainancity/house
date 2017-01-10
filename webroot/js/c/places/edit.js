@@ -1,5 +1,8 @@
 var map, marker;
 $(function () {
+	if (!pointLatLng) {
+        pointLatLng = new google.maps.LatLng(22.989992, 120.184843);
+    }
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
         zoom: 14,
         center: pointLatLng,
@@ -31,7 +34,10 @@ $(function () {
             var point = new google.maps.LatLng(ui.item.latitude, ui.item.longitude);
             $('#PlaceLatitude').val(ui.item.latitude);
             $('#PlaceLongitude').val(ui.item.longitude);
-            $('#PlaceTitle').val(ui.item.label);
+			if($('#PlaceTitle').val()=="")
+			{
+				$('#PlaceTitle').val(ui.item.label);
+			}
             $('#PlaceForeignId').val(ui.item.id);
             marker.setPosition(point);
             map.setCenter(point);
