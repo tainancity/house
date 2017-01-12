@@ -56,7 +56,7 @@ $(function () {
     });
 
     $('a#geoInput').click(function () {
-        getLocation(placeLocation);
+		getLocation('placeLocation');
         return false;
     });
     $('a#geoGoogle').click(function () {
