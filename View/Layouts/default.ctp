@@ -31,18 +31,19 @@
                 <div class="btn-group pull-right">
                     <?php
                     switch ($loginMember['group_id']) {
-                        case 1:
+                        case 1://管理者
                             echo $this->Html->link('空地空屋列管資料', '/admin/tasks', array('class' => 'btn btn-default'));
+							echo $this->Html->link('列管編輯記錄', '/admin/PlaceLogs', array('class' => 'btn btn-default'));
                             echo $this->Html->link('專案', '/admin/projects', array('class' => 'btn btn-default'));
                             echo $this->Html->link('帳號管理', '/admin/members', array('class' => 'btn btn-default'));
                             echo $this->Html->link('群組', '/admin/groups', array('class' => 'btn btn-default'));
                             echo $this->Html->link('登出', '/members/logout', array('class' => 'btn btn-default'));
                             break;
-                        case 0:
+                        case 0://未登入
 							echo $this->Html->link('公開空地空屋列管地圖', '/tasks', array('class' => 'btn btn-default'));
                             echo $this->Html->link('管理者登入', '/members/login', array('class' => 'btn btn-default'));
                             break;
-                        default:
+                        default://局處
                             echo $this->Html->link('空地空屋列管資料', '/admin/tasks', array('class' => 'btn btn-default'));
                             echo $this->Html->link('追蹤項目', '/admin/trackers/user', array('class' => 'btn btn-default'));
                             echo $this->Html->link('登出', '/members/logout', array('class' => 'btn btn-default'));

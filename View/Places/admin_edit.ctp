@@ -28,7 +28,7 @@
 					echo '
 					<div class="btn-group">
 						<a href="#" id="geoInput" class="btn btn-default">定位目前位置</a>
-						<a href="#" id="geoGoogle" class="btn btn-default">透過Google地址定位</a>
+						<a href="#" id="geoGoogle" class="btn btn-default">輸入地址查找座標</a>
 					</div>
 					';
 					break;

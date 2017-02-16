@@ -169,7 +169,8 @@
                 <th>狀態</th>
                 <th>操作人</th>
                 <th>照片</th>
-                <th>記錄</th>
+                <th>備註</th>
+				<th>記錄</th>
 				<?php if ($loginMember['group_id'] == 1) {?>
 				<th>操作</th>
 				<?php } ?>
@@ -188,6 +189,7 @@
                         }
                         ?></td>
                     <td><?php echo nl2br($log['note']); ?></td>
+					<td><?php echo nl2br($log['update_log']); ?></td>
 					<?php if ($loginMember['group_id'] == 1) {?>
 					<td>
 					<?php

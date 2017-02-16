@@ -6,7 +6,7 @@ class PlaceLogsController extends AppController {
 
     public $name = 'PlaceLogs';
     public $paginate = array();
-    public $helpers = array();
+    public $helpers = array('Media.Media');
 
     function admin_add($foreignModel = null, $foreignId = 0) {
         $foreignId = intval($foreignId);
@@ -50,6 +50,7 @@ class PlaceLogsController extends AppController {
         $this->set('belongsToModels', $belongsToModels);
     }
 	
+	
 	function admin_delete($id = null) {
         if (!empty($id)) {
 			
@@ -72,5 +73,34 @@ class PlaceLogsController extends AppController {
         }
 		$this->redirect(array('controller' => 'Places','action' => 'view', $this->request->query('place_id')));
     }
+	
+	
+	function admin_index() {
+		
 
+		$this->paginate['PlaceLog']['limit'] = 20;
+		$this->paginate['PlaceLog']['order'] = array('created' => 'DESC');
+        $this->paginate['PlaceLog']['contain'] = array(
+            'Creator' => array(
+				'fields' => array('username'),
+			),
+			'Place',
+			'Place.Group' => array(
+				'fields' => array('name'),
+			),
+			'Place.Task' => array(
+				'fields' => array('title'),
+			),
+			
+        );
+		$item=$this->paginate($this->PlaceLog);
+		$this->set('item',$item);
+        if (!empty($item)) {
+            $this->set('item', $item);
+	
+        } else {
+            $this->Session->setFlash('請依照網址指示操作');
+            $this->redirect(array('action' => 'index'));
+        }
+    }
 }

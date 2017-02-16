@@ -272,6 +272,92 @@ class PlacesController extends AppController {
                 $dataToSave['PlaceLog']['place_id'] = $dataToSave['Place']['id'];
                 $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
                 $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
+				//更新記錄
+				if (!empty($id)) {
+					$loaded_item = $this->Place->find('first', array(
+						'conditions' => array('Place.id' => $id),
+						'contain' => array('PlaceLink'),
+					));
+				}
+				$update_log="";
+				if($item['Place']['title']!=$dataToSave['Place']['title'])
+				{
+					$update_log="名稱：".$item['Place']['title']." -> ".$dataToSave['Place']['title']." \r\n".$update_log;
+				}
+				if($item['Place']['description']!=$dataToSave['Place']['description'])
+				{
+					$update_log="位置描述：".$item['Place']['description']." -> ".$dataToSave['Place']['description']." \r\n".$update_log;
+				}
+				if($item['Place']['latitude']!=$dataToSave['Place']['latitude'])
+				{
+					$update_log="緯度：".$item['Place']['latitude']." -> ".$dataToSave['Place']['latitude']." \r\n".$update_log;
+				}
+				if($item['Place']['longitude']!=$dataToSave['Place']['longitude'])
+				{
+					$update_log="經度：".$item['Place']['longitude']." -> ".$dataToSave['Place']['longitude']." \r\n".$update_log;
+				}
+				
+				if($item['Place']['area']!=$dataToSave['Place']['area'])
+				{
+					$update_log="面積：".$item['Place']['area']." -> ".$dataToSave['Place']['area']." \r\n".$update_log;
+				}
+				if($item['Place']['is_adopt']!=$dataToSave['Place']['is_adopt'])
+				{
+					$yes_or_no_s=$item['Place']['is_adopt']==1?"是":"否";
+					$yes_or_no_e=$dataToSave['Place']['is_adopt']==1?"是":"否";
+					$update_log="是否為認養地：".$yes_or_no_s." -> ".$yes_or_no_e." \r\n".$update_log;
+				}
+				if($item['Place']['adopt_type']!=$dataToSave['Place']['adopt_type'])
+				{
+					$update_log="認養類型：".$item['Place']['adopt_type']." -> ".$dataToSave['Place']['adopt_type']." \r\n".$update_log;
+				}
+				if($item['Place']['status']!=$dataToSave['Place']['status'])
+				{
+					$update_log="狀態：".$item['Place']['status']." -> ".$dataToSave['Place']['status']." \r\n".$update_log;
+				}
+				if($item['Place']['issue']!=$dataToSave['Place']['issue'])
+				{
+					$update_log="待改善情形：".$item['Place']['issue']." -> ".$dataToSave['Place']['issue']." \r\n".$update_log;
+				}
+				if($item['Place']['inspect']!=$dataToSave['Place']['inspect'])
+				{
+					$update_log="稽查單位：".$item['Place']['inspect']." -> ".$dataToSave['Place']['inspect']." \r\n".$update_log;
+				}
+				if($item['Place']['ownership']!=$dataToSave['Place']['ownership'])
+				{
+					$update_log="土地/房屋權屬：".$item['Place']['ownership']." -> ".$dataToSave['Place']['ownership']." \r\n".$update_log;
+				}
+				if($item['Place']['owner']!=$dataToSave['Place']['owner'])
+				{
+					$update_log="土地/房屋所有權人：".$item['Place']['owner']." -> ".$dataToSave['Place']['owner']." \r\n".$update_log;
+				}
+				if($item['Place']['date_begin']!=$dataToSave['Place']['date_begin'])
+				{
+					$update_log="開始列管日期：".$item['Place']['date_begin']." -> ".$dataToSave['Place']['date_begin']." \r\n".$update_log;
+				}	
+				if($item['Place']['is_rule_area']!=$dataToSave['Place']['is_rule_area'])
+				{
+					$yes_or_no_s=$item['Place']['is_rule_area']==1?"是":"否";
+					$yes_or_no_e=$dataToSave['Place']['is_rule_area']==1?"是":"否";
+					$update_log="是否位於空地空屋管理自治條例公告實施範圍：".$yes_or_no_s." -> ".$yes_or_no_e." \r\n".$update_log;
+				}
+				if($item['Place']['adopt_begin']!=$dataToSave['Place']['adopt_begin'])
+				{
+					$update_log="認養契約簽訂起始日：".$item['Place']['adopt_begin']." -> ".$dataToSave['Place']['adopt_begin']." \r\n".$update_log;
+				}
+				if($item['Place']['adopt_end']!=$dataToSave['Place']['adopt_end'])
+				{
+					$update_log="認養契約期限：".$item['Place']['adopt_end']." -> ".$dataToSave['Place']['adopt_end']." \r\n".$update_log;
+				}			
+				if($item['Place']['adopt_closed']!=$dataToSave['Place']['adopt_closed'])
+				{
+					$update_log="解除認養日期：".$item['Place']['adopt_closed']." -> ".$dataToSave['Place']['adopt_closed']." \r\n".$update_log;
+				}
+				if($item['Place']['adopt_by']!=$dataToSave['Place']['adopt_by'])
+				{
+					$update_log="認養維護單位：".$item['Place']['adopt_by']." -> ".$dataToSave['Place']['adopt_by']." \r\n".$update_log;
+				}
+				$dataToSave['PlaceLog']['update_log']=$update_log;
                 $this->Place->PlaceLog->create();
                 $this->Place->PlaceLog->save($dataToSave);
 
