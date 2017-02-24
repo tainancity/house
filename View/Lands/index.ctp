@@ -1,6 +1,13 @@
 <div id="LandsIndex">
     <div class="input">
-        <input type="text" class="col-md-12" id="landInput" />
+        輸入地段號(格式：[中西]保安段00140000)<input type="text" class="col-md-12" id="landInput" placeholder="搜尋格式：[中西]保安段00140000" />
+		<div style="margin:10px" class="col-md-12">
+		經緯度:<input type="text"  id="lnglat" placeholder="自動產生經緯度" /><br>
+		緯經度:<input type="text"  id="latlng" placeholder="自動產生緯經度" /><br>
+		經度:<input type="text"  id="lng" placeholder="自動產生經度" />
+		緯度:<input type="text"  id="lat" placeholder="自動產生緯度" />
+			
+		</div>
         <div id="mapCanvas" class="col-md-12" style="height: 600px;"></div>
     </div>
     <script type="text/javascript">

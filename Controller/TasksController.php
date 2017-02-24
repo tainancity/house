@@ -270,6 +270,11 @@ class TasksController extends AppController {
                     );
                 }
                 $report[$place['Place']['group_id']][$label] += 1;
+				/*
+				因為資料庫原有設計是varchar:修正1,735.65=>1.73565不正確轉值判斷.(資料庫原設計不動)
+				參考網頁http://stackoverflow.com/questions/481466/php-string-to-float
+				*/
+				$place['Place']['area']=floatval(preg_replace("/[^-0-9\.]/","",$place['Place']['area']));
                 $report[$place['Place']['group_id']]['總面積'] += $place['Place']['area'];
                 if ($place['Place']['status'] == 1) {
                     $report[$place['Place']['group_id']]['現況良好數量'] += 1;

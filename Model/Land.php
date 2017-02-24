@@ -18,13 +18,17 @@ class Land extends AppModel {
         $address = preg_replace('/\s+/', '', $address);//address標準輸入格式為[中西]保安段00140000
         if (!empty($address)) {
             $pos = strrpos($address, '段');
+			
             if (false === $pos) {
                 $sectionPart = $address;
             } else {
                 $sectionPart = substr($address, 0, $pos);
             }
-
+			
             if (!empty($sectionPart)) {
+				if (false !== $pos){
+					$sectionPart = $sectionPart."段";//確保類似：搜尋太子->找到%太子%段,搜尋太子段->%太子段
+				}
                 $conditions = array('OR' => array(
                         'Section.name LIKE' => '%' . $sectionPart . '%'
                 ));

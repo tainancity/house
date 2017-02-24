@@ -63,4 +63,10 @@ function showJson(obj) {
         }
     }
     map.fitBounds(newBounds);
+	
+	var centerPoint = newBounds.getCenter();
+	$('#lnglat').val(centerPoint.lng()+","+centerPoint.lat());
+	$('#latlng').val(centerPoint.lat()+","+centerPoint.lng());
+	$('#lat').val(centerPoint.lat());
+    $('#lng').val(centerPoint.lng());
 }

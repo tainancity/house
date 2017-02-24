@@ -75,19 +75,52 @@ class PlacesController extends AppController {
             }
         }
 		//搜尋條件
+		$conditions=array('');
+		$land_conditions=array('');
+		$land_contains=array();
 		$srch_title=@$this->request->data['srch_title']==""?"":$this->request->data['srch_title'];//POST
+		$srch_section=@$this->request->data['srch_section']==""?"":$this->request->data['srch_section'];//POST
+		$srch_code=@$this->request->data['srch_code']==""?"":$this->request->data['srch_code'];//POST
 		//$conditions['title  LIKE'] = "%".$this->request->query('data.srch_title')."%";//GET
-		$conditions['title  LIKE'] = "%".$srch_title."%";
+		if($srch_title!="")
+		{
+			$conditions['title  LIKE'] = "%".$srch_title."%";
+		}
 		
+		if($srch_section!="")
+		{
+			$land_conditions['Section.name  LIKE'] = "%".$srch_section."%";
+			$land_contains['Section']=array('fields' => array('name'));
+		}
+		if($srch_code!="")
+		{
+			$land_conditions['code'] = $srch_code;
+		}
+		if(!empty($land_conditions))
+		{
+			
+			$land_id_a = $this->Place->Land->find('first', array(
+                        'conditions' => $land_conditions,
+                        'contain' => $land_contains,
+                    ));
+				
+			//foreach($land_id_a as $key=>$val)
+			//{		
+				//print_r($land_id_a);
+				//$this->paginate['PlaceLink']['conditions'] = array('foreign_id'=>$land_id_a['Land']['id']);
+				//$conditions['Land.id'] = $land_id_a['Land']['id'];
+			//}			
+		}
 		$this->paginate['Place']['conditions'] = $conditions;
 		
         $this->set('scope', $scope);
         $this->paginate['Place']['limit'] = 40;
 		$this->paginate['Place']['order'] = array('s_order' => 'ASC');
         $this->paginate['Place']['contain'] = array(
-            'Modifier' => array(
-                'fields' => array('username'),
-            ),
+                    'Modifier' => array(
+                        'fields' => array('username'),
+                    ),
+                    'PlaceLink',
         );
 		
         $items = $this->paginate($this->Place, $scope);
@@ -100,6 +133,8 @@ class PlacesController extends AppController {
         $this->set('tasks', $this->Place->Task->find('list'));
         $this->set('url', array($typeModel, $foreignModel, $foreignId));
 		$this->set('GET_title',$srch_title);
+		$this->set('GET_section',$srch_section);
+		$this->set('GET_code',$srch_code);
     }
 
     function admin_view($id = null) {

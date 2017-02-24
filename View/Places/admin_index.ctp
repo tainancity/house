@@ -38,9 +38,14 @@ if (!empty($foreignId) && !empty($foreignModel)) {
         }
         ?>
 		
-		<div class="form-group"> 
-			<label for="srch_title">搜尋路段名稱</label> 
+		<div class="form-group"> 搜尋:
+			<label for="srch_title">路段名稱</label> 
 			<?php echo $this->Form->text('srch_title', ['class' => 'form-control','value' => $GET_title]); ?>
+			
+			<label for="srch_title">地段</label> 
+			<?php echo $this->Form->text('srch_section', ['class' => 'form-control','value' => $GET_section]); ?>
+			<label for="srch_title">地號</label> 
+			<?php echo $this->Form->text('srch_code', ['class' => 'form-control','value' => $GET_code]); ?>
 		
 		</div>
 		<input type="submit" name="btn" id="btn" value="搜尋" class="btn btn-default" />

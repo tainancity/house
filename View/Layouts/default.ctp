@@ -41,6 +41,8 @@
                             break;
                         case 0://未登入
 							echo $this->Html->link('公開空地空屋列管地圖', '/tasks', array('class' => 'btn btn-default'));
+							echo $this->Html->link('地址座標查詢', '/doors', array('class' => 'btn btn-default'));
+							echo $this->Html->link('地號座標查詢', '/lands', array('class' => 'btn btn-default'));
                             echo $this->Html->link('管理者登入', '/members/login', array('class' => 'btn btn-default'));
                             break;
                         default://局處
