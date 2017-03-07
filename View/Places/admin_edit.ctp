@@ -116,6 +116,64 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+			
+			
+			echo '<style>.area_detail_div{float:left;}</style><h4>個別記錄功能(開放試用)</h4>';
+			$area_detail_a=json_decode($this->data['Place']['area_detail'],true);
+			$i=0;
+			if(is_array($this->data['PlaceLink']))
+			{
+				foreach($this->data['PlaceLink']as $key=>$val)
+				{
+					if($this->data['PlaceLink'][$key]['Section']['name']!="")
+					{
+						$EDIT_section_code=$this->data['PlaceLink'][$key]['Section']['name'].$this->data['PlaceLink'][$key]['Land']['code'];
+						$EDIT_area="";
+						$EDIT_owner="";
+						if(!empty($area_detail_a))
+						{
+							foreach($area_detail_a as $area_detail_key => $area_detail_val)
+							{
+								if($EDIT_section_code==$area_detail_val['section_code'])
+								{
+									$EDIT_section_code=$this->data['PlaceLink'][$key]['Section']['name'].$this->data['PlaceLink'][$key]['Land']['code'];
+									$EDIT_area=$area_detail_val['area'];
+									$EDIT_owner=$area_detail_val['owner'];
+									break;
+								}
+							}
+						}
+						echo $this->Form->input('PlaceArea_Detail.'.$i.'.section_code', array(
+							'label' => '地號',
+							'type' => 'text',
+							'div' => 'area_detail_div',
+							'value' => $EDIT_section_code,
+							'size' => 25
+						));
+						echo $this->Form->input('PlaceArea_Detail.'.$i.'.area', array(
+							'label' => '面積',
+							'type' => 'text',
+							'div' => 'area_detail_div',
+							'value' =>$EDIT_area,
+							'size' => 5
+						));
+						echo $this->Form->input('PlaceArea_Detail.'.$i.'.owner', array(
+							'label' => '擁有人',
+							'type' => 'text',
+							'div' => 'area_detail_div',
+							'value' =>$EDIT_owner,
+							'size' => 10
+						));
+					echo"<br>";
+					$i++;
+
+					}
+				}
+			}
+			echo "<hr>";
+			
+			
+			
             echo $this->Form->input('Place.date_begin', array(
                 'type' => 'text',
                 'label' => '開始列管日期',
@@ -178,6 +236,8 @@
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+			
+			
             ?>
         </div>
     </div>
