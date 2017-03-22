@@ -48,6 +48,8 @@ if (!empty($foreignId) && !empty($foreignModel)) {
 			//print_r($item);
             foreach ($item AS $k=> $log_a) {
 				$log=$log_a['PlaceLog'];
+				if($item[$k]['Place']['title']!="")
+				{
                 ?><tr>
 					<td><?php echo $item[$k]['Place']['Task']['title']; ?></td>
 					<td><?php echo $item[$k]['Place']['title']; ?></td>
@@ -75,6 +77,7 @@ if (!empty($foreignId) && !empty($foreignModel)) {
 					
                 </tr>
                 <?php
+				}
             }
             ?>
         </table>

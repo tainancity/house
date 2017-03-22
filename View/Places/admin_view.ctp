@@ -106,6 +106,54 @@
             echo $item['Place']['owner'];
             ?>&nbsp;
         </div>
+		
+		<div class="clearfix"></div>
+		<div class="col-md-3">個別所有權人</div>
+		<div class="col-md-9">
+		<?php
+		
+		if($item['Place']['model']=="Land")
+		{
+			$area_detail_a=json_decode($item['Place']['area_detail'],true);
+			$i=0;
+			if(is_array($item['PlaceLink']))
+			{
+				foreach($item['PlaceLink']as $key=>$val)
+				{
+					if($item['PlaceLink'][$key]['Section']['name']!="")
+					{
+						$EDIT_section_code=$item['PlaceLink'][$key]['Section']['name'].$item['PlaceLink'][$key]['Land']['code'];
+						$EDIT_area="";
+						$EDIT_owner="";
+						if(!empty($area_detail_a))
+						{
+							foreach($area_detail_a as $area_detail_key => $area_detail_val)
+							{
+								if($EDIT_section_code==$area_detail_val['section_code'])
+								{
+									$EDIT_section_code=$item['PlaceLink'][$key]['Section']['name'].$item['PlaceLink'][$key]['Land']['code'];
+									$EDIT_area=$area_detail_val['area'];
+									$EDIT_owner=$area_detail_val['owner'];
+									break;
+								}
+							}
+						}		
+						echo "地號:".$EDIT_section_code." ";
+						if($EDIT_owner!="")
+						{
+						echo "面積:".$EDIT_area." ";
+						echo "擁有人:".$EDIT_owner." ";
+						}
+						echo"<br>";
+						$i++;
+
+					}
+				}
+			}
+			}
+			
+		?>
+		</div>
         <div class="clearfix"></div>
         <div class="col-md-3">開始列管日期</div>
         <div class="col-md-9">&nbsp;<?php

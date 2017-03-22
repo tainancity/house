@@ -300,8 +300,10 @@ class PlacesController extends AppController {
                 $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
             }
             $this->Place->id = $item['Place']['id'];
+			if ($item['Place']['model'] === 'Land') {
 			$dataToSave['Place']['area_detail'] = json_encode($dataToSave['PlaceArea_Detail'], JSON_UNESCAPED_UNICODE);
-            $dataToSave['Place']['modified_by'] = $this->loginMember['id'];
+            }
+			$dataToSave['Place']['modified_by'] = $this->loginMember['id'];
             $dataToSave['Place']['modified'] = date('Y-m-d H:i:s');
             if ($this->Place->save($dataToSave)) {
                 $this->Place->PlaceLink->deleteAll(array('place_id' => $dataToSave['Place']['id']));

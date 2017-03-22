@@ -117,8 +117,9 @@
                 'class' => 'form-control',
             ));
 			
-			
-			echo '<style>.area_detail_div{float:left;}</style><h4>個別記錄功能(開放試用)</h4>';
+			if($typeModel=="Land")
+			{
+			echo '<style>.area_detail_div{float:left;}</style><h4>個別所有權人</h4>';
 			$area_detail_a=json_decode($this->data['Place']['area_detail'],true);
 			$i=0;
 			if(is_array($this->data['PlaceLink']))
@@ -155,6 +156,7 @@
 							'type' => 'text',
 							'div' => 'area_detail_div',
 							'value' =>$EDIT_area,
+							'placeholder'=>'(平方公尺)',
 							'size' => 5
 						));
 						echo $this->Form->input('PlaceArea_Detail.'.$i.'.owner', array(
@@ -171,7 +173,7 @@
 				}
 			}
 			echo "<hr>";
-			
+			}
 			
 			
             echo $this->Form->input('Place.date_begin', array(
