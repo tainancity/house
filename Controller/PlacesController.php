@@ -603,7 +603,7 @@ class PlacesController extends AppController {
             $result = array();
             $placeCounter = 0;
             while ($line = fgetcsv($fh, 2048)) {
-                if (count($line) === 19 && is_numeric($line[5])) {
+                if (count($line) >= 19 && count($line) <= 30 &&is_numeric($line[5])) {
 					if($line[1]!=""&&$line[2]!=""&&$line[3]!="")
 					{//必須前幾列有填,才能作為後面列參考範例
 						$lastLine = $line;
@@ -621,9 +621,8 @@ class PlacesController extends AppController {
 					
                 }
             }
-			//$import_msg.=print_r($result);
+			
             foreach ($result AS $lands) {
-
                 $dataToSave = array('Place' => array(
                         'model' => 'Land',
                         'task_id' => $taskId,
