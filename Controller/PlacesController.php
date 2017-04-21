@@ -604,8 +604,8 @@ class PlacesController extends AppController {
             $placeCounter = 0;
             while ($line = fgetcsv($fh, 2048)) {
                 if (count($line) >= 19 && count($line) <= 30 &&is_numeric($line[5])) {
-					if($line[1]!=""&&$line[2]!=""&&$line[3]!="")
-					{//必須前幾列有填,才能作為後面列參考範例
+					if($line[1]!=""&&$line[6]!="")
+					{//必須前幾欄(地區,面積)有填,才能作為後面列的參考範例(適用於同一空地多列地號情況)
 						$lastLine = $line;
 					}
                     foreach ($line AS $k => $v) {

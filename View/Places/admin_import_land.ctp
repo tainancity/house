@@ -27,3 +27,4 @@
     echo $this->Form->end('上傳');
     ?>
 </div>
+<?php echo $this->Html->image('demo.png', ['width' => '80%']);?>
