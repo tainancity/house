@@ -86,31 +86,65 @@ class PlacesController extends AppController {
 		{
 			$conditions['title  LIKE'] = "%".$srch_title."%";
 		}
-		
-		if($srch_section!="")
-		{
-			$land_conditions['Section.name  LIKE'] = "%".$srch_section."%";
+	
+
+		if($srch_section!=""&&$srch_code!="")
+		{//地段與地號必須同時填寫才能篩選
+			//$land_conditions['Section.name  LIKE'] = "%".$srch_section."%";
+			$land_conditions['Section.name'] = $srch_section;
 			$land_contains['Section']=array('fields' => array('name'));
-		}
-		if($srch_code!="")
-		{
 			$land_conditions['code'] = $srch_code;
-		}
-		if(!empty($land_conditions))
-		{
-			
 			$land_id_a = $this->Place->Land->find('first', array(
                         'conditions' => $land_conditions,
                         'contain' => $land_contains,
                     ));
-				
-			//foreach($land_id_a as $key=>$val)
-			//{		
-				//print_r($land_id_a);
-				//$this->paginate['PlaceLink']['conditions'] = array('foreign_id'=>$land_id_a['Land']['id']);
-				//$conditions['Land.id'] = $land_id_a['Land']['id'];
-			//}			
+			$filter_place_id = $this->Place->PlaceLink->find('all', array(
+						'conditions' => array('PlaceLink.foreign_id' => $land_id_a['Land']['id']),
+						'fields' => array('PlaceLink.place_id'),
+					));	
+			$filter_place_id_list=array();
+			foreach($filter_place_id as $key=>$val)
+			{	
+				$filter_place_id_list[]=$val['PlaceLink']['place_id'];
+			}
+			//print_r($filter_place_id_list);			
+			$conditions['Place.id'] = $filter_place_id_list;			
+			
 		}
+		
+		/*
+		if($srch_section!="")
+		{//地段必須同時填寫才能篩選(地號選填)->負載太大,先關閉
+			//$land_conditions['Section.name  LIKE'] = "%".$srch_section."%";
+			$land_conditions['Section.name'] = $srch_section;
+			$land_contains['Section']=array('fields' => array('name'));
+			if($srch_code!="")
+			{
+				$land_conditions['code'] = $srch_code;
+			}
+			$land_id_a = $this->Place->Land->find('all', array(
+                        'conditions' => $land_conditions,
+                        'contain' => $land_contains,
+                    ));
+			$filter_place_id_list=array();		
+			foreach($land_id_a as $val_land_id)
+			{		
+				$filter_place_id = $this->Place->PlaceLink->find('all', array(
+							'conditions' => array('PlaceLink.foreign_id' => $val_land_id['Land']['id']),
+							'fields' => array('PlaceLink.place_id'),
+						));	
+				
+				foreach($filter_place_id as $val_filter_place)
+				{	
+					$filter_place_id_list[]=$val_filter_place['PlaceLink']['place_id'];
+				}
+			}
+			//print_r($filter_place_id_list);			
+			$conditions['Place.id'] = $filter_place_id_list;			
+			
+		}
+		*/
+		
 		$this->paginate['Place']['conditions'] = $conditions;
 		
         $this->set('scope', $scope);
@@ -120,7 +154,7 @@ class PlacesController extends AppController {
                     'Modifier' => array(
                         'fields' => array('username'),
                     ),
-                    'PlaceLink',
+                    'PlaceLink'
         );
 		
         $items = $this->paginate($this->Place, $scope);
