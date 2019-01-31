@@ -64,7 +64,7 @@
             <div id="footer">
                 &nbsp;<br /><br />
                 <div class="pull-right">
-                    本系統由 研考會-資訊中心-規劃設計組 建置，如有疑問請聯繫 <a href="mailto:shinryuken@mail.tainan.gov.tw">shinryuken@mail.tainan.gov.tw</a>
+                    本系統由 研考會-智慧發展中心  建置，如有疑問請聯繫 <a href="mailto:shinryuken@mail.tainan.gov.tw">shinryuken@mail.tainan.gov.tw</a>
                 </div>
             </div>
         </div>
