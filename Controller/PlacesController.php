@@ -230,7 +230,8 @@ class PlacesController extends AppController {
             $dataToSave = $this->data;
             if (!empty($dataToSave['PlaceLog']['file']['name'])) {
                 $p = pathinfo($dataToSave['PlaceLog']['file']['name']);
-                $dataToSave['PlaceLog']['file']['name'] = uuid_create() . '.' . strtolower($p['extension']);
+                //$dataToSave['PlaceLog']['file']['name'] = uuid_create() . '.' . strtolower($p['extension']);
+				$dataToSave['PlaceLog']['file']['name'] = uniqid() . '.' . strtolower($p['extension']);
             }
             if (!empty($foreignModel)) {
                 $dataToSave['Place'][$foreignKeys[$foreignModel]] = $foreignId;
@@ -328,13 +329,14 @@ class PlacesController extends AppController {
             $dataToSave['Place']['id'] = $id;
             if (!empty($dataToSave['PlaceLog']['file']['name'])) {
                 $p = pathinfo($dataToSave['PlaceLog']['file']['name']);
-                $dataToSave['PlaceLog']['file']['name'] = uuid_create() . '.' . strtolower($p['extension']);
+               // $dataToSave['PlaceLog']['file']['name'] = uuid_create() . '.' . strtolower($p['extension']);
+			   $dataToSave['PlaceLog']['file']['name'] = uniqid() . '.' . strtolower($p['extension']);
             }
             if ($this->loginMember['group_id'] != 1) {
                 $dataToSave['Place']['group_id'] = $this->loginMember['group_id'];
             }
             $this->Place->id = $item['Place']['id'];
-			if ($item['Place']['model'] === 'Land') {
+			if ($item['Place']['model'] === 'Land'&&isset($dataToSave['PlaceArea_Detail'])) {
 			$dataToSave['Place']['area_detail'] = json_encode($dataToSave['PlaceArea_Detail'], JSON_UNESCAPED_UNICODE);
             }
 			$dataToSave['Place']['modified_by'] = $this->loginMember['id'];
