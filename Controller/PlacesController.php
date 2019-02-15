@@ -341,6 +341,28 @@ class PlacesController extends AppController {
             }
 			$dataToSave['Place']['modified_by'] = $this->loginMember['id'];
             $dataToSave['Place']['modified'] = date('Y-m-d H:i:s');
+			//讓日期欄位預設值為NULL,不為0000-00-00(MYSQL strict模式)
+			if($dataToSave['Place']['date_begin']=="0000-00-00")
+			{
+				$dataToSave['Place']['date_begin']=NULL;
+			}
+			if($dataToSave['Place']['adopt_begin']=="0000-00-00")
+			{
+				$dataToSave['Place']['adopt_begin']=NULL;
+			}
+			if($dataToSave['Place']['adopt_end']=="0000-00-00")
+			{
+				$dataToSave['Place']['adopt_end']=NULL;
+			}
+			if($dataToSave['Place']['adopt_closed']=="0000-00-00")
+			{
+				$dataToSave['Place']['adopt_closed']=NULL;
+			}
+			if($dataToSave['PlaceLog']['date_visited']=="0000-00-00")
+			{
+				$dataToSave['PlaceLog']['date_visited']=NULL;
+			}
+			
             if ($this->Place->save($dataToSave)) {
                 $this->Place->PlaceLink->deleteAll(array('place_id' => $dataToSave['Place']['id']));
                 $dataToSave['PlaceLog']['place_id'] = $dataToSave['Place']['id'];
