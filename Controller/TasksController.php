@@ -345,13 +345,14 @@ class TasksController extends AppController {
 					if(!empty($place['PlaceLink']))
 					{
 						foreach ($place['PlaceLink'] AS $k => $v) {
+							
 							$item['PlaceLink'][$k] = $this->Task->Place->Land->find('first', array(
 								'conditions' => array('Land.id' => $v['foreign_id']),
 								'contain' => array('Section'),
 							));
-							
-							if (!isset($report[$place['Place']['id']])) {
-								$report[$place['Place']['id']] = array(
+							if($k==0)
+							{
+								$temp_a=array(
 									'編號' => $i,
 									'區別' => $tasks[$place['Place']['task_id']],
 									'類別' => $type,
@@ -375,8 +376,19 @@ class TasksController extends AppController {
 									'解除認養日期' => $place['Place']['adopt_closed'],
 									'認養維護單位' => $place['Place']['adopt_by'],
 									'備註' => $place['Place']['note'],
+									'地段2' => '-',
+									'地號2' => '-',
 								);
+								$report[$i] = $temp_a;
 							}
+							else
+							{
+								$t=$k+1;
+								$report[$i]['地段'.$t]=$item['PlaceLink'][$k]['Section']['name'];
+								$report[$i]['地號'.$t]=$item['PlaceLink'][$k]['Land']['code'];
+								
+							}
+							
 						}
 					}
 					else{
@@ -404,6 +416,8 @@ class TasksController extends AppController {
 							'解除認養日期' => $place['Place']['adopt_closed'],
 							'認養維護單位' => $place['Place']['adopt_by'],
 							'備註' => $place['Place']['note'],
+							'地段2' => '-',
+							'地號2' => '-',
 						);
 					}
 				}
@@ -432,6 +446,8 @@ class TasksController extends AppController {
 							'解除認養日期' => $place['Place']['adopt_closed'],
 							'認養維護單位' => $place['Place']['adopt_by'],
 							'備註' => $place['Place']['note'],
+							'地段2' => '-',
+							'地號2' => '-',
 					);
 				}
 				//print_r($item['PlaceLink']);   
