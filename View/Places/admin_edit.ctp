@@ -36,7 +36,7 @@
 					break;
 			}
 			?>
-            <input type="text" class="col-md-12" id="mapHelper" placeholder="搜尋格式：[中西]保安段00140000" />
+            <input type="text" class="col-md-12" id="mapHelper" placeholder="搜尋格式：[中西]保安段00140000 (地號可動態新增)" />
             <div class="clearfix"></div>
             <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
             <br />&nbsp;<br />&nbsp;

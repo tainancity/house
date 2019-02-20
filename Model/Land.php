@@ -17,6 +17,7 @@ class Land extends AppModel {
         );
         $address = preg_replace('/\s+/', '', $address);//address標準輸入格式為[中西]保安段00140000
         if (!empty($address)) {
+			//$result['result'][] =$address;
             $pos = strrpos($address, '段');
 			
             if (false === $pos) {
@@ -56,6 +57,7 @@ class Land extends AppModel {
                         $landPart = str_pad(substr($landPart, 0, $pos), 4, '0', STR_PAD_LEFT) . str_pad(substr($landPart, $pos + 1), 4, '0', STR_PAD_LEFT);
                     }
                     $landPartLength = strlen($landPart);
+					$landPart_s=$landPart;
                     if ($landPartLength <= 4) {
                         $landPart = '%' . $landPart . '%';
                     } elseif ($landPartLength < 8) {
@@ -77,17 +79,39 @@ class Land extends AppModel {
                     ));
                     foreach ($lands AS $k => $item) {
                         $item['Land']['label'] = $item['Land']['value'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
+						$item['Land']['btn_id'] = $sections[0]['Section']['id'].$item['Land']['code'];
                         $result['result'][] = $item['Land'];
                     }
+					//dynamic add no-match-in-json's land code	
+					if(strlen($landPart_s)>=5)
+					{
+						$add_land_a['Land']['code']=$landPart_s;
+						$add_land_a['Land']['section_id']=$sections[0]['Section']['id'];
+						$add_land_a['Land']['file']="";
+						$conditions = array(
+							'Land.code' => $landPart_s,
+							'Land.section_id' => $sections[0]['Section']['id'],
+						);
+						if (!$this->hasAny($conditions)){
+							$this->create();
+							$this->save($add_land_a);
+						}
+						
+					}
                 } else {
                     foreach ($sections AS $k => $item) {
                         $item['Section']['label'] = $item['Section']['value'] = $item['Section']['name'];
                         $result['result'][] = $item['Section'];
                     }
                 }
+				
+				
             }
+			
         }
         return $result;
     }
+	
+	
 
 }

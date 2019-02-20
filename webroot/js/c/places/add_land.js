@@ -52,6 +52,12 @@ $(function () {
                     }
                 }
             }
+			else if(currentItem.value.length>12)
+			{//12 is key-in address length (7 section name+5 land code)
+				//console.log(currentItem.value+"@"+currentItem.value.length);
+				showAddress(currentItem.value);
+				
+			}
         },
         minLength: 1
     });
@@ -121,6 +127,12 @@ function showJson(obj) {
         objItem.append('<input type="hidden" name="data[PlaceLink][]" value="' + currentItem.id + '" />');
         $('#mapItems').append(objItem);
     }
+}
+function showAddress(addr) {
+    var objItem = $('<a class="btnMapItem btn btn-default" id="btn' + currentItem.btn_id + '" data-id="' + currentItem.btn_id  + '">' + currentItem.label + '</a>');
+	objItem.click(btnObjClick);
+	objItem.append('<input type="hidden" name="data[PlaceLink][]" value="' + currentItem.id + '" />');
+	$('#mapItems').append(objItem);
 }
 
 function placeLocation(pos) {

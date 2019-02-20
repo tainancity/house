@@ -43,23 +43,31 @@ $(function () {
                 id: place.PlaceLink[k].Land.id,
                 label: place.PlaceLink[k].Section.name + place.PlaceLink[k].Land.code
             };
-            if (!loadedJson[place.PlaceLink[k].Land.file]) {
-                loadingFile = place.PlaceLink[k].Land.file;
-                $.getJSON(jsonBaseUrl + place.PlaceLink[k].Land.file, {}, function (r) {
-                    loadedJson[loadingFile] = r;
-                    for (i in r.features) {
-                        if (place.PlaceLink[k].Land.code == r.features[i].properties.AA49) {
-                            showJson(r.features[i]);
-                        }
-                    }
-                });
-            } else {
-                for (i in loadedJson[place.PlaceLink[k].Land.file].features) {
-                    if (place.PlaceLink[k].Land.code == loadedJson[place.PlaceLink[k].Land.file].features[i].properties.AA49) {
-                        showJson(loadedJson[place.PlaceLink[k].Land.file].features[i]);
-                    }
-                }
-            }
+			if(place.PlaceLink[k].Land.file)
+			{
+				if (!loadedJson[place.PlaceLink[k].Land.file]) {
+					loadingFile = place.PlaceLink[k].Land.file;
+					$.getJSON(jsonBaseUrl + place.PlaceLink[k].Land.file, {}, function (r) {
+						loadedJson[loadingFile] = r;
+						for (i in r.features) {
+							if (place.PlaceLink[k].Land.code == r.features[i].properties.AA49) {
+								showJson(r.features[i]);
+							}
+						}
+					});
+				}
+				else {
+					for (i in loadedJson[place.PlaceLink[k].Land.file].features) {
+						if (place.PlaceLink[k].Land.code == loadedJson[place.PlaceLink[k].Land.file].features[i].properties.AA49) {
+							showJson(loadedJson[place.PlaceLink[k].Land.file].features[i]);
+						}
+					}
+				}
+			}
+			else 
+			{//no-match-in-json's land code					
+				showAddress(currentItem.value);
+			}
         }
         map.fitBounds(theBounds);
         if (!pointLatLng) {
@@ -111,6 +119,12 @@ $(function () {
 				}
                 $('#PlaceForeignId').val(ui.item.id);
             }
+			else if(currentItem.value.length>12)
+			{//12 is key-in address length (7 section name+5 land code)
+				//console.log(currentItem.value+"@"+currentItem.value.length);
+				showAddress(currentItem.value);
+				
+			}
         },
         minLength: 1
     });
@@ -159,6 +173,13 @@ function showJson(obj, fillForm) {
         objItem.append('<input type="hidden" name="data[PlaceLink][]" value="' + currentItem.id + '" />');
         $('#mapItems').append(objItem);
     }
+}
+
+function showAddress(addr) {
+    var objItem = $('<a class="btnMapItem btn btn-default" id="btn' + currentItem.btn_id + '" data-id="' + currentItem.btn_id  + '">' + currentItem.label + '</a>');
+	objItem.click(btnObjClick);
+	objItem.append('<input type="hidden" name="data[PlaceLink][]" value="' + currentItem.id + '" />');
+	$('#mapItems').append(objItem);
 }
 
 function mapObjClick(e) {
