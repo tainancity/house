@@ -5,6 +5,7 @@ tmp
 webroot/.htaccess
 webroot/media
 webroot/json
+tmp_default
 
 error
 stats

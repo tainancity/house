@@ -1,6 +1,28 @@
 var map, marker, theBounds;
 var loadedJson = {}, loadingFile = '', currentObj = {}, currentItem = {};
 $(function () {
+	
+	var timeout;
+	$(window).scroll(function() {
+	  clearTimeout(timeout);  
+	  timeout = setTimeout(function() {
+		  var error="";
+		  if($( "[name='data[Place][latitude]']" ).val()>90 || $( "[name='data[Place][latitude]']" ).val()<-90 )
+		  {
+			  error="緯度須在-90~90度內.";
+		  }
+		  if($( "[name='data[Place][longitude]']" ).val()>180 || $( "[name='data[Place][longitude]']" ).val()<-180 )
+		  {
+			  error+="經度須在-180~180度內.";
+		  }
+		  if(error!="")
+		  {
+			  alert("注意!錯誤:"+error);
+		  }
+		}, 50);
+	 
+	});
+	
     var pointLatLng = new google.maps.LatLng(23.01, 120.22);
     map = new google.maps.Map(document.getElementById('mapCanvas'), {
         zoom: 14,
