@@ -78,7 +78,15 @@ class Land extends AppModel {
                         'limit' => 200
                     ));
                     foreach ($lands AS $k => $item) {
-                        $item['Land']['label'] = $item['Land']['value'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
+						if($item['Land']['file']!="")
+						{
+							$item['Land']['label'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
+						}
+						else
+						{
+							$item['Land']['label'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}(未對應座標)";
+						}
+						$item['Land']['value'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
 						$item['Land']['btn_id'] = $sections[0]['Section']['id'].$item['Land']['code'];
                         $result['result'][] = $item['Land'];
                     }
