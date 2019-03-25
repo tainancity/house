@@ -7,6 +7,7 @@ $(function () {
 	  clearTimeout(timeout);  
 	  timeout = setTimeout(function() {
 		  var error="";
+		  
 		  if($( "[name='data[Place][latitude]']" ).val()>90 || $( "[name='data[Place][latitude]']" ).val()<-90 )
 		  {
 			  error="緯度須在-90~90度內.";
@@ -15,6 +16,27 @@ $(function () {
 		  {
 			  error+="經度須在-180~180度內.";
 		  }
+		 $(".datecheck").each(function(){  
+			  var v=$(this).val();
+			  //console.log(v.substr(0,4)+" | "+v.substr(5,2)+" | "+v.substr(8,2));
+			  if(v!="")
+			  {
+  				  
+				  if(v.substr(0,4)<=1000||v.substr(0,4)>9999)
+				  {
+					 error+="請檢查"+v+"日期格式是否錯誤."; 
+				  }
+				  if(v.substr(5,2)<=0||v.substr(5,2)>100)
+				  {
+					 error+="請檢查"+v+"日期格式是否錯誤."; 
+				  }
+				   if(v.substr(8,2)<=0||v.substr(8,2)>100)
+				  {
+					 error+="請檢查"+v+"日期格式是否錯誤."; 
+				  }
+				  
+			  }
+			});	
 		  if(error!="")
 		  {
 			  alert("注意!錯誤:"+error);

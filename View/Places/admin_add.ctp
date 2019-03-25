@@ -129,7 +129,7 @@
                 'type' => 'text',
                 'label' => '開始列管日期',
                 'div' => 'form-group',
-                'class' => 'form-control',
+                'class' => 'form-control datecheck',
             ));
             echo $this->Form->input('Place.is_rule_area', array(
                 'type' => 'checkbox',
@@ -141,19 +141,19 @@
                 'type' => 'text',
                 'label' => '認養契約簽訂起始日',
                 'div' => 'form-group',
-                'class' => 'form-control',
+                'class' => 'form-control datecheck',
             ));
             echo $this->Form->input('Place.adopt_end', array(
                 'type' => 'text',
                 'label' => '契約期限',
                 'div' => 'form-group',
-                'class' => 'form-control',
+                'class' => 'form-control datecheck',
             ));
             echo $this->Form->input('Place.adopt_closed', array(
                 'type' => 'text',
                 'label' => '解除認養日期',
                 'div' => 'form-group',
-                'class' => 'form-control',
+                'class' => 'form-control datecheck',
             ));
             echo $this->Form->input('Place.adopt_by', array(
                 'type' => 'text',
@@ -178,7 +178,7 @@
                 'label' => '訪視日期',
                 'type' => 'text',
                 'div' => 'form-group',
-                'class' => 'form-control',
+                'class' => 'form-control datecheck',
             ));
             echo $this->Form->input('PlaceLog.note', array(
                 'label' => '訪視記錄',
