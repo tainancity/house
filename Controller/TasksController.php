@@ -245,29 +245,51 @@ class TasksController extends AppController {
                     'Place.task_id' => $id,
                     'Place.model' => $model,
                 ),
-                'fields' => array('group_id', 'status', 'is_adopt', 'adopt_type', 'area'),
+                'fields' => array('group_id', 'status', 'is_adopt', 'adopt_type', 'area', 'adopt_area'),
                 'order' => array('Place.group_id' => 'ASC'),
             ));
             $report = array();
             foreach ($places AS $place) {
                 if (!isset($report[$place['Place']['group_id']])) {
-                    $report[$place['Place']['group_id']] = array(
-                        '區別' => $groups[$place['Place']['group_id']],
-                        $label => 0,
-                        '總面積' => 0,
-                        '現況良好數量' => 0,
-                        '待改善數量' => 0,
-                        '認養地數量' => 0,
-                        '認養地面積' => 0,
-                        '綠美化數量' => 0,
-                        '綠美化面積' => 0,
-                        '停車場數量' => 0,
-                        '停車場面積' => 0,
-                        '運動場數量' => 0,
-                        '運動場面積' => 0,
-                        '其他公益場地數量' => 0,
-                        '其他公益場地面積' => 0,
-                    );
+					if($model !== 'Land') {
+						$report[$place['Place']['group_id']] = array(
+							'區別' => $groups[$place['Place']['group_id']],
+							$label => 0,
+							'總面積' => 0,
+							'現況良好數量' => 0,
+							'待改善數量' => 0,
+							'認養地數量' => 0,
+							'認養地面積' => 0,
+							'綠美化數量' => 0,
+							'綠美化面積' => 0,
+							'停車場數量' => 0,
+							'停車場面積' => 0,
+							'運動場數量' => 0,
+							'運動場面積' => 0,
+							'其他公益場地數量' => 0,
+							'其他公益場地面積' => 0,
+						);
+					 } else {
+						$report[$place['Place']['group_id']] = array(
+							'區別' => $groups[$place['Place']['group_id']],
+							$label => 0,
+							'列管地總面積' => 0,
+							'認養地總面積' => 0,
+							'現況良好數量' => 0,
+							'待改善數量' => 0,
+							'認養地數量' => 0,
+							'認養地面積' => 0,
+							'綠美化數量' => 0,
+							'綠美化面積' => 0,
+							'停車場數量' => 0,
+							'停車場面積' => 0,
+							'運動場數量' => 0,
+							'運動場面積' => 0,
+							'其他公益場地數量' => 0,
+							'其他公益場地面積' => 0,
+						);
+
+					}
                 }
                 $report[$place['Place']['group_id']][$label] += 1;
 				/*
@@ -275,7 +297,13 @@ class TasksController extends AppController {
 				參考網頁http://stackoverflow.com/questions/481466/php-string-to-float
 				*/
 				$place['Place']['area']=floatval(preg_replace("/[^-0-9\.]/","",$place['Place']['area']));
-                $report[$place['Place']['group_id']]['總面積'] += $place['Place']['area'];
+				$place['Place']['adopt_area']=floatval(preg_replace("/[^-0-9\.]/","",$place['Place']['adopt_area']));
+				if($model !== 'Land') {
+					$report[$place['Place']['group_id']]['總面積'] += $place['Place']['area'];
+				} else {
+					$report[$place['Place']['group_id']]['列管地總面積'] += $place['Place']['area'];
+					$report[$place['Place']['group_id']]['認養地總面積'] += $place['Place']['adopt_area'];
+				}
                 if ($place['Place']['status'] == 1) {
                     $report[$place['Place']['group_id']]['現況良好數量'] += 1;
                 } else {
@@ -364,7 +392,8 @@ class TasksController extends AppController {
 									'待改善情形' => $place['Place']['issue'],
 									'地段' => $item['PlaceLink'][$k]['Section']['name'],
 									'地號' => $item['PlaceLink'][$k]['Land']['code'],
-									'空地面積(m²)' => $place['Place']['area'],
+									'列管地面積(m²)' => $place['Place']['area'],
+									'認養地面積(m²)' => $place['Place']['adopt_area'],
 									'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
 									'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
 									'開始列管日期' => $place['Place']['date_begin'],
@@ -404,7 +433,8 @@ class TasksController extends AppController {
 							'待改善情形' => $place['Place']['issue'],
 							'地段' => '-',
 							'地號' => '-',
-							'空地面積(m²)' => $place['Place']['area'],
+							'列管地面積(m²)' => $place['Place']['area'],
+							'認養地面積(m²)' => $place['Place']['adopt_area'],
 							'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
 							'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
 							'開始列管日期' => $place['Place']['date_begin'],
@@ -434,7 +464,8 @@ class TasksController extends AppController {
 							'待改善情形' => $place['Place']['issue'],
 							'地段' => '-',
 							'地號' => '-',
-							'空地面積(m²)' => $place['Place']['area'],
+							'列管空地面積(m²)' => $place['Place']['area'],
+							'認養地面積(m²)' => $place['Place']['adopt_area'],
 							'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
 							'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
 							'開始列管日期' => $place['Place']['date_begin'],

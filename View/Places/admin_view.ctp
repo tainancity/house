@@ -58,8 +58,9 @@
             echo $item['Place']['latitude'] . ',' . $item['Place']['longitude'];
             ?>&nbsp;
         </div>
+		
         <div class="clearfix"></div>
-        <div class="col-md-3">列管地面積</div>
+        <div class="col-md-3"><?php if($item['Place']['model']=="Land"){ echo "列管地";}?>面積</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['area'];
             ?>&nbsp;(平方公尺)
@@ -70,12 +71,14 @@
             echo ($item['Place']['is_adopt'] == 1) ? '是' : '否';
             ?>&nbsp;
         </div>
+		<?php if($item['Place']['model']=="Land"){ ?>
 		<div class="clearfix"></div>
         <div class="col-md-3">認養地面積</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['adopt_area'];
             ?>&nbsp;(平方公尺)
         </div>
+		<?php }?>
         <div class="clearfix"></div>
         <div class="col-md-3">認養地類型</div>
         <div class="col-md-9">&nbsp;<?php
