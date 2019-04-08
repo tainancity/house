@@ -59,7 +59,7 @@
             ?>&nbsp;
         </div>
         <div class="clearfix"></div>
-        <div class="col-md-3">面積</div>
+        <div class="col-md-3">列管地面積</div>
         <div class="col-md-9">&nbsp;<?php
             echo $item['Place']['area'];
             ?>&nbsp;(平方公尺)
@@ -69,6 +69,12 @@
         <div class="col-md-9">&nbsp;<?php
             echo ($item['Place']['is_adopt'] == 1) ? '是' : '否';
             ?>&nbsp;
+        </div>
+		<div class="clearfix"></div>
+        <div class="col-md-3">認養地面積</div>
+        <div class="col-md-9">&nbsp;<?php
+            echo $item['Place']['adopt_area'];
+            ?>&nbsp;(平方公尺)
         </div>
         <div class="clearfix"></div>
         <div class="col-md-3">認養地類型</div>
@@ -124,6 +130,7 @@
 					{
 						$EDIT_section_code=$item['PlaceLink'][$key]['Section']['name'].$item['PlaceLink'][$key]['Land']['code'];
 						$EDIT_area="";
+						$EDIT_adopt_area="";
 						$EDIT_owner="";
 						if(!empty($area_detail_a))
 						{
@@ -133,6 +140,7 @@
 								{
 									$EDIT_section_code=$item['PlaceLink'][$key]['Section']['name'].$item['PlaceLink'][$key]['Land']['code'];
 									$EDIT_area=$area_detail_val['area'];
+									$EDIT_adopt_area=$area_detail_val['adopt_area'];
 									$EDIT_owner=$area_detail_val['owner'];
 									break;
 								}
@@ -141,7 +149,8 @@
 						echo "地號:".$EDIT_section_code." ";
 						if($EDIT_owner!="")
 						{
-						echo "面積:".$EDIT_area." ";
+						echo "列管地面積:".$EDIT_area." ";
+						echo "認養地面積:".$EDIT_adopt_area." ";
 						echo "擁有人:".$EDIT_owner." ";
 						}
 						echo"<br>";

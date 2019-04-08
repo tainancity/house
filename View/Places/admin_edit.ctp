@@ -67,15 +67,22 @@
             ));
             echo $this->Form->input('Place.area', array(
                 'type' => 'text',
-                'label' => '面積(平方公尺)',
+                'label' => '列管地面積(平方公尺)',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+			
             echo $this->Form->input('Place.is_adopt', array(
                 'type' => 'checkbox',
                 'label' => '是否為認養地？',
                 'div' => 'form-group',
                 'class' => false,
+            ));
+			echo $this->Form->input('Place.adopt_area', array(
+                'type' => 'text',
+                'label' => '認養地面積(平方公尺)',
+                'div' => 'form-group',
+                'class' => 'form-control',
             ));
             echo $this->Form->input('Place.adopt_type', array(
                 'label' => '認養類型',
@@ -130,6 +137,7 @@
 					{
 						$EDIT_section_code=$this->data['PlaceLink'][$key]['Section']['name'].$this->data['PlaceLink'][$key]['Land']['code'];
 						$EDIT_area="";
+						$EDIT_adopt_area="";
 						$EDIT_owner="";
 						if(!empty($area_detail_a))
 						{
@@ -139,6 +147,7 @@
 								{
 									$EDIT_section_code=$this->data['PlaceLink'][$key]['Section']['name'].$this->data['PlaceLink'][$key]['Land']['code'];
 									$EDIT_area=$area_detail_val['area'];
+									$EDIT_adopt_area=$area_detail_val['adopt_area'];
 									$EDIT_owner=$area_detail_val['owner'];
 									break;
 								}
@@ -152,10 +161,18 @@
 							'size' => 25
 						));
 						echo $this->Form->input('PlaceArea_Detail.'.$i.'.area', array(
-							'label' => '面積',
+							'label' => '列管地面積',
 							'type' => 'text',
 							'div' => 'area_detail_div',
 							'value' =>$EDIT_area,
+							'placeholder'=>'(平方公尺)',
+							'size' => 5
+						));
+						echo $this->Form->input('PlaceArea_Detail.'.$i.'.adopt_area', array(
+							'label' => '認養地面積',
+							'type' => 'text',
+							'div' => 'area_detail_div',
+							'value' =>$EDIT_adopt_area,
 							'placeholder'=>'(平方公尺)',
 							'size' => 5
 						));

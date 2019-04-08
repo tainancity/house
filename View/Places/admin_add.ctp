@@ -76,15 +76,22 @@
             ));
             echo $this->Form->input('Place.area', array(
                 'type' => 'text',
-                'label' => '面積(平方公尺)',
+                'label' => '列管地面積(平方公尺)',
                 'div' => 'form-group',
                 'class' => 'form-control',
             ));
+			
             echo $this->Form->input('Place.is_adopt', array(
                 'type' => 'checkbox',
                 'label' => '是否為認養地？',
                 'div' => 'form-group',
                 'class' => false,
+            ));
+			echo $this->Form->input('Place.adopt_area', array(
+                'type' => 'text',
+                'label' => '認養地面積(平方公尺)',
+                'div' => 'form-group',
+                'class' => 'form-control',
             ));
             echo $this->Form->input('Place.adopt_type', array(
                 'label' => '認養類型',
