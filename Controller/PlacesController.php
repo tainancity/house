@@ -397,9 +397,12 @@ class PlacesController extends AppController {
 				{
 					$update_log="列管地面積：".$item['Place']['area']." -> ".$dataToSave['Place']['area']." \r\n".$update_log;
 				}
-				if($item['Place']['adopt_area']!=$dataToSave['Place']['adopt_area'])
+				if(isset($item['Place']['adopt_area']))
 				{
-					$update_log="領養地面積：".$item['Place']['adopt_area']." -> ".$dataToSave['Place']['adopt_area']." \r\n".$update_log;
+					if($item['Place']['adopt_area']!=$dataToSave['Place']['adopt_area'])
+					{
+						$update_log="領養地面積：".$item['Place']['adopt_area']." -> ".$dataToSave['Place']['adopt_area']." \r\n".$update_log;
+					}
 				}
 				if($item['Place']['is_adopt']!=$dataToSave['Place']['is_adopt'])
 				{
