@@ -274,7 +274,6 @@ class TasksController extends AppController {
 							'區別' => $groups[$place['Place']['group_id']],
 							$label => 0,
 							'列管地總面積' => 0,
-							'認養地總面積' => 0,
 							'現況良好數量' => 0,
 							'待改善數量' => 0,
 							'認養地數量' => 0,
@@ -302,7 +301,6 @@ class TasksController extends AppController {
 					$report[$place['Place']['group_id']]['總面積'] += $place['Place']['area'];
 				} else {
 					$report[$place['Place']['group_id']]['列管地總面積'] += $place['Place']['area'];
-					$report[$place['Place']['group_id']]['認養地總面積'] += $place['Place']['adopt_area'];
 				}
                 if ($place['Place']['status'] == 1) {
                     $report[$place['Place']['group_id']]['現況良好數量'] += 1;
@@ -311,7 +309,7 @@ class TasksController extends AppController {
                 }
                 if ($place['Place']['is_adopt'] == 1) {
                     $report[$place['Place']['group_id']]['認養地數量'] += 1;
-                    $report[$place['Place']['group_id']]['認養地面積'] += $place['Place']['area'];
+                    $report[$place['Place']['group_id']]['認養地面積'] += $place['Place']['adopt_area'];
                     switch ($place['Place']['adopt_type']) {
                         case '綠美化':
                             $report[$place['Place']['group_id']]['綠美化數量'] += 1;
@@ -369,6 +367,13 @@ class TasksController extends AppController {
 				else{
 					$lat_lng="";
 				}
+				if ($place['Place']['is_adopt'] == 1) {
+					$adopt_area=$place['Place']['adopt_area'];
+				}
+				else{
+					$adopt_area="-";
+				}
+				
 				if ($place['Place']['model'] === 'Land') {
 					if(!empty($place['PlaceLink']))
 					{
@@ -378,8 +383,10 @@ class TasksController extends AppController {
 								'conditions' => array('Land.id' => $v['foreign_id']),
 								'contain' => array('Section'),
 							));
+							
 							if($k==0)
 							{
+								
 								$temp_a=array(
 									'編號' => $i,
 									'區別' => $tasks[$place['Place']['task_id']],
@@ -393,7 +400,7 @@ class TasksController extends AppController {
 									'地段' => $item['PlaceLink'][$k]['Section']['name'],
 									'地號' => $item['PlaceLink'][$k]['Land']['code'],
 									'列管地面積(m²)' => $place['Place']['area'],
-									'認養地面積(m²)' => $place['Place']['adopt_area'],
+									'認養地面積(m²)' => $adopt_area,
 									'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
 									'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
 									'開始列管日期' => $place['Place']['date_begin'],
@@ -434,7 +441,7 @@ class TasksController extends AppController {
 							'地段' => '-',
 							'地號' => '-',
 							'列管地面積(m²)' => $place['Place']['area'],
-							'認養地面積(m²)' => $place['Place']['adopt_area'],
+							'認養地面積(m²)' => $adopt_area,
 							'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
 							'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
 							'開始列管日期' => $place['Place']['date_begin'],
@@ -465,7 +472,7 @@ class TasksController extends AppController {
 							'地段' => '-',
 							'地號' => '-',
 							'列管空地面積(m²)' => $place['Place']['area'],
-							'認養地面積(m²)' => $place['Place']['adopt_area'],
+							'認養地面積(m²)' => $adopt_area,
 							'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
 							'土地管理機關<br>土地所有權人' => $place['Place']['owner'],
 							'開始列管日期' => $place['Place']['date_begin'],
