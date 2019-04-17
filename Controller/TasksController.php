@@ -310,22 +310,23 @@ class TasksController extends AppController {
                 if ($place['Place']['is_adopt'] == 1) {
                     $report[$place['Place']['group_id']]['認養地數量'] += 1;
                     $report[$place['Place']['group_id']]['認養地面積'] += $place['Place']['adopt_area'];
+					//認養地數量=綠美化+停車場+運動場+其他公益場地
                     switch ($place['Place']['adopt_type']) {
                         case '綠美化':
                             $report[$place['Place']['group_id']]['綠美化數量'] += 1;
-                            $report[$place['Place']['group_id']]['綠美化面積'] += $place['Place']['area'];
+                            $report[$place['Place']['group_id']]['綠美化面積'] += $place['Place']['adopt_area'];
                             break;
                         case '停車場':
                             $report[$place['Place']['group_id']]['停車場數量'] += 1;
-                            $report[$place['Place']['group_id']]['停車場面積'] += $place['Place']['area'];
+                            $report[$place['Place']['group_id']]['停車場面積'] += $place['Place']['adopt_area'];
                             break;
                         case '運動場':
                             $report[$place['Place']['group_id']]['運動場數量'] += 1;
-                            $report[$place['Place']['group_id']]['運動場面積'] += $place['Place']['area'];
+                            $report[$place['Place']['group_id']]['運動場面積'] += $place['Place']['adopt_area'];
                             break;
                         case '其他公益場地':
                             $report[$place['Place']['group_id']]['其他公益場地數量'] += 1;
-                            $report[$place['Place']['group_id']]['其他公益場地面積'] += $place['Place']['area'];
+                            $report[$place['Place']['group_id']]['其他公益場地面積'] += $place['Place']['adopt_area'];
                             break;
                     }
                 }

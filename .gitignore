@@ -2,6 +2,7 @@
 Config/core.php
 Config/database.php
 tmp
+tmp_default
 webroot/.htaccess
 webroot/media
 webroot/json
