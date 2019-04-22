@@ -161,7 +161,10 @@
 								{
 									$EDIT_section_code=$this->data['PlaceLink'][$key]['Section']['name'].$this->data['PlaceLink'][$key]['Land']['code'];
 									$EDIT_area=$area_detail_val['area'];
+									if(isset($area_detail_val['adopt_area']))
+									{
 									$EDIT_adopt_area=$area_detail_val['adopt_area'];
+									}
 									$EDIT_owner=$area_detail_val['owner'];
 									break;
 								}
@@ -197,7 +200,7 @@
 							'value' =>$EDIT_owner,
 							'size' => 10
 						));
-					echo"<br>";
+					echo "<div style='clear:both'><hr></div>";
 					$i++;
 
 					}

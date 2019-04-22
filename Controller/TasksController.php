@@ -123,7 +123,7 @@ class TasksController extends AppController {
             $foreignModel = '';
         }
         $this->set('scope', $scope);
-        $this->paginate['Task']['limit'] = 20;
+        $this->paginate['Task']['limit'] = 50;
         $items = $this->paginate($this->Task, $scope);
 
         if ($op == 'set' && !empty($joins[$foreignModel]) && !empty($foreignModel) && !empty($foreignId) && !empty($items)) {
@@ -398,8 +398,8 @@ class TasksController extends AppController {
 									'經度' => $place['Place']['longitude'],
 									'狀態' => $place['Place']['status'],
 									'待改善情形' => $place['Place']['issue'],
-									'地段' => $item['PlaceLink'][$k]['Section']['name'],
-									'地號' => $item['PlaceLink'][$k]['Land']['code'],
+									'地段' => @$item['PlaceLink'][$k]['Section']['name'],
+									'地號' => @$item['PlaceLink'][$k]['Land']['code'],
 									'列管地面積(m²)' => $place['Place']['area'],
 									'認養地面積(m²)' => $adopt_area,
 									'土地權屬<br>(國有/市有/私有)' =>$place['Place']['ownership'],
@@ -421,8 +421,8 @@ class TasksController extends AppController {
 							else
 							{
 								$t=$k+1;
-								$report[$i]['地段'.$t]=$item['PlaceLink'][$k]['Section']['name'];
-								$report[$i]['地號'.$t]=$item['PlaceLink'][$k]['Land']['code'];
+								@$report[$i]['地段'.$t]=$item['PlaceLink'][$k]['Section']['name'];
+								@$report[$i]['地號'.$t]=$item['PlaceLink'][$k]['Land']['code'];
 								
 							}
 							

@@ -72,24 +72,6 @@ class Land extends AppModel {
                         $conditions['Land.code'] = $landPart;
                     }
 					
-          
-                    $lands = $this->find('all', array(
-                        'conditions' => $conditions,
-                        'limit' => 200
-                    ));
-                    foreach ($lands AS $k => $item) {
-						if($item['Land']['file']!="")
-						{
-							$item['Land']['label'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
-						}
-						else
-						{
-							$item['Land']['label'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}(未對應座標)";
-						}
-						$item['Land']['value'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
-						$item['Land']['btn_id'] = $sections[0]['Section']['id'].$item['Land']['code'];
-                        $result['result'][] = $item['Land'];
-                    }
 					//dynamic add no-match-in-json's land code	
 					if(strlen($landPart_s)>=5)
 					{
@@ -106,6 +88,25 @@ class Land extends AppModel {
 						}
 						
 					}
+					
+                    $lands = $this->find('all', array(
+                        'conditions' => $conditions,
+                        'limit' => 50
+                    ));
+                    foreach ($lands AS $k => $item) {
+						if($item['Land']['file']!="")
+						{
+							$item['Land']['label'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
+						}
+						else
+						{
+							$item['Land']['label'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}(未對應座標)";
+						}
+						$item['Land']['value'] = "{$sections[0]['Section']['name']}{$item['Land']['code']}";
+						$item['Land']['btn_id'] = $sections[0]['Section']['id'].$item['Land']['code'];
+                        $result['result'][] = $item['Land'];
+                    }
+					
                 } else {
                     foreach ($sections AS $k => $item) {
                         $item['Section']['label'] = $item['Section']['value'] = $item['Section']['name'];

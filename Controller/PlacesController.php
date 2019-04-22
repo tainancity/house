@@ -148,7 +148,7 @@ class PlacesController extends AppController {
 		$this->paginate['Place']['conditions'] = $conditions;
 		
         $this->set('scope', $scope);
-        $this->paginate['Place']['limit'] = 40;
+        $this->paginate['Place']['limit'] = 100;
 		$this->paginate['Place']['order'] = array('s_order' => 'ASC');
         $this->paginate['Place']['contain'] = array(
                     'Modifier' => array(
@@ -670,7 +670,7 @@ class PlacesController extends AppController {
             while ($line = fgetcsv($fh, 2048)) {
                 if (count($line) >= 19 && count($line) <= 30 &&is_numeric($line[5])) {
 					if($line[1]!=""&&$line[6]!="")
-					{//必須前幾欄(地區,面積)有填,才能作為後面列的參考範例(適用於同一空地多列地號情況)
+					{//必須前幾欄(地區,面積)有填且第一欄編號要填相同,才能作為後面列的參考範例(適用於同一空地多列地號情況)
 						$lastLine = $line;
 					}
                     foreach ($line AS $k => $v) {
@@ -679,14 +679,14 @@ class PlacesController extends AppController {
                             $line[$k] = $lastLine[$k];
                         }
                     }
-                    if (!isset($result[$line[0]])) {
+                    if (!isset($result[$line[0]])) {//不同編號換列,and initial
                         $result[$line[0]] = array();
                     }
                     $result[$line[0]][] = $line;
 					
                 }
             }
-			
+			//debug($result);
             foreach ($result AS $lands) {
                 $dataToSave = array('Place' => array(
                         'model' => 'Land',
@@ -757,7 +757,7 @@ class PlacesController extends AppController {
 						}
 						$import_msg_code.=$lands[$land_key][5].",";
 						//測試網址：.../house/lands/q/xxx
-                        $lands_srch = $this->Place->Land->queryKeyword($land_keyword);
+                        $lands_srch = $this->Place->Land->queryKeyword($land_keyword);//search and dynamic add no-match-in-json's land code
                         if (count($lands_srch['result']) === 1) {
                             $this->Place->PlaceLink->create();
                             $this->Place->PlaceLink->save(array('PlaceLink' => array(
@@ -766,12 +766,14 @@ class PlacesController extends AppController {
                                     'foreign_id' => $lands_srch['result'][0]['id'],
                             )));
                         }
+						
                     }
 					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ".$lands[$land_key][3]." 含地號：".$import_msg_code." -匯入成功</span><br>";
                 }
 				else{
 					$import_msg.="<span style='color:#ff0000;'>第".$placeCounter."筆 ".$lands[$land_key][3]." -匯入失敗</span><br>";
 				}
+				
 				
             }
             $this->Session->setFlash("共".count($result)."筆資料 匯入了 {$placeCounter} 筆資料<br>".$import_msg);
