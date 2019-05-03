@@ -543,13 +543,8 @@ class PlacesController extends AppController {
               [9] => 開始列管日期
               [10] => 解除列管日期
               [11] => 是否位於空地空屋管理自治條例公告實施範圍
-              [12] => 是否認養
-              [13] => 設置類別
-              [14] => 認養契約簽訂起始日
-              [15] => 契約期限
-              [16] => 解除認養日期
-              [17] => 認養維護單位
-              [18] => 備註(如附現地照片)
+              [12] => 現況分析及說明
+              [13] => 備註(如附現地照片)
               )
              */
             $result = array();
@@ -586,6 +581,7 @@ class PlacesController extends AppController {
                         'note' => $lands[0][12],
                         'created_by' => $this->loginMember['id'],
                         'modified_by' => $this->loginMember['id'],
+						'is_adopt' =>  '0',
                 ));
                 foreach ($lands AS $land) {
                     $dataToSave['Place']['note'] .= "\n地號： {$land[4]}{$land[5]}";
@@ -799,8 +795,14 @@ class PlacesController extends AppController {
         } else {
             $this->Session->setFlash('請勾選刪除項目');
         }
-
-		$this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));
+		if($this->request->data['del_type']=="door")
+		{
+			$this->redirect(array('action' => 'index', 'Door', 'Task', $taskId));
+		}
+		else
+		{
+			$this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));
+		}
         
     }
 	

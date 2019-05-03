@@ -56,6 +56,13 @@ if (!empty($foreignId) && !empty($foreignModel)) {
 	
 	<?php echo $this->Form->create(null, array('url' => array('controller' => 'Places', 'action' => 'delete_place_batch', $foreignId))); ?>
 	<input type="submit" name="btn_del" id="btn_del" value="批次刪除" class="btn btn-default" />
+	<?php
+	 if($typeModel === 'Door') {
+		echo '<input type="hidden" name="del_type" id="del_type" value="door"  />';
+	} else {
+		echo '<input type="hidden" name="del_type" id="del_type" value="land"  />';
+	}
+	?>
     <table class="table table-bordered" id="PlacesAdminIndexTable">
         <thead>
             <tr>
