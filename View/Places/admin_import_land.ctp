@@ -19,7 +19,7 @@
         ));
     }
     echo $this->Form->input('Place.file', array(
-        'label' => '檔案 (' . $this->Html->link('匯入範例', '/pub/sample_land.csv', array('target' => '_blank')) . ') 如上傳失敗請檢查格式與編碼(UTF-8)',
+        'label' => '檔案 (' . $this->Html->link('匯入範例', '/pub/sample_land.csv?v=1', array('target' => '_blank')) . ') 如上傳失敗請檢查格式與編碼(UTF-8)',
         'type' => 'file',
         'div' => 'form-group',
         'class' => 'form-control',

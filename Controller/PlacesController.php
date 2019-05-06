@@ -647,24 +647,25 @@ class PlacesController extends AppController {
               [4] => 地段
               [5] => 地號
               [6] => 空地面積(m²)
-              [7] => 土地權屬(國有/市有/私有)
-              [8] => 土地管理機關土地所有權人
-              [9] => 開始列管日期
-              [10] => 解除列管日期
-              [11] => 是否位於空地空屋管理自治條例公告實施範圍
-              [12] => 是否認養
-              [13] => 設置類別
-              [14] => 認養契約簽訂起始日
-              [15] => 契約期限
-              [16] => 解除認養日期
-              [17] => 認養維護單位
-              [18] => 備註(如附現地照片)
+			  [7] => 認養面積(m²)
+              [8] => 土地權屬(國有/市有/私有)
+              [9] => 土地管理機關土地所有權人
+              [10] => 開始列管日期
+              [11] => 解除列管日期
+              [12] => 是否位於空地空屋管理自治條例公告實施範圍
+              [13] => 是否認養
+              [14] => 設置類別
+              [15] => 認養契約簽訂起始日
+              [16] => 契約期限
+              [17] => 解除認養日期
+              [18] => 認養維護單位
+              [19] => 備註(如附現地照片)
               )
              */
             $result = array();
             $placeCounter = 0;
             while ($line = fgetcsv($fh, 2048)) {
-                if (count($line) >= 19 && count($line) <= 30 &&is_numeric($line[5])) {
+                if (count($line) >= 20 && count($line) <= 31 &&is_numeric($line[5])) {
 					if($line[1]!=""&&$line[6]!="")
 					{//必須前幾欄(地區,面積)有填且第一欄編號要填相同,才能作為後面列的參考範例(適用於同一空地多列地號情況)
 						$lastLine = $line;
@@ -689,18 +690,19 @@ class PlacesController extends AppController {
                         'task_id' => $taskId,
                         'title' => $lands[0][3],
                         'status' => '1',
-                        'is_adopt' => ($lands[0][12] === '是') ? '1' : '0',
-                        'adopt_type' => $lands[0][13],
+                        'is_adopt' => ($lands[0][13] === '是') ? '1' : '0',
+                        'adopt_type' => $lands[0][14],
                         'area' => $lands[0][6],
-                        'ownership' => $lands[0][7],
-                        'owner' => $lands[0][8],
-                        'date_begin' => $this->parseDate($lands[0][9]),
-                        'is_rule_area' => ($lands[0][11] === '是') ? true : false,
-                        'adopt_begin' => $this->parseDate($lands[0][14]),
-                        'adopt_end' => $this->parseDate($lands[0][15]),
-                        'adopt_closed' => $this->parseDate($lands[0][16]),
-                        'adopt_by' => $lands[0][17],
-                        'note' => $lands[0][18],
+						'adopt_area' => $lands[0][7],
+                        'ownership' => $lands[0][8],
+                        'owner' => $lands[0][9],
+                        'date_begin' => $this->parseDate($lands[0][10]),
+                        'is_rule_area' => ($lands[0][12] === '是') ? true : false,
+                        'adopt_begin' => $this->parseDate($lands[0][15]),
+                        'adopt_end' => $this->parseDate($lands[0][16]),
+                        'adopt_closed' => $this->parseDate($lands[0][17]),
+                        'adopt_by' => $lands[0][18],
+                        'note' => $lands[0][19],
                         'created_by' => $this->loginMember['id'],
                         'modified_by' => $this->loginMember['id'],
 						's_order' => $lands[0][0],
