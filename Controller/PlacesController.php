@@ -766,10 +766,10 @@ class PlacesController extends AppController {
                         }
 						
                     }
-					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ".$lands[$land_key][3]." 含地號：".$import_msg_code." -匯入成功</span><br>";
+					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ,編號".$lands[$land_key][0]." ".$lands[$land_key][3]." 含地號：".$import_msg_code." -匯入成功</span><br>";
                 }
 				else{
-					$import_msg.="<span style='color:#ff0000;'>第".$placeCounter."筆 ".$lands[$land_key][3]." -匯入失敗</span><br>";
+					$import_msg.="<span style='color:#ff0000;'>第".$placeCounter."筆 ,編號".$lands[$land_key][0]." ".$lands[$land_key][3]." -匯入失敗</span><br>";
 				}
 				
 				
@@ -919,7 +919,7 @@ class PlacesController extends AppController {
 	
     private function parseDate($s) {
         $s = trim($s);
-        if (empty($s)) {
+        if (empty($s)||!is_numeric(mb_substr($s,0,2,"utf-8"))) {
             return '';
         }
         if (strlen($s) === 7) {
@@ -936,14 +936,21 @@ class PlacesController extends AppController {
         }
 
         switch (count($parts)) {
-            case 3:
+			case 4: //type like: 101.1.1.
                 return implode('-', array(
                     $parts[0],
                     str_pad($parts[1], 2, '0', STR_PAD_LEFT),
                     str_pad($parts[2], 2, '0', STR_PAD_LEFT),
                 ));
                 break;
-            case 2:
+            case 3: //type like: 101.1.1 (standard)
+                return implode('-', array(
+                    $parts[0],
+                    str_pad($parts[1], 2, '0', STR_PAD_LEFT),
+                    str_pad($parts[2], 2, '0', STR_PAD_LEFT),
+                ));
+                break;
+            case 2: //type like: 101.1 
                 return implode('-', array(
                     $parts[0],
                     str_pad($parts[1], 2, '0', STR_PAD_LEFT),
