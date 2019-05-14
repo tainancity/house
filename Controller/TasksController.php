@@ -347,7 +347,7 @@ class TasksController extends AppController {
                     'Place.task_id' => $id,
                 ),
                 'contain' => array('PlaceLink'),
-                'order' => array('Place.group_id' => 'ASC'),
+                'order' => array('Place.group_id' => 'ASC','Place.s_order' => 'ASC'),
             ));
 			$tasks = $this->Task->find('list');
             $report = array();

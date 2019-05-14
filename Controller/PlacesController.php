@@ -661,6 +661,11 @@ class PlacesController extends AppController {
               [18] => 認養維護單位
               [19] => 備註(如附現地照片)
               )
+			  匯入填列要點：
+			  1.面積不能留空,至少填寫0
+			  2.多地號狀態,必須每個地號自己一列,其他資訊除面積外可相同
+			  3.多地號會計算各地號面積總和,作為該地的面積(所以不知道就寫0) 
+			  4.單列不能有多列值,並整合改在同一列. 
              */
             $result = array();
             $placeCounter = 0;
@@ -670,10 +675,18 @@ class PlacesController extends AppController {
 					{//必須前幾欄(地區,面積)有填且第一欄編號要填相同,才能作為後面列的參考範例(適用於同一空地多列地號情況)
 						$lastLine = $line;
 					}
+					
                     foreach ($line AS $k => $v) {
                         $line[$k] = trim(str_replace("\n", ' ', $v));
                         if (empty($line[$k]) && isset($lastLine[$k])) {
-                            $line[$k] = $lastLine[$k];
+							if($k==6&&empty($line[$k]))
+							{//面積如果是空的,就自動補0,以免被填入上值
+								$line[6]=0;
+							}
+							else
+							{
+								$line[$k] = $lastLine[$k];
+							}
                         }
                     }
                     if (!isset($result[$line[0]])) {//不同編號換列,and initial
@@ -683,17 +696,40 @@ class PlacesController extends AppController {
 					
                 }
             }
-			//debug($result);
+			//debug($result);exit;
+			
             foreach ($result AS $lands) {
+				
+				$area_sum=0;
+				$adopt_area_sum=0;
+				$is_adopt=0;
+
+				if(count($lands)>1)
+				{//累計多地號的面積
+					for($i=0;$i<count($lands);$i++) {
+						$area_sum+=(int)$lands[$i][6];
+						$adopt_area_sum+=(int)$lands[$i][7];
+						if($is_adopt!=1)
+						{//只要有一個子地號為認養,整塊地就算認養
+							$is_adopt=($lands[$i][13] === '是') ? '1' : '0';
+						}
+					}
+				}
+				else
+				{
+					$area_sum=$lands[0][6];
+					$adopt_area_sum=$lands[0][7];
+					$is_adopt=($lands[0][13] === '是') ? '1' : '0';
+				}
                 $dataToSave = array('Place' => array(
                         'model' => 'Land',
                         'task_id' => $taskId,
                         'title' => $lands[0][3],
                         'status' => '1',
-                        'is_adopt' => ($lands[0][13] === '是') ? '1' : '0',
+                        'is_adopt' => $is_adopt,
                         'adopt_type' => $lands[0][14],
-                        'area' => $lands[0][6],
-						'adopt_area' => $lands[0][7],
+                        'area' => $area_sum,
+						'adopt_area' => $adopt_area_sum,
                         'ownership' => $lands[0][8],
                         'owner' => $lands[0][9],
                         'date_begin' => $this->parseDate($lands[0][10]),
@@ -717,12 +753,14 @@ class PlacesController extends AppController {
                 $this->Place->create();
                 if ($this->Place->save($dataToSave)) {
                     ++$placeCounter;
-                    $dataToSave['PlaceLog']['place_id'] = $this->Place->getInsertID();
+					$new_place_id=$this->Place->getInsertID();
+                    $dataToSave['PlaceLog']['place_id'] = $new_place_id;
                     $dataToSave['PlaceLog']['status'] = $dataToSave['Place']['status'];
                     $dataToSave['PlaceLog']['created_by'] = $this->loginMember['id'];
                     $this->Place->PlaceLog->create();
                     $this->Place->PlaceLog->save($dataToSave);
 					$import_msg_code="";
+					$temp=array();
 					for($i=0;$i<count($lands);$i++) {
 						$land_key=$i;
 						$land_keyword="";//格式：[中西]保安段00140000 ([區名]地段地號)
@@ -763,9 +801,27 @@ class PlacesController extends AppController {
                                     'model' => 'Land',
                                     'foreign_id' => $lands_srch['result'][0]['id'],
                             )));
-                        }
-						
+							if(count($lands)>1)
+							{//地號兩筆以上才個別記錄
+								$temp['PlaceArea_Detail'][$land_key]['section_code']=$land_keyword;
+								$temp['PlaceArea_Detail'][$land_key]['area']=$lands[$land_key][6];
+								$temp['PlaceArea_Detail'][$land_key]['adopt_area']=$lands[$land_key][7];
+								$temp['PlaceArea_Detail'][$land_key]['owner']=$lands[$land_key][9];
+							}
+                        }	
                     }
+					if(isset($temp['PlaceArea_Detail']))
+					{
+						unset($dataToSave);
+						$dataToSave=array();
+						$dataToSave['Place']['area_detail'] = json_encode($temp['PlaceArea_Detail'], JSON_UNESCAPED_UNICODE);
+						
+						$this->Place->create();
+						$this->Place->id = $new_place_id;
+						$this->Place->save($dataToSave);//這邊注意,如資料庫有預設值的內容,修改時沒有帶入寫入數值的會被改為預設值
+						
+					
+					}
 					$import_msg.="<span style='color:#009778;font-size:10px'>第".$placeCounter."筆 ,編號".$lands[$land_key][0]." ".$lands[$land_key][3]." 含地號：".$import_msg_code." -匯入成功</span><br>";
                 }
 				else{
@@ -774,6 +830,7 @@ class PlacesController extends AppController {
 				
 				
             }
+			
             $this->Session->setFlash("共".count($result)."筆資料 匯入了 {$placeCounter} 筆資料<br>".$import_msg);
             $this->redirect(array('action' => 'index', 'Land', 'Task', $taskId));
         }
