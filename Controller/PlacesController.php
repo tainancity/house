@@ -680,8 +680,12 @@ class PlacesController extends AppController {
                         $line[$k] = trim(str_replace("\n", ' ', $v));
                         if (empty($line[$k]) && isset($lastLine[$k])) {
 							if($k==6&&empty($line[$k]))
-							{//面積如果是空的,就自動補0,以免被填入上值
+							{//面積如果是空的,就自動補0,以免被填入上一列延續值
 								$line[6]=0;
+							}
+							else if($k==7&&empty($line[$k]))
+							{//面積如果是空的,就自動補0,以免被填入上一列延續值
+								$line[7]=0;
 							}
 							else
 							{
