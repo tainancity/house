@@ -47,7 +47,8 @@ class Land extends AppModel {
                 $landPart = strtr($landPart, $numbersMap);
 				$landPart = preg_replace('/[^0-9\\-]/', '', $landPart);
 	
-                if (count($sections) === 1 && !empty($landPart)) {
+                if ((count($sections) === 1||(strlen($sectionPart)>=17 && count($sections) === 2)) && !empty($landPart)) {
+					//strlen($sectionPart)=17為適應新舊段名相同,但section id段號不同之情形.ex:[佳里]北文段
                     $conditions = array(
                         'Land.section_id' => $sections[0]['Section']['id'],
                     );

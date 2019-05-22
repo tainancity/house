@@ -36,9 +36,12 @@ if (!empty($foreignId) && !empty($foreignModel)) {
         } else {
             echo $this->Html->link('匯入空屋', array('action' => 'import_door', $foreignId), array('class' => 'btn btn-default'));
         }
+		echo $this->Html->link('空地範例下載', '/pub/sample_land.csv?v=1', array('target' => '_blank'));
+		echo " | ".$this->Html->link('空屋範例下載', '/pub/sample_door.csv', array('target' => '_blank'));
         ?>
 		
-		<div class="form-group"> 搜尋:
+		
+		<div> 搜尋:
 			<label for="srch_title">路段名稱</label> 
 			<?php echo $this->Form->text('srch_title', ['class' => 'form-control','value' => $GET_title,'size'=>10]); ?>
 			
@@ -47,9 +50,9 @@ if (!empty($foreignId) && !empty($foreignModel)) {
 			<label for="srch_title">&地號</label> 
 			<?php echo $this->Form->text('srch_code', ['class' => 'form-control','value' => $GET_code,'placeholder'=>'格式：00140000','size'=>12]); ?>
 			(地段號皆需填寫)
-		
+			<input type="submit" name="btn" id="btn" value="搜尋" class="btn btn-default" />
 		</div>
-		<input type="submit" name="btn" id="btn" value="搜尋" class="btn btn-default" />
+		
 		</form>
     </div>
     <div class="paging"><?php echo $this->element('paginator'); ?></div>
