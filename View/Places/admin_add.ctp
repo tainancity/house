@@ -38,14 +38,18 @@
 						<a href="#" id="geoInput" class="btn btn-default">定位目前位置</a>
 						<a href="#" id="geoGoogle" class="btn btn-default">輸入地址查找座標</a>
 					</div>
+					<input type="text" class="col-md-12" id="mapHelper" placeholder="搜尋格式：請輸入地址" />
 					';
 					break;
 				case 'Land':
+					echo '
+						<input type="text" class="col-md-12" id="mapHelper" placeholder="搜尋格式：[台南]保安段00140000 (地號可動態新增)" />
+					';
 					break;
 			}
 			
 			?>
-            <input type="text" class="col-md-12" id="mapHelper" placeholder="搜尋格式：[台南]保安段00140000 (地號可動態新增)" />
+            
             <div class="clearfix"></div>
             <div id="mapCanvas" class="col-md-12" style="height: 400px;"></div>
             <br />&nbsp;<br />&nbsp;
