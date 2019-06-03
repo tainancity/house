@@ -711,8 +711,8 @@ class PlacesController extends AppController {
 				if(count($lands)>1)
 				{//累計多地號的面積
 					for($i=0;$i<count($lands);$i++) {
-						$area_sum+=(int)$lands[$i][6];
-						$adopt_area_sum+=(int)$lands[$i][7];
+						$area_sum+=(float)$lands[$i][6];
+						$adopt_area_sum+=(float)$lands[$i][7];
 						if($is_adopt!=1)
 						{//只要有一個子地號為認養,整塊地就算認養
 							$is_adopt=($lands[$i][13] === '是') ? '1' : '0';
